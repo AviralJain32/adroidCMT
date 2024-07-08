@@ -52,7 +52,7 @@ const ConferenceSchema: Schema<IConference> = new Schema({
   conferenceCreatedAt: { type: Date, required: true, default: Date.now },
   conferencePaperSubmissionLink: { type: String, required: true },
   conferenceIsAcceptingPaper: { type: Boolean, default: true },
-  conferenceStatus: { type: String, required: true,enum:["submitted","accepted","rejected"],default:"submitted" },
+  conferenceStatus: { type: String, required: true,enum:["submitted","accepted","rejected"],default:"submitted" }
 });
 
 // Conference model

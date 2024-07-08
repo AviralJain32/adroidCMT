@@ -9,6 +9,7 @@ import { getServerSession, User } from 'next-auth';
 import { authOptions } from '../auth/[...nextauth]/options';
 import { uploadOnCloudinary } from '@/helpers/cloudinaryUploadFile';
 import ConferenceModel from '@/model/Conference';
+import { generatePaperID } from '@/lib/PaperId';
 
 export const config = {
   api: {
@@ -84,7 +85,9 @@ export async function POST(request: NextRequest) {
         { status: 404 }
       );
     }
-    console.log(user._id)
+
+    const paperID=await generatePaperID(conference)
+    console.log(paperID)
     // Create a new paper document
     const newPaper = await PaperModel.create({
       paperAuthor: user._id,
@@ -96,6 +99,7 @@ export async function POST(request: NextRequest) {
       paperSubmissionDate: new Date(),
       conference:conferenceDocument._id,
       paperStatus: 'submitted',
+      paperID:paperID
     });
 
     newPaper.save()

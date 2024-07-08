@@ -11,6 +11,7 @@ export interface IPaper extends Document {
   paperSubmissionDate: Date;
   conference: mongoose.Types.ObjectId;
   paperStatus: 'submitted' | 'accepted' | 'rejected';
+  paperID:string
 }
 
 // Paper schema definition
@@ -54,6 +55,10 @@ const PaperSchema: Schema<IPaper> = new Schema({
     type: String,
     enum: ['submitted', 'accepted', 'rejected'],
     default: 'submitted'
+  },
+  paperID:{
+    type:String,
+    required:true
   }
 });
 

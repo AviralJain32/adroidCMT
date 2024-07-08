@@ -77,7 +77,7 @@ export default function SignInForm() {
               control={form.control}
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Email/Username</FormLabel>
+                  <FormLabel>Email</FormLabel>
                   <Input {...field} />
                   <FormMessage />
                 </FormItem>

@@ -17,6 +17,8 @@ export const authOptions:NextAuthOptions={
                 await dbConnect()
                 try {
                     const user=await UserModel.findOne({email:credentials.identifier})
+                   
+                    
                     if(!user){
                         throw new Error("No user found with this email")
                     }
@@ -43,6 +45,8 @@ export const authOptions:NextAuthOptions={
                 session.user._id=token._id
                 session.user.isVerified= token.isVerified
                 session.user.email=token.email
+                session.user.fullname=token.fullname
+    
             }
             return session
         },
@@ -51,6 +55,7 @@ export const authOptions:NextAuthOptions={
                 token._id=user._id?.toString()
                 token.isVerified=user.isVerified;
                 token.email=user.email
+                token.fullname=user.fullname
             }
             return token
         }
