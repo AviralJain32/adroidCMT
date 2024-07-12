@@ -9,7 +9,7 @@ export interface IConference extends Document {
   conferenceTitle: string;
   conferenceEmail:string,
   conferenceAnyOtherInformation: string;
-  conferenceSubmittedPapers: mongoose.Types.ObjectId[];
+  // conferenceSubmittedPapers: mongoose.Types.ObjectId[];
   conferenceAcronym: string;
   conferenceWebpage: string;
   conferenceVenue: string;
@@ -22,10 +22,10 @@ export interface IConference extends Document {
   conferenceSecondaryArea: string;
   conferenceAreaNotes:string,
   conferenceCreatedAt: Date;
-  conferencePaperSubmissionLink: string;
-  conferenceDescription: string;
+  // conferenceDescription: string;
   conferenceIsAcceptingPaper: boolean;
   conferenceStatus: string;
+  conferenceStatusComment:string
 }
 
 // Conference schema definition
@@ -37,7 +37,7 @@ const ConferenceSchema: Schema<IConference> = new Schema({
   conferenceTitle: { type: String, required: true },
   conferenceEmail:{type:String,required:true},
   conferenceAnyOtherInformation: { type: String, required: false },
-  conferenceSubmittedPapers: [{ type: Schema.Types.ObjectId, ref: 'Paper' }],
+  // conferenceSubmittedPapers: [{ type: Schema.Types.ObjectId, ref: 'Paper' }],
   conferenceAcronym: { type: String, required: true },
   conferenceWebpage: { type: String, required: true },
   conferenceVenue: { type: String, required: true },
@@ -50,9 +50,9 @@ const ConferenceSchema: Schema<IConference> = new Schema({
   conferenceSecondaryArea: { type: String },
   conferenceAreaNotes:{type:String,length:500},
   conferenceCreatedAt: { type: Date, required: true, default: Date.now },
-  conferencePaperSubmissionLink: { type: String, required: true },
   conferenceIsAcceptingPaper: { type: Boolean, default: true },
-  conferenceStatus: { type: String, required: true,enum:["submitted","accepted","rejected"],default:"submitted" }
+  conferenceStatus: { type: String, required: true,enum:["submitted","accepted","rejected"],default:"submitted" },
+  conferenceStatusComment:{type:String}
 });
 
 // Conference model

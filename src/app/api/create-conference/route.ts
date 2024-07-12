@@ -3,7 +3,9 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "../auth/[...nextauth]/options";
 import { User } from "next-auth";
 import ConferenceModel from "@/model/Conference";
+import { sendConferenceCreationMail } from "@/helpers/sendConferenceCreationMail";
 import UserModel from "@/model/User";
+// import UserModel from "@/model/User";
 
 export async function POST(request: Request) {
     await dbConnect();
@@ -39,10 +41,9 @@ export async function POST(request: Request) {
         conferenceSecondaryArea,
         conferenceAreaNotes,
         conferenceTitle,
-        conferencePaperSubmissionLink,
     } = await request.json();
 
-    if (!conferenceTitle || !conferenceAcronym || !conferenceWebpage || !conferenceVenue || !conferenceCity || !conferenceCountry || !conferenceFirstDay || !conferenceLastDay || !conferencePrimaryArea || !conferenceTitle || !conferencePaperSubmissionLink) {
+    if (!conferenceTitle || !conferenceAcronym || !conferenceWebpage || !conferenceVenue || !conferenceCity || !conferenceCountry || !conferenceFirstDay || !conferenceLastDay || !conferencePrimaryArea || !conferenceTitle ) {
         return new Response(
             JSON.stringify({
                 success: false,
@@ -78,7 +79,6 @@ export async function POST(request: Request) {
             conferenceTitle,
             conferenceEmail,
             conferenceAnyOtherInformation,
-            conferenceSubmittedPapers:[],
             conferenceAcronym,
             conferenceWebpage,
             conferenceVenue,
@@ -90,17 +90,32 @@ export async function POST(request: Request) {
             conferencePrimaryArea,
             conferenceSecondaryArea,
             conferenceAreaNotes,
-            conferencePaperSubmissionLink,
             conferenceIsAcceptingPaper:true,
             conferenceStatus:"submitted"
         });
 
         await newConference.save();
 
-        await UserModel.findByIdAndUpdate(user._id, {
-            $push: { Organizedconferences: newConference._id },
-          });
+        // await UserModel.findByIdAndUpdate(user._id, {
+        //     $push: { Organizedconferences: newConference._id },
+        //   });
+        const organizer = await UserModel.findById(user._id);
 
+        //email bhejna hai conference ka
+
+        // const emailResponse=await sendConferenceCreationMail(
+        //     conferenceEmail,
+        //     organizer?.fullname 
+        // )
+
+        // if(!emailResponse.success){
+        //     return Response.json({
+        //         success:false,
+        //         message:emailResponse.message
+        //     },{
+        //         status:500
+        //     })
+        // }
           
         return new Response(
             JSON.stringify({

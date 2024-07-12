@@ -50,8 +50,8 @@ const page = ({}) => {
     const copyToClipboard = () => {
       navigator.clipboard.writeText(profileUrl);
       toast({
-        title: 'URL Copied!',
-        description: 'Profile URL has been copied to clipboard.',
+        title: 'Submission Link Copied!',
+        description: 'Submission Link has been copied to clipboard.',
       });
     };
     console.log(papers)
@@ -101,3 +101,9 @@ const page = ({}) => {
 }
 
 export default page
+
+
+//conference acronym paper id
+// submitted paper id,comment,edit
+// comment dalne ka option - accept reject revise
+// mulltiple author

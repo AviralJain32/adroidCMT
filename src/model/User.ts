@@ -9,8 +9,8 @@ export interface User extends Document{
     isVerified:boolean;
     affilation:string,
     country:string,
-    Organizedconferences:mongoose.Types.ObjectId[],
-    submittedPapers:mongoose.Types.ObjectId[]
+    // Organizedconferences:mongoose.Types.ObjectId[],
+    // submittedPapers:mongoose.Types.ObjectId[]
 }
 
 const UserSchema:Schema<User> = new Schema({
@@ -47,16 +47,16 @@ const UserSchema:Schema<User> = new Schema({
         required:true,
         default:"India"
     },
-    Organizedconferences:[{
-        type:mongoose.Schema.Types.ObjectId,
-        ref:"Conference"
-    }],
-    submittedPapers:[
-        {
-        type: Schema.Types.ObjectId, 
-        ref: 'Paper'
-        }
-    ]
+    // Organizedconferences:[{
+    //     type:mongoose.Schema.Types.ObjectId,
+    //     ref:"Conference"
+    // }],
+    // submittedPapers:[
+    //     {
+    //     type: Schema.Types.ObjectId, 
+    //     ref: 'Paper'
+    //     }
+    // ]
 },{timestamps:true})
 
 const UserModel= (mongoose.models.User as mongoose.Model<User>) || (mongoose.model<User>("User",UserSchema))

@@ -30,7 +30,7 @@ export async function GET(request: Request) {
                     success: true,
                     message: "No submitted papers found",
                 }),
-                { status: 404 }
+                { status: 200 }
             );
         }
 

@@ -54,7 +54,7 @@ export async function POST(request: NextRequest) {
   const tempDir = path.join(process.cwd(), 'public', 'temp');
   await fs.mkdir(tempDir, { recursive: true });
 
-  const tempFilePath = path.join(tempDir, `${Date.now()}-${paperFile.name}`);
+  const tempFilePath = path.join(tempDir, `${paperFile.name}`);//${Date.now()}
   const arrayBuffer = await paperFile.arrayBuffer();
   await fs.writeFile(tempFilePath, Buffer.from(arrayBuffer));
 
@@ -105,16 +105,16 @@ export async function POST(request: NextRequest) {
     newPaper.save()
 
     // Update the user's submitted papers
-    const model=await UserModel.findByIdAndUpdate(user._id, {
-      $push: { submittedPapers: newPaper._id },
-    });
-    console.log(model)
+    // const model=await UserModel.findByIdAndUpdate(user._id, {
+    //   $push: { submittedPapers: newPaper._id },
+    // });
+    // console.log(model)
 
     // Update the user's submitted papers
-    const model2= await ConferenceModel.findByIdAndUpdate(conferenceDocument._id, {
-      $push: { submittedPapers: newPaper._id },
-    });
-    console.log(model2)
+    // const model2= await ConferenceModel.findByIdAndUpdate(conferenceDocument._id, {
+    //   $push: { submittedPapers: newPaper._id },
+    // });
+    // console.log(model2)
 
     // Remove the local temp file
     await fs.unlink(tempFilePath);

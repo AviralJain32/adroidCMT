@@ -46,8 +46,8 @@ export async function POST(request:Request){
                 verifyCode,
                 verifyCodeExpiry:expiryDate,
                 isVerified:false,
-                Organizedconferences:[],
-                submittedPapers:[]
+                // Organizedconferences:[],
+                // submittedPapers:[]
             })
             await newUser.save()
         }

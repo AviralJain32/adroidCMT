@@ -1,6 +1,7 @@
 import { v2 as cloudinary } from "cloudinary";
-import fs from "fs";
 import { PathLike } from "fs";
+// import fs from "fs";
+import fs from 'fs/promises';
 
 cloudinary.config({ 
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME as string, 
@@ -30,19 +31,23 @@ type UploadResponse = {
 
 const uploadOnCloudinary = async (localFilePath: String): Promise<UploadResponse | null> => {
     try {
+      console.log("in the uopload on cloudinary function")
         console.log(localFilePath);
         if (!localFilePath) return null;
         // Upload the file to Cloudinary
         const response = await cloudinary.uploader.upload(localFilePath.toString(), {
             resource_type: "auto",
+            use_filename:true,
         });
 
         // File has been uploaded successfully
         // fs.unlinkSync(localFilePath); // Remove the locally saved temporary file
+        // await fs.unlink(localFilePath as PathLike);
         return response;
     } catch (error) {
         // Remove the locally saved temporary file if the upload operation fails
         // fs.unlink(localFilePath);
+        await fs.unlink(localFilePath as PathLike);
         console.log("File is unable to upload to Cloudinary", error);
         return null;
     }

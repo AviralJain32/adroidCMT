@@ -30,7 +30,7 @@ export async function GET(request: Request) {
                     success: true,
                     message: "No organized conferences found",
                 }),
-                { status: 404 }
+                { status: 200 }
             );
         }
 

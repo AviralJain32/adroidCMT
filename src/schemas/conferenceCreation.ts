@@ -19,18 +19,18 @@ const conferenceSchema = z.object({
             message: "Estimated number of submissions must be a positive number",
         }),
     conferenceFirstDay: z.string().transform((date) => {
-        const formattedDate = moment(date).format("YYYY-MM-DDTHH:mm:ss");
+        const formattedDate = new Date(date).toLocaleDateString(); //moment(date).format("YYYY-MM-DDTHH:mm:ss")
         return formattedDate;
     }),
     conferenceLastDay: z.string().transform((date) => {
-        const formattedDate = moment(date).format("YYYY-MM-DDTHH:mm:ss");
+        const formattedDate = new Date(date).toLocaleDateString();
         return formattedDate;
     }),
     conferencePrimaryArea: z.string().min(2, { message: "Primary area must be at least 2 characters" }),
     conferenceSecondaryArea: z.string().optional(),
     conferenceAreaNotes: z.string().optional(),
     conferenceTitle: z.string().min(2, { message: "Title must be at least 2 characters" }),
-    conferencePaperSubmissionLink: z.string().url({ message: "Invalid URL for paper submission link" }),
+    // conferencePaperSubmissionLink: z.string().url({ message: "Invalid URL for paper submission link" }),
 })
 .refine((data) => {
     const { conferenceFirstDay, conferenceLastDay } = data;
