@@ -19,7 +19,7 @@ import {
   ColumnDef,
   SortingState,
 } from "@tanstack/react-table";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import moment from "moment";
 import { IPaper } from "@/model/PaperSchema";
 import { Button } from "@/components/ui/button";
@@ -28,12 +28,17 @@ import { ArrowUpDown, MoreHorizontal } from "lucide-react"
 import { Input } from "./ui/input";
 import Link from "next/link";
 import PaperDetailsPage from "./PaperDetailsPage";
+import { usePathname, useRouter } from "next/navigation";
 
 interface PaperTableProps {
   data: IPaper[];
 }
 
 const PaperTable: React.FC<PaperTableProps> = ({ data }) => {
+  const router = useRouter()
+  const pathname=usePathname()
+
+
   const DownloadFile = (file: string) => {
     try {
       fetch(file)
@@ -68,7 +73,7 @@ const PaperTable: React.FC<PaperTableProps> = ({ data }) => {
       },
       {
         header: "Author",
-        accessorKey: "paperAuthor.fullname",
+        accessorFn: (row) => row.paperAuthor[0]?.fullname || "",
         footer: "Author",
       },
       {
@@ -78,11 +83,10 @@ const PaperTable: React.FC<PaperTableProps> = ({ data }) => {
       },
       {
         header: "Information",
-        accessorKey: "_id",
+        accessorFn: row=>row.paperID,
         footer: "Information",
         cell:info=>(
-          // <Button variant={"outline"} onClick={}>Open</Button>
-          <PaperDetailsPage {...info.row.original}></PaperDetailsPage>
+          <Button variant={'outline'} onClick={()=>router.push(`${pathname}/${info.getValue()}`)}>Open</Button>
         )
       },
       {
@@ -191,5 +195,7 @@ const PaperTable: React.FC<PaperTableProps> = ({ data }) => {
     </div>
   );
 };
+
+
 
 export default PaperTable;

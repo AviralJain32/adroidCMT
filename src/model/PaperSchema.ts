@@ -2,7 +2,7 @@ import mongoose, { Schema, Document } from "mongoose";
 
 // Interface for Paper document
 export interface IPaper extends Document {
-  paperAuthor: mongoose.Types.ObjectId;
+  paperAuthor: mongoose.Types.ObjectId[];
   paperTitle: string;
   paperFile: string;
   paperKeywords: string[];
@@ -16,11 +16,11 @@ export interface IPaper extends Document {
 
 // Paper schema definition
 const PaperSchema: Schema<IPaper> = new Schema({
-    paperAuthor: {
+    paperAuthor: [{
     type: Schema.Types.ObjectId,
     ref: "User",
     required: true
-  },
+  }],
   paperTitle: {
     type: String,
     required: true,

@@ -7,6 +7,7 @@ import { useForm } from 'react-hook-form';
 import { Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
+import { useFieldArray } from 'react-hook-form';
 import {
   Form,
   FormControl,
@@ -15,7 +16,6 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
-
 import { toast } from '@/components/ui/use-toast';
 import * as z from 'zod';
 import { ApiResponse } from '@/types/ApiResponse';
@@ -45,7 +45,6 @@ export default function SendMessage() {
   const [isLoading, setIsLoading] = useState(false);
 
   const onSubmit = async (data: z.infer<typeof paperSubmissionSchema>) => {
-    console.log(data)
     const formData = new FormData();
     formData.append('paperTitle', data.paperTitle);
     formData.append('paperKeywords', data.paperKeywords);

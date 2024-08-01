@@ -45,11 +45,6 @@ const Page: React.FC = () => {
         setOrganizedConferences(response.data.data.organizedConferences)
       } catch (error) {
         const axiosError = error as AxiosError<ApiResponse>
-        // toast({
-        //   title: "Fetch Failed",
-        //   description: axiosError.response?.data.message,
-        //   variant: "destructive"
-        // })
       } finally {
         setLoadingConferences(false)
       }
@@ -65,11 +60,6 @@ const Page: React.FC = () => {
         setSubmittedPapers(response.data.data.submittedPapers)
       } catch (error) {
         const axiosError = error as AxiosError<ApiResponse>
-        // toast({
-        //   title: "Fetch Failed",
-        //   description: axiosError.response?.data.message,
-        //   variant: "destructive"
-        // }) 
       } finally {
         setLoadingPapers(false)
       }
