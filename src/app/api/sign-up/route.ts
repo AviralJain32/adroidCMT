@@ -6,8 +6,8 @@ import bcryptjs from "bcryptjs"
 export async function POST(request:Request){
     await dbConnect()
     try {
-        const {firstname,lastname,email,password,country,affilation,retypePassword}=await request.json()
-        console.log(affilation);
+        const {firstname,lastname,email,password,country,affilation,contactNumber,retypePassword}=await request.json()
+        console.log(contactNumber);
         const fullname=firstname+" "+lastname
         
         const existingUerByEmail=await UserModel.findOne({email})
@@ -18,7 +18,7 @@ export async function POST(request:Request){
             if(existingUerByEmail.isVerified){
                 return Response.json({
                     success:false,
-                    message:"User already exist with this email"
+                    message:"User already exist with this email, Please sign-in"
                 },{
                     status:400
                 })
@@ -40,6 +40,7 @@ export async function POST(request:Request){
             const newUser=new UserModel({
                 fullname:fullname,
                 email,
+                contactNumber,
                 password:hashedPassword,
                 country,
                 affilation,

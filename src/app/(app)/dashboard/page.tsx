@@ -16,6 +16,9 @@ import { Badge } from '@/components/ui/badge'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
+import { useGetOrganizedConferencesQuery } from '@/store/features/ConferenceApiSlice';
+import Loader from '@/components/Loader';
+import EditPopup from './EditPopup';
 
 interface OrganizedConference {
   _id: string;
@@ -25,32 +28,25 @@ interface OrganizedConference {
 }
 
 interface SubmittedPaper {
+  paperAuthor: [];
+  correspondingAuthor:[];
   paperTitle: string;
+  paperFile: string;
+  paperKeywords: string[];
+  paperAbstract: string;
   paperSubmissionDate: Date;
-  paperStatus: string;
-  conference:{conferenceAcronym:string}
+  conference: {conferenceAcronym:string};
+  paperStatus: 'submitted' | 'accepted' | 'rejected' | 'review';
+  paperID:string
 }
-
 const Page: React.FC = () => {
-  const [organizedConferences, setOrganizedConferences] = useState<OrganizedConference[]>([])
-  const [loadingConferences, setLoadingConferences] = useState(false)
+  // const [organizedConferences, setOrganizedConferences] = useState<OrganizedConference[]>([])
+  // const [loadingConferences, setLoadingConferences] = useState(false)
   const [submittedPapers, setSubmittedPapers] = useState<SubmittedPaper[]>([])
   const [loadingPapers, setLoadingPapers] = useState(false)
 
-  useMemo(() => {
-    const getConferences = async () => {
-      setLoadingConferences(true)
-      try {
-        const response = await axios.get('/api/get-conferences')
-        setOrganizedConferences(response.data.data.organizedConferences)
-      } catch (error) {
-        const axiosError = error as AxiosError<ApiResponse>
-      } finally {
-        setLoadingConferences(false)
-      }
-    }
-    getConferences()
-  }, [])
+  const { data: organizedConferences, error: conferencesError, isLoading: loadingConferences } = useGetOrganizedConferencesQuery()
+  console.log(organizedConferences)
 
   useMemo(() => {
     const getSubmittedPapers = async () => {
@@ -67,6 +63,11 @@ const Page: React.FC = () => {
     getSubmittedPapers()
   }, [])
 
+  // const editPaperDetails=(paperID:string)=>{
+  //   console.log(paperID)
+  //   return 
+  // }
+  console.log(submittedPapers)
   return (
     <div className='container mx-auto p-4'>
       <div className='flex flex-col gap-8 md:flex-row'>
@@ -88,14 +89,13 @@ const Page: React.FC = () => {
                   <TableRow>
                     <TableCell colSpan={3}>Loading...</TableCell>
                   </TableRow>
-                ) : organizedConferences.length > 0 ? (
-                  organizedConferences.map((organizedConference) => (
+                ) :organizedConferences && organizedConferences.length > 0 ? (
+                  organizedConferences.map((organizedConference:any) => (
                     <TableRow key={organizedConference._id}>
                       <TableCell className="font-medium">{organizedConference.conferenceAcronym}</TableCell>
                       <TableCell>{organizedConference.conferenceOrganizerRole}</TableCell>
                       <TableCell>{moment(organizedConference.conferenceCreatedAt).calendar()}</TableCell>
                       <TableCell><Link href={`/conference/${organizedConference.conferenceAcronym}`} replace><Button variant={'outline'}>Open</Button></Link></TableCell>
-                      {/* ?confID=${organizedConference._id} */}
                     </TableRow>
                   ))
                 ) : (
@@ -134,14 +134,30 @@ const Page: React.FC = () => {
                       <TableCell className="font-medium">{submittedPaper.conference.conferenceAcronym}</TableCell>
                       <TableCell>{moment(submittedPaper.paperSubmissionDate).calendar()}</TableCell>
                       <TableCell>
-                        {submittedPaper.paperStatus === "submitted" ? (
-                          <Badge variant="secondary">Submitted</Badge>
+                        {/* {submittedPaper.paperStatus === "submitted" ? (
+                          <Badge variant="submitted">Submitted</Badge>
                         ) : submittedPaper.paperStatus === "accepted" ? (
-                          <Badge variant="default">Accepted</Badge>
+                          <Badge variant="accepted">Accepted</Badge>
                         ) : (
-                          <Badge variant="destructive">Rejected</Badge>
-                        )}
+                          <Badge variant="rejected">Rejected</Badge>
+                        )} */}
+                         {(() => {
+                            switch (submittedPaper.paperStatus) {
+                              case "submitted":
+                                return <Badge variant="submitted">Submitted</Badge>;
+                              case "accepted": 
+                                return <Badge variant="accepted">Accepted</Badge>;
+                              case "rejected":
+                                return <Badge variant="rejected">Rejected</Badge>;
+                              case "review":
+                                return <Badge variant="review">Review</Badge>;
+                              default:
+                                return <Badge variant="submitted">Submitted</Badge>; // or some default Badge if you want to handle unexpected statuses
+                            }
+                          })()}
                       </TableCell>
+                      <TableCell><EditPopup {...submittedPaper}/></TableCell>
+                      
                     </TableRow>
                   ))
                 ) : (

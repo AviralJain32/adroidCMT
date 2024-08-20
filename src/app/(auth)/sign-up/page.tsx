@@ -42,6 +42,7 @@ const page = () => {
       firstname: "",
       lastname:"",
       email: "",
+      // contactNumber:undefined,
       affilation: "",
       country: "",
       password:"",
@@ -51,6 +52,7 @@ const page = () => {
 
 
   const onSubmit = async (data: z.infer<typeof signUpSchema>) => {
+    console.log(data)
     setIsSubmitting(true)
     try {
       const response = await axios.post<ApiResponse>('/api/sign-up', data)
@@ -126,6 +128,23 @@ const page = () => {
                         field.onChange(e)
                         setEmail(e.target.value)
                       }}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              name="contactNumber"
+              control={form.control}
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Contact Number</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="Enter your Contact Number"
+                      type="tel"
+                      {...field}
                     />
                   </FormControl>
                   <FormMessage />

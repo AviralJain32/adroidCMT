@@ -26,7 +26,7 @@ export async function GET(request: Request) {
 
         const getPaperDetails=await PaperModel.findOne({
             paperID:queryParams.paperID
-        })
+        }).populate('paperAuthor').populate('correspondingAuthor')
 
         if(!getPaperDetails){
             return new Response(

@@ -27,7 +27,7 @@ import { Download } from "lucide-react";
 import { ArrowUpDown, MoreHorizontal } from "lucide-react"
 import { Input } from "./ui/input";
 import Link from "next/link";
-import PaperDetailsPage from "./PaperDetailsPage";
+// import PaperDetailsPage from "./PaperDetailsPage";
 import { usePathname, useRouter } from "next/navigation";
 
 interface PaperTableProps {
@@ -60,6 +60,15 @@ const PaperTable: React.FC<PaperTableProps> = ({ data }) => {
     }
   };
 
+  const getAuthorNames=(row:IPaper)=>{
+    const authors = [
+      ...row.paperAuthor.map((author: any) => author.fullname),
+      ...row.correspondingAuthor.map((author: any) => author.fullname),
+    ];
+    const uniqueAuthors = Array.from(new Set(authors));
+    return uniqueAuthors.join(", ");
+  }
+
   const [sorting, setSorting] = useState<SortingState>([]);
   const [filtering, setFiltering] = useState("");
 
@@ -72,8 +81,8 @@ const PaperTable: React.FC<PaperTableProps> = ({ data }) => {
         footer: "ID",
       },
       {
-        header: "Author",
-        accessorFn: (row) => row.paperAuthor[0]?.fullname || "",
+        header: "Authors",
+        accessorFn: (row) => getAuthorNames(row), //row.paperAuthor[0]?.fullname || ""
         footer: "Author",
       },
       {

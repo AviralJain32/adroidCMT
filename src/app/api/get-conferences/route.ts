@@ -24,20 +24,10 @@ export async function GET(request: Request) {
             conferenceOrganizer: user._id,
         });
 
-        if (!organizedConferences || organizedConferences.length === 0) {
-            return new Response(
-                JSON.stringify({
-                    success: true,
-                    message: "No organized conferences found",
-                }),
-                { status: 200 }
-            );
-        }
-
         return new Response(
             JSON.stringify({
                 success: true,
-                message: "Organized conferences found",
+                message: organizedConferences.length > 0 ? "Organized conferences found" : "No organized conferences found",
                 data: { organizedConferences },
             }),
             { status: 200 }

@@ -1,4 +1,5 @@
 "use client"
+import Loader from '@/components/Loader'
 import PaperTable from '@/components/PaperTable'
 import { Button } from '@/components/ui/button'
 import { toast } from '@/components/ui/use-toast'
@@ -56,7 +57,9 @@ const page = ({}) => {
     };
     console.log(papers)
 
-
+    if(!conferenceDetails){
+      return <Loader/>
+    }
   return (
     conferenceDetails?.conferenceStatus==="submitted" ? 
 
@@ -106,6 +109,6 @@ export default page
 //conference acronym paper id
 // submitted paper id,comment,edit
 // comment dalne ka option - accept reject revise
-// mulltiple author
+// mulltiple author X
 
 

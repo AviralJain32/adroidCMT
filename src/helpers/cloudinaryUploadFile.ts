@@ -31,8 +31,6 @@ type UploadResponse = {
 
 const uploadOnCloudinary = async (localFilePath: String): Promise<UploadResponse | null> => {
     try {
-      console.log("in the uopload on cloudinary function")
-        console.log(localFilePath);
         if (!localFilePath) return null;
         // Upload the file to Cloudinary
         const response = await cloudinary.uploader.upload(localFilePath.toString(), {
@@ -53,6 +51,29 @@ const uploadOnCloudinary = async (localFilePath: String): Promise<UploadResponse
     }
 
 };
+const deleteFromCloudinary = async (fileURL: string): Promise<{ result: string } | null> => {
+  try {
+    if (!fileURL) return null;
 
-export { uploadOnCloudinary };
+    // Extract the public ID from the URL
+    const fileArray = fileURL.split('/');
+    let fileNameWithExtension = fileArray[fileArray.length - 1];
+    const [publicId] = fileNameWithExtension.split('.');
+
+    console.log('Deleting file with public ID:', publicId);
+
+    // Delete the file from Cloudinary
+    const response = await cloudinary.uploader.destroy(publicId);
+
+    console.log('Delete response:', response);
+
+    return response;
+  } catch (error) {
+    console.log('File was unable to delete from Cloudinary:', error);
+    return null;
+  }
+};
+
+
+export { uploadOnCloudinary ,deleteFromCloudinary};
 

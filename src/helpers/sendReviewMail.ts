@@ -20,7 +20,7 @@ export async function sendVerificationEmail(
             subject: 'Adroid CMT Account Verification code',
             html:render(VerificationEmail({username,otp:verifyCode})),
           });
-          console.log("Your mail have send sucessfully")
+          console.log("Your mail have sned sucessfully")
         return {success:true,message:"verification email send sucessfully"}
     } catch (emailError) {
         console.log("error sending verification email",emailError)

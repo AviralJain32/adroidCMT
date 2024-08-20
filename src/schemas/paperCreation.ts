@@ -1,27 +1,24 @@
 import { z } from 'zod';
 
-// const MAX_FILE_SIZE = 5000000;
-// function checkFileType(file: File) {
-//     if (file?.name) {
-//         const fileType = file.name.split(".").pop();
-//         if (fileType === "docx" || fileType === "pdf") return true;
-//     }
-//     return false;
-// }
-
 const paperSubmissionSchema = z.object({
   paperTitle: z.string().min(1, "Paper title is required"),
-  paperKeywords: z.string().min(2,{message:"the paper keyword length should be greater than 2"}),
-  paperKeyphrases: z.string().min(2,{message:"the paper keyword length should be greater than 2"}),
+  paperKeywords: z.string().min(2, { message: "The paper keyword length should be greater than 2" }),
   paperAbstract: z.string().min(1, "Paper abstract is required"),
-  
   paperFile: z
-  .instanceof(FileList)
-  .refine((file) => file?.length == 1, 'File is required.'),
-  paperAuthors:z.array(z.object({
-    FirstName:z.string().min(3,"first name should be atleast minimum of 3 character"),
-    
+    .any()
+    .refine((file) => file instanceof FileList && file.length === 1, {
+      message: "File is required and should be exactly one file",
+    }),
+  paperAuthors: z.array(z.object({
+    FirstName: z.string().min(3, "First name should be at least 3 characters"),
+    LastName: z.string().min(3, "Last name should be at least 3 characters"),
+    email: z.string().email("Invalid email address"),
+    Country: z.string().min(1, "Country is required"),
+    Affiliation: z.string().min(3, "Affiliation should be at least 3 characters"),
+    WebPage: z.string().url("Invalid URL").optional(),
+    isCorrespondingAuthor:z.boolean()
   }))
 });
 
 export { paperSubmissionSchema };
+

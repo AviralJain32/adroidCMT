@@ -1,17 +1,16 @@
 import React from 'react'
-
+import {Hourglass} from "react-loader-spinner"
 const Loader = () => {
   return (
     <div>
-      <Watch
+      <Hourglass
         visible={true}
         height="80"
         width="80"
-        radius="48"
-        color="#4fa94d"
-        ariaLabel="watch-loading"
+        ariaLabel="hourglass-loading"
         wrapperStyle={{}}
         wrapperClass=""
+        colors={['#306cce', '#72a1ed']}
         />
     </div>
   )

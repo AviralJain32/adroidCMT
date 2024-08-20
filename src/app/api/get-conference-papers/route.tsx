@@ -42,7 +42,7 @@ export async function GET(request: Request) {
         }
         const paperSubmittedInConference = await PaperModel.find({
             conference: getConferenceDetails._id
-        }).populate('paperAuthor', 'fullname');
+        }).populate('paperAuthor', 'fullname').populate('correspondingAuthor','fullname');
 
         if (!paperSubmittedInConference || paperSubmittedInConference.length === 0) {
             return new Response(

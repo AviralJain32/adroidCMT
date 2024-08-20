@@ -9,6 +9,7 @@ export interface User extends Document{
     isVerified:boolean;
     affilation:string,
     country:string,
+    contactNumber:number,
     // Organizedconferences:mongoose.Types.ObjectId[],
     // submittedPapers:mongoose.Types.ObjectId[]
 }
@@ -47,6 +48,10 @@ const UserSchema:Schema<User> = new Schema({
         required:true,
         default:"India"
     },
+    contactNumber:{
+        type:Number,
+        required:true,
+    }
     // Organizedconferences:[{
     //     type:mongoose.Schema.Types.ObjectId,
     //     ref:"Conference"

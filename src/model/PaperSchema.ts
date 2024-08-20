@@ -3,20 +3,29 @@ import mongoose, { Schema, Document } from "mongoose";
 // Interface for Paper document
 export interface IPaper extends Document {
   paperAuthor: mongoose.Types.ObjectId[];
+  correspondingAuthor:mongoose.Types.ObjectId[];
   paperTitle: string;
   paperFile: string;
   paperKeywords: string[];
-  paperKeyphrases: string[];
   paperAbstract: string;
   paperSubmissionDate: Date;
   conference: mongoose.Types.ObjectId;
-  paperStatus: 'submitted' | 'accepted' | 'rejected';
-  paperID:string
+  paperStatus: 'submitted' | 'accepted' | 'rejected' | 'review';
+  paperID:string,
+  paperComment:string,
+  paperReview1:string,
+  paperReview2:string,
+  comment:string,
 }
 
 // Paper schema definition
 const PaperSchema: Schema<IPaper> = new Schema({
     paperAuthor: [{
+    type: Schema.Types.ObjectId,
+    ref: "User",
+    required: true
+  }],
+  correspondingAuthor:[{
     type: Schema.Types.ObjectId,
     ref: "User",
     required: true
@@ -30,10 +39,6 @@ const PaperSchema: Schema<IPaper> = new Schema({
     required: true
   },
   paperKeywords: {
-    type: [String],
-    required: true
-  },
-  paperKeyphrases: {
     type: [String],
     required: true
   },
@@ -59,8 +64,20 @@ const PaperSchema: Schema<IPaper> = new Schema({
   paperID:{
     type:String,
     required:true
+  },
+  paperComment: {
+    type: String
+  },
+  paperReview1:{
+    type:String
+  },
+  paperReview2:{
+    type:String
+  },
+  comment:{
+    type:String
   }
-});
+},{timestamps:true});
 
 // Paper model
 const PaperModel = (mongoose.models.Paper as mongoose.Model<IPaper>) || mongoose.model<IPaper>("Paper", PaperSchema);

@@ -20,28 +20,17 @@ export async function GET(request: Request) {
     }
 
     try {
-        const submittedPapers = await PaperModel.find({
-            paperAuthor: user._id,
-        }).populate("conference","conferenceAcronym");
-
-        if (!submittedPapers || submittedPapers.length === 0) {
-            return new Response(
-                JSON.stringify({
-                    success: true,
-                    message: "No submitted papers found",
-                }),
-                { status: 200 }
-            );
-        }
-
+        const submittedPapers = await PaperModel.find({$or:[{paperAuthor: user._id},{correspondingAuthor:user._id}]}).populate("conference","conferenceAcronym").populate('paperAuthor').populate('correspondingAuthor');
+        
         return new Response(
             JSON.stringify({
                 success: true,
-                message: "Submitted papers found",
+                message: submittedPapers.length > 0 ? "Organized conferences found" : "No organized conferences found",
                 data: { submittedPapers },
             }),
             { status: 200 }
         );
+        
     } catch (error) {
         console.log("An unexpected error occurred: ", error);
         return new Response(
