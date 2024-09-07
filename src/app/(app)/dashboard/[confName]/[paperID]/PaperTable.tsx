@@ -25,13 +25,14 @@ import { IPaper } from "@/model/PaperSchema";
 import { Button } from "@/components/ui/button";
 import { Download } from "lucide-react";
 import { ArrowUpDown, MoreHorizontal } from "lucide-react"
-import { Input } from "./ui/input";
+import { Input } from "../../../../../components/ui/input";
 import Link from "next/link";
 // import PaperDetailsPage from "./PaperDetailsPage";
 import { usePathname, useRouter } from "next/navigation";
+import { SubmittedPaper } from "@/types/SubmittedPaperType";
 
 interface PaperTableProps {
-  data: IPaper[];
+  data: SubmittedPaper[];
 }
 
 const PaperTable: React.FC<PaperTableProps> = ({ data }) => {
@@ -60,7 +61,7 @@ const PaperTable: React.FC<PaperTableProps> = ({ data }) => {
     }
   };
 
-  const getAuthorNames=(row:IPaper)=>{
+  const getAuthorNames=(row:SubmittedPaper)=>{
     const authors = [
       ...row.paperAuthor.map((author: any) => author.fullname),
       ...row.correspondingAuthor.map((author: any) => author.fullname),
@@ -72,7 +73,7 @@ const PaperTable: React.FC<PaperTableProps> = ({ data }) => {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [filtering, setFiltering] = useState("");
 
-  const columns: ColumnDef<IPaper>[] = useMemo(
+  const columns: ColumnDef<SubmittedPaper>[] = useMemo(
     () => [
       {
         header: "ID",

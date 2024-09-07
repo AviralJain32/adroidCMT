@@ -1,28 +1,28 @@
 import sgMail from '@sendgrid/mail';
-import VerificationEmail from "../../emails/VerificationEmail";
 import { render } from '@react-email/components';
 import { ApiResponse } from '@/types/ApiResponse';
+import ConferenceCreationEmailTemplate from '../../emails/ConferenceCreationEmailTemplate';
 
 sgMail.setApiKey(process.env.SENDGRID_API_KEY as string);
 
-
-
 export async function sendConferenceCreationMail(
-    ConferenceEmail:string,
+    conferenceEmail:string,
     conferenceOrganizer:string,
+    conferenceTitle:string,
+    conferenceStartDate:string,
 ):Promise<ApiResponse>{
+    console.log(conferenceEmail,conferenceOrganizer,conferenceTitle,conferenceStartDate)
     try {
-        console.log(ConferenceEmail)
         await sgMail.send({
             from: 'adroidconnectz@gmail.com',
-            to: ConferenceEmail,
+            to: conferenceEmail,
             subject: 'New Conference Created',
-            html:render(ConferenceCreationEmailTemplate(conferenceOrganizer)),
+            html:render(ConferenceCreationEmailTemplate({username:conferenceOrganizer,conferenceTitle,conferenceDate:conferenceStartDate})),
           });
-          console.log("Your mail have sned sucessfully")
-        return {success:true,message:"verification email send sucessfully"}
+          console.log("Your mail have send sucessfully")
+        return {success:true,message:"conference creation email send sucessfully"}
     } catch (emailError) {
         console.log("error sending verification email",emailError)
-        return {success:false,message:"failed to send verification email"}
+        return {success:false,message:"failed to send confernece creation email"}
     }
 }

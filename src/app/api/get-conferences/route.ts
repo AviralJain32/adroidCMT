@@ -22,7 +22,7 @@ export async function GET(request: Request) {
     try {
         const organizedConferences = await ConferenceModel.find({
             conferenceOrganizer: user._id,
-        });
+        }).populate("conferenceOrganizer","fullname");
 
         return new Response(
             JSON.stringify({

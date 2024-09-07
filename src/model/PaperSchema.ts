@@ -58,7 +58,7 @@ const PaperSchema: Schema<IPaper> = new Schema({
   },
   paperStatus: {
     type: String,
-    enum: ['submitted', 'accepted', 'rejected'],
+    enum: ['submitted', 'accepted', 'rejected','review'],
     default: 'submitted'
   },
   paperID:{

@@ -25,8 +25,6 @@ export async function GET(request: Request) {
         const queryParams = {
         confName: searchParams.get('confName'),
         };
-        console.log(queryParams.confName)
-
 
         const getConferenceDetails=await ConferenceModel.findOne({
             conferenceAcronym:queryParams.confName

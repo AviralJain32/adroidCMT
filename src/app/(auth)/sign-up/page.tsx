@@ -25,35 +25,21 @@ import { Button } from "@/components/ui/button"
 import { Loader2 } from "lucide-react"
 import { Country }  from 'country-state-city';
 
-
-
 const page = () => {
   const [email, setEmail] = useState("")
   const [isSubmitting, setIsSubmitting] = useState(false)
-
 
   const { toast } = useToast()
   const router = useRouter()
 
   // zod implementation
   const form = useForm<z.infer<typeof signUpSchema>>({
-    resolver: zodResolver(signUpSchema),
-    defaultValues: {
-      firstname: "",
-      lastname:"",
-      email: "",
-      // contactNumber:undefined,
-      affilation: "",
-      country: "",
-      password:"",
-      retypePassword:"",
-    }
+    resolver: zodResolver(signUpSchema)
   })
-
-
+  console.log(isSubmitting)
   const onSubmit = async (data: z.infer<typeof signUpSchema>) => {
-    console.log(data)
     setIsSubmitting(true)
+    console.log(data)
     try {
       const response = await axios.post<ApiResponse>('/api/sign-up', data)
       toast({
@@ -74,46 +60,51 @@ const page = () => {
   }
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gray-100">
-      <div className="w-full max-w-md p-8 space-y-8 bg-white rounded-lg shadow-md">
+    <div className="flex justify-center items-center min-h-screen bg-gradient-to-r from-blue-100 to-blue-400 p-6">
+      <div className="w-full max-w-2xl p-10 space-y-6 bg-white rounded-lg shadow-lg">
         <div className="text-center">
-          <h1 className="text-4xl font-extrabold tracking-tight lg:text-5xl mb-6">Adroid CMT</h1>
-          <p className="mb-4">Sign up to start </p>
+          <h1 className="text-4xl font-extrabold text-gray-800 tracking-tight lg:text-5xl mb-2">
+            Welcome to Adroid CMT
+          </h1>
+          <p className="text-gray-600">Create your account to get started</p>
         </div>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2">
-            <FormField
-              name="firstname"
-              control={form.control}
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>First name</FormLabel>
-                  <FormControl>
-                    <Input
-                      placeholder="Enter Your First name"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              name="lastname"
-              control={form.control}
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Last name</FormLabel>
-                  <FormControl>
-                    <Input
-                      placeholder="Enter your Last name"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <FormField
+                name="firstname"
+                control={form.control}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>First Name</FormLabel>
+                    <FormControl>
+                      <Input
+                        placeholder="Enter your first name"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                name="lastname"
+                control={form.control}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Last Name</FormLabel>
+                    <FormControl>
+                      <Input
+                        placeholder="Enter your last name"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+
             <FormField
               name="email"
               control={form.control}
@@ -122,7 +113,7 @@ const page = () => {
                   <FormLabel>Email</FormLabel>
                   <FormControl>
                     <Input
-                      placeholder="Enter your Email"
+                      placeholder="Enter your email"
                       {...field}
                       onChange={(e) => {
                         field.onChange(e)
@@ -134,6 +125,7 @@ const page = () => {
                 </FormItem>
               )}
             />
+
             <FormField
               name="contactNumber"
               control={form.control}
@@ -142,8 +134,7 @@ const page = () => {
                   <FormLabel>Contact Number</FormLabel>
                   <FormControl>
                     <Input
-                      placeholder="Enter your Contact Number"
-                      type="tel"
+                      placeholder="Enter your contact number"
                       {...field}
                     />
                   </FormControl>
@@ -151,6 +142,7 @@ const page = () => {
                 </FormItem>
               )}
             />
+
             <FormField
               name="affilation"
               control={form.control}
@@ -168,76 +160,79 @@ const page = () => {
               )}
             />
 
-          <FormField
-            name="country"
-            control={form.control}
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Country</FormLabel>
-                <FormControl>
-                  <Select onValueChange={field.onChange} value={field.value}>
-                    <SelectTrigger >
-                      <SelectValue placeholder="Select your Country" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectGroup>
-                        {Country.getAllCountries().map((country)=>(<SelectItem key={country.name} value={country.name}>{country.name}</SelectItem>))}
-                      </SelectGroup>
-                    </SelectContent>
-                  </Select>
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+            <FormField
+              name="country"
+              control={form.control}
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Country</FormLabel>
+                  <FormControl>
+                    <Select onValueChange={field.onChange} value={field.value}>
+                      <SelectTrigger >
+                        <SelectValue placeholder="Select your country" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectGroup>
+                          {Country.getAllCountries().map((country)=>(<SelectItem key={country.name} value={country.name}>{country.name}</SelectItem>))}
+                        </SelectGroup>
+                      </SelectContent>
+                    </Select>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
-            <FormField
-              name="password"
-              control={form.control}
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Password</FormLabel>
-                  <FormControl>
-                    <Input
-                      placeholder="Enter your Password"
-                      type="password"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              name="retypePassword"
-              control={form.control}
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Retype Password</FormLabel>
-                  <FormControl>
-                    <Input
-                      placeholder="Retype your Password"
-                      type="password"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <Button type="submit" disabled={isSubmitting}>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <FormField
+                name="password"
+                control={form.control}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Password</FormLabel>
+                    <FormControl>
+                      <Input
+                        placeholder="Enter your password"
+                        type="password"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                name="retypePassword"
+                control={form.control}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Retype Password</FormLabel>
+                    <FormControl>
+                      <Input
+                        placeholder="Retype your password"
+                        type="password"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+            
+            <Button type="submit" className="w-full bg-blue-600 text-white" disabled={isSubmitting}>
               {isSubmitting ? (
                 <>
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Please Wait
                 </>
-              ) : ('Signup')}
+              ) : ('Sign Up')}
             </Button>
           </form>
         </Form>
-        <div className="text-center mt-4">
-          <p>
+        <div className="text-center mt-6">
+          <p className="text-gray-600">
             Already a member?{' '}
-            <Link href="/sign-in" className="text-blue-600 hover:text-blue-800">
+            <Link href="/sign-in" className="text-blue-600 hover:text-blue-800 font-semibold">
               Sign in
             </Link>
           </p>
@@ -248,3 +243,4 @@ const page = () => {
 }
 
 export default page
+

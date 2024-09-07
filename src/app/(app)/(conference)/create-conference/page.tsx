@@ -28,12 +28,13 @@ import { AcronymDescription, emailDescription, titleDescription, webPageDescript
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Country }  from 'country-state-city';
 import { useState } from 'react';
-import { Loader2 } from 'lucide-react';
+import { CalendarIcon, Loader2 } from 'lucide-react';
+import { useCreateNewConferenceMutation } from '@/store/features/ConferenceApiSlice';
 
 export default function CreateConferenceForm() {
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false)
-
+  const [createConference]=useCreateNewConferenceMutation()
 
   const form = useForm<z.infer<typeof conferenceSchema>>({
     resolver: zodResolver(conferenceSchema),
@@ -42,23 +43,21 @@ export default function CreateConferenceForm() {
   const { toast } = useToast();
   const onSubmit = async (data: z.infer<typeof conferenceSchema>) => {
     setIsSubmitting(true)
-    
-    // Handle the form submission logic here
-    console.log(data);
     try {
-      const response = await axios.post('/api/create-conference', data);
+      const response = await createConference(data).unwrap(); // Use .unwrap() to directly get the fulfilled response or throw an error if it failed
       toast({
         title: 'Success',
-        description: response.data.message,
+        description: response.message,
       });
-      router.replace('/dashboard');
-    } 
-    catch (error) {
-      const axiosError = error as AxiosError<ApiResponse>;
+      router.push('/dashboard');
+
+    }
+    catch (error:any) {
+      console.log(error)
 
       toast({
         title: 'Error while creating a conference',
-        description:axiosError.response?.data.message,
+        description:error.data.message,
         variant: 'destructive',
       });
     }
@@ -68,10 +67,10 @@ export default function CreateConferenceForm() {
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gray-800 p-3">
-      <div className="w-full max-w-2xl p-8 space-y-8 bg-white rounded-lg shadow-md">
+    <div className="flex justify-center items-center min-h-screen p-3">
+      <div className="w-full max-w-6xl p-8 space-y-8 bg-white rounded-lg shadow-md">
         <div className="text-center">
-          <h1 className="text-4xl font-extrabold tracking-tight lg:text-5xl mb-6">
+          <h1 className="text-4xl font-extrabold tracking-tight lg:text-5xl mb-6 font">
             Create a New Conference
           </h1>
           <p className="mb-4">Fill in the details below to create a new conference</p>
@@ -216,7 +215,6 @@ export default function CreateConferenceForm() {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>First Day</FormLabel>
-                  
                   <Input type="date" 
                   {...field}
                   />

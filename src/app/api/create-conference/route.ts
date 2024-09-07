@@ -99,23 +99,25 @@ export async function POST(request: Request) {
         // await UserModel.findByIdAndUpdate(user._id, {
         //     $push: { Organizedconferences: newConference._id },
         //   });
-        const organizer = await UserModel.findById(user._id);
+        // const organizer = await UserModel.findById(user._id);
 
         //email bhejna hai conference ka
+        console.log(user)
+        const emailResponse=await sendConferenceCreationMail(
+            conferenceEmail,
+            user.fullname as string,
+            conferenceTitle,
+            conferenceFirstDay
+        )
 
-        // const emailResponse=await sendConferenceCreationMail(
-        //     conferenceEmail,
-        //     organizer?.fullname 
-        // )
-
-        // if(!emailResponse.success){
-        //     return Response.json({
-        //         success:false,
-        //         message:emailResponse.message
-        //     },{
-        //         status:500
-        //     })
-        // }
+        if(!emailResponse.success){
+            return Response.json({
+                success:false,
+                message:emailResponse.message
+            },{
+                status:500
+            })
+        }
           
         return new Response(
             JSON.stringify({

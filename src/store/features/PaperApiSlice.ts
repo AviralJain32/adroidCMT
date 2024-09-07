@@ -1,4 +1,4 @@
-// Need to use the React-specific entry point to import createApi
+import { IConference } from '@/model/Conference';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 interface ApiResponse<T> {
@@ -7,12 +7,17 @@ interface ApiResponse<T> {
     data: T;
 }
 
-
 interface SubmittedPaper {
-    paperTitle: string;
-    paperSubmissionDate: Date;
-    paperStatus: string;
-    conference: { conferenceAcronym: string };
+  paperAuthor: [];
+  correspondingAuthor: [];
+  paperTitle: string;
+  paperFile: string;
+  paperKeywords: string[];
+  paperAbstract: string;
+  paperSubmissionDate: Date;
+  conference: { conferenceAcronym: string };
+  paperStatus: 'submitted' | 'accepted' | 'rejected' | 'review';
+  paperID: string;
 }
 
 export const PaperApiSlice = createApi({
@@ -29,11 +34,26 @@ export const PaperApiSlice = createApi({
         }
       },
     }),
-    // Add other endpoints here
+    getConferencePapers: builder.query<{
+      paperSubmittedInConference: SubmittedPaper[],
+      getConferenceDetails: IConference
+    }, string>({
+      query: (confName) => `/get-conference-papers?confName=${confName}`,
+      transformResponse: (response: ApiResponse<{
+        paperSubmittedInConference: SubmittedPaper[],
+        getConferenceDetails: IConference
+      }>) => {
+        if (response.success) {
+          return response.data;
+        } else {
+          throw new Error(response.message);
+        }
+      },
+    }),
   }),
 });
 
-// Export hooks for usage in functional components
 export const { 
-  useGetSubmittedPapersQuery 
+  useGetSubmittedPapersQuery,
+  useGetConferencePapersQuery
 } = PaperApiSlice;

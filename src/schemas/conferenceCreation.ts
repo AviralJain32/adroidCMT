@@ -18,21 +18,36 @@ const conferenceSchema = z.object({
         .refine((value) => !isNaN(value) && value > 0, {
             message: "Estimated number of submissions must be a positive number",
         }),
+    // conferenceFirstDay: 
+    // z.string()
+    // .transform((date) => {
+    //         console.log(date)
+    //         // const formattedDate = new Date(date); //moment(date).format("YYYY-MM-DDTHH:mm:ss")
+    //         const formattedDate = moment(date).format("YYYY-MM-DDTHH:mm:ss"); 
+    //         console.log(formattedDate)
+    //         return formattedDate;
+    //     })
+    //   ,
+    // conferenceLastDay: z.string().transform((date) => {
+    //     const formattedDate = new Date(date).toLocaleDateString();
+    //     return formattedDate;
+    // }),
     conferenceFirstDay: z.string().transform((date) => {
-        const formattedDate = new Date(date).toLocaleDateString(); //moment(date).format("YYYY-MM-DDTHH:mm:ss")
+        const formattedDate = moment(date).format("YYYY-MM-DD");
         return formattedDate;
     }),
     conferenceLastDay: z.string().transform((date) => {
-        const formattedDate = new Date(date).toLocaleDateString();
+        const formattedDate = moment(date).format("YYYY-MM-DD");
         return formattedDate;
     }),
+    
     conferencePrimaryArea: z.string().min(2, { message: "Primary area must be at least 2 characters" }),
     conferenceSecondaryArea: z.string().optional(),
     conferenceAreaNotes: z.string().optional(),
     conferenceTitle: z.string().min(2, { message: "Title must be at least 2 characters" }),
     // conferencePaperSubmissionLink: z.string().url({ message: "Invalid URL for paper submission link" }),
 })
-.refine((data) => {
+.refine((data) => { 
     const { conferenceFirstDay, conferenceLastDay } = data;
     return moment(conferenceFirstDay).isBefore(conferenceLastDay) &&
            moment(conferenceFirstDay).isAfter(moment()) &&

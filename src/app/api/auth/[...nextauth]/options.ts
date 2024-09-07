@@ -46,7 +46,6 @@ export const authOptions:NextAuthOptions={
                 session.user.isVerified= token.isVerified
                 session.user.email=token.email
                 session.user.fullname=token.fullname
-    
             }
             return session
         },
