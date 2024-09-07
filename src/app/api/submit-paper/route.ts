@@ -186,11 +186,11 @@ import ConferenceModel from '@/model/Conference';
 import { generatePaperID } from '@/helpers/PaperId';
 import { handleFileUpload, validateAuthors } from '@/helpers/VerficationAuthorsAndCloudinaryCommonFunctions';
 
-export const config = {
-  api: {
-    bodyParser: false, // Disallow body parsing, as we'll handle it manually
-  },
-};
+// export const config = {
+//   api: {
+//     bodyParser: false, // Disallow body parsing, as we'll handle it manually
+//   },
+// };
 
 
 export async function POST(request: NextRequest) {
