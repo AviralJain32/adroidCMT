@@ -25,7 +25,7 @@ import { Button } from "@/components/ui/button"
 import { Loader2 } from "lucide-react"
 import { Country }  from 'country-state-city';
 
-const page = () => {
+const Page = () => {
   const [email, setEmail] = useState("")
   const [isSubmitting, setIsSubmitting] = useState(false)
 
@@ -242,5 +242,5 @@ const page = () => {
   )
 }
 
-export default page
+export default Page
 

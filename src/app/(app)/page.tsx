@@ -1,13 +1,13 @@
 import * as React from "react";
 import { Button } from "@/components/ui/button";
 import { FeatureCard } from "./FeatureCard";
-import Meteors from "@/components/magicui/meteors";
+// import Meteors from "@/components/magicui/meteors";
 
 const Page = () => {
   return (
     <div className="container mx-auto px-4 py-16">
       <div className="min-h-[50vh] flex flex-col justify-center items-center text-center space-y-8">
-      <Meteors number={30}/>
+      {/* <Meteors number={30}/> */}
         <h1 className="text-5xl md:text-7xl font-extrabold text-gray-900">
           Simplify Your Conference Management
         </h1>

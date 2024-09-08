@@ -73,8 +73,53 @@ const PaperTable: React.FC<PaperTableProps> = ({ data }) => {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [filtering, setFiltering] = useState("");
 
-  const columns: ColumnDef<SubmittedPaper>[] = useMemo(
-    () => [
+  // const columns: ColumnDef<SubmittedPaper>[] = useMemo(
+  //   () => [
+  //     {
+  //       header: "ID",
+  //       accessorKey: "paperID",
+  //       cell: (id) => id.getValue<string>().split("-")[2],
+  //       footer: "ID",
+  //     },
+  //     {
+  //       header: "Authors",
+  //       accessorFn: (row) => getAuthorNames(row), //row.paperAuthor[0]?.fullname || ""
+  //       footer: "Author",
+  //     },
+  //     {
+  //       header: "Title",
+  //       accessorKey: "paperTitle",
+  //       footer: "Title",
+  //     },
+  //     {
+  //       header: "Information",
+  //       accessorFn: row=>row.paperID,
+  //       footer: "Information",
+  //       cell:info=>(
+  //         <Button variant={'outline'} onClick={()=>router.push(`${pathname}/${info.getValue()}`)}>Open</Button>
+  //       )
+  //     },
+  //     {
+  //       header: "Paper",
+  //       accessorKey: "paperFile",
+  //       cell: (info) => (
+  //         <Button variant={"ghost"} onClick={() => DownloadFile(info.getValue<string>())}>
+  //           <Download />
+  //         </Button>
+  //       ),
+  //       footer: "Paper",
+  //     },
+  //     {
+  //       header: "Time",
+  //       accessorKey: "paperSubmissionDate",
+  //       footer: "Time",
+  //       cell: (info) => moment(info.getValue<string>()).format("MMMM Do YYYY, h:mm:ss a"),
+  //     },
+  //   ],
+  //   []
+  // );
+
+  const columns: ColumnDef<SubmittedPaper>[] =[
       {
         header: "ID",
         accessorKey: "paperID",
@@ -115,10 +160,7 @@ const PaperTable: React.FC<PaperTableProps> = ({ data }) => {
         footer: "Time",
         cell: (info) => moment(info.getValue<string>()).format("MMMM Do YYYY, h:mm:ss a"),
       },
-    ],
-    []
-  );
-
+    ]
   const table = useReactTable({
     data,
     columns,

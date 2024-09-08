@@ -138,7 +138,7 @@ export default function CreateConferenceForm() {
                   <AlertInfoDialog title={"Web Page"} description={webPageDescription}/>
                   </FormLabel>
                   <FormDescription>
-                  If the conference has no Web page yet write 'none' in the corresponding field and add an explanation in 'Any other information' below.
+                  If the conference has no Web page yet write &apos;none&apos; in the corresponding field and add an explanation in &apos;Any other information&apos; below.
                   </FormDescription>
                   <Input {...field} 
                   placeholder='Enter the conference Web page'

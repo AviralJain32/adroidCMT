@@ -26,7 +26,7 @@ interface PaperDetails {
   paperAuthor: AuthorDetails[];
   paperAbstract: string;
   paperSubmissionDate: Date;
-  paperStatus: string;
+  paperStatus: "submitted" | "accepted" | "rejected" | "review" | "outline" | null | undefined,
   paperID: string;
   paperFile: string;
   paperReview1:string,
@@ -124,7 +124,7 @@ const Page = () => {
               <TableHead>Decision</TableHead>
               <TableCell className="font-medium">
                 <Badge variant={paperStatus}>
-                  {paperStatus.charAt(0).toUpperCase() + paperStatus.slice(1)}
+                  {paperStatus && paperStatus.charAt(0).toUpperCase() + paperStatus.slice(1)}
                 </Badge>
               </TableCell>
             </TableRow>

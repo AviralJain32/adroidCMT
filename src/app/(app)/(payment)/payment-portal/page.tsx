@@ -4,7 +4,6 @@ import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 import CheckoutPage from "./checkoutPage";
 import { useEffect, useState } from "react";
-import CompletePage from "./completePage";
 
 if (process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY === undefined) {
   throw new Error("NEXT_PUBLIC_STRIPE_PUBLIC_KEY is not defined");
@@ -20,9 +19,9 @@ export default function Home() {
     return Math.round(amount * factor);
   }
   
-    useEffect(() => {
-    setConfirmed(new URLSearchParams(window.location.search).get("payment_intent_client_secret"));
-  });
+    // useEffect(() => {
+    // setConfirmed(new URLSearchParams(window.location.search).get("payment_intent_client_secret"));
+  // });
 
   return (
     <main className="max-w-6xl mx-auto p-10 text-white text-center border m-10 rounded-md bg-gradient-to-tr from-blue-500 to-purple-500">
@@ -50,7 +49,7 @@ export default function Home() {
           amount: convertToSubcurrency(amount),
           currency: "inr",
         }} stripe={stripePromise}>
-          {confirmed ? <CompletePage /> : <CheckoutPage amount={amount} />}
+          <CheckoutPage amount={amount} />
         </Elements>
       )}
     </main>
