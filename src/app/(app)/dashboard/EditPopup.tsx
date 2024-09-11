@@ -263,12 +263,12 @@ const EditPopup = ({ paperID,paperTitle,paperKeywords,paperAbstract,paperAuthor,
                       </div>
                     ))}
                     <Button type="button" variant="ghost" onClick={() => append({
-                      FirstName: "",
-                      LastName: "",
+                      // FirstName: "",
+                      // LastName: "",
                       email: "",
-                      Country: "",
-                      Affiliation: "",
-                      WebPage: "",
+                      // Country: "",
+                      // Affiliation: "",
+                      // WebPage: "",
                       isCorrespondingAuthor: false,
                     })}>
                       Add Author
