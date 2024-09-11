@@ -14,12 +14,14 @@ import {
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useToast } from '@/components/ui/use-toast';
 import { signInSchema } from '@/schemas/signInSchema';
 
 export default function SignInForm() {
   const router = useRouter();
+  const searchParams = useSearchParams(); // Extract query parameters
+  const callbackUrl = searchParams.get('callbackUrl') || '/dashboard'; // Fallback to dashboard if no callbackUrl
 
   const form = useForm<z.infer<typeof signInSchema>>({
     resolver: zodResolver(signInSchema),
@@ -30,14 +32,16 @@ export default function SignInForm() {
   });
 
   const { toast } = useToast();
+
   const onSubmit = async (data: z.infer<typeof signInSchema>) => {
     const result = await signIn('credentials', {
       redirect: false,
       identifier: data.identifier,
       password: data.password,
+      callbackUrl, // Pass the callback URL to the signIn function
     });
 
-    console.log(result);
+    console.log(result)
 
     if (result?.error) {
       if (result.error === 'CredentialsSignin') {
@@ -49,14 +53,14 @@ export default function SignInForm() {
       } else {
         toast({
           title: 'Error',
-          description: `An unexpected error occurred: ${result.error}. Please try again.`,
+          description: `${result.error}`,
           variant: 'destructive',
         });
       }
     }
 
     if (result?.url) {
-      router.replace('/dashboard');
+      router.replace(result.url); // Redirect to the URL provided by NextAuth.js (callbackUrl)
     }
   };
 

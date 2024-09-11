@@ -10,7 +10,8 @@ import { useRouter } from 'next/navigation';
 
 function Navbar() {
   const { data: session } = useSession();
-  const user: User = session?.user;
+  // const user: User = session?.user;
+  // console.log(user)
   const router = useRouter();
 
   return (

@@ -14,6 +14,8 @@ import * as z from 'zod';
 const VerifyPage = () => {
   const router = useRouter();
   const params = useParams<{ email: string }>();
+
+  console.log()
   const { toast } = useToast();
 
   const form = useForm<z.infer<typeof verifySchema>>({
@@ -49,7 +51,7 @@ const VerifyPage = () => {
         <div className="text-center">
           <h1 className="text-3xl font-bold text-gray-800 mb-2">Verify Your Account</h1>
           <p className="text-sm text-gray-500 mb-6">
-            Enter the verification code sent to <span className="font-medium text-gray-900">{params.email}</span>
+            Enter the verification code sent to <span className="font-medium text-gray-900">{decodeURIComponent(params.email)}</span>
           </p>
         </div>
 

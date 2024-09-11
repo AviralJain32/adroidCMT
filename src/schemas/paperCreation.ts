@@ -10,12 +10,12 @@ const paperSubmissionSchema = z.object({
       message: "File is required and should be exactly one file",
     }),
   paperAuthors: z.array(z.object({
-    FirstName: z.string().min(3, "First name should be at least 3 characters"),
-    LastName: z.string().min(3, "Last name should be at least 3 characters"),
+    // FirstName: z.string().min(3, "First name should be at least 3 characters"),
+    // LastName: z.string().min(3, "Last name should be at least 3 characters"),
     email: z.string().email("Invalid email address"),
-    Country: z.string().min(1, "Country is required"),
-    Affiliation: z.string().min(3, "Affiliation should be at least 3 characters"),
-    WebPage: z.string().url("Invalid URL").optional(),
+    // Country: z.string().min(1, "Country is required"),
+    // Affiliation: z.string().min(3, "Affiliation should be at least 3 characters"),
+    // WebPage: z.string().url("Invalid URL").optional(),
     isCorrespondingAuthor:z.boolean()
   }))
 });

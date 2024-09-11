@@ -34,7 +34,7 @@ export const authOptions:NextAuthOptions={
                     }
 
                 } catch (error:any) {
-                    throw new error
+                    throw new Error(error.message || "Login failed");
                 }
               }
         })
