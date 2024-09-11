@@ -2,6 +2,7 @@ import * as React from "react";
 import { Button } from "@/components/ui/button";
 import { FeatureCard } from "./FeatureCard";
 // import Meteors from "@/components/magicui/meteors";
+import Link from "next/link";
 
 const Page = () => {
   return (
@@ -15,9 +16,11 @@ const Page = () => {
           Manage submissions, reviews, and schedules effortlessly with our
           <span className="font-bold text-gray-800"> all-in-one conference management system.</span>
         </p>
+        <Link href={"/dashboard"}>
         <Button className="text-lg px-8 py-4 mt-4 bg-blue-600 text-white hover:bg-blue-700 transition-colors duration-300">
           Get Started →
         </Button>
+        </Link>
       </div>
       
       <div className="mt-16">
