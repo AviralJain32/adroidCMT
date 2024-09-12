@@ -17,6 +17,7 @@ import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useToast } from '@/components/ui/use-toast';
 import { signInSchema } from '@/schemas/signInSchema';
+import { Suspense } from 'react';
 
 export default function SignInForm() {
   const router = useRouter();
@@ -65,6 +66,7 @@ export default function SignInForm() {
   };
 
   return (
+<Suspense fallback={<div>Loading...</div>}>
     <div className="flex justify-center items-center min-h-screen bg-gradient-to-r from-blue-100 to-blue-400">
       <div className="w-full max-w-md p-8 space-y-8 bg-white rounded-xl shadow-lg">
         <div className="text-center">
@@ -119,5 +121,6 @@ export default function SignInForm() {
         </div>
       </div>
     </div>
+    </Suspense>
   );
 }
