@@ -112,6 +112,8 @@ import { Button } from '@/components/ui/button';
 import PricingCard from './pricingCard';
 import Link from 'next/link';
 import { Faqs } from './faqs';
+import { HandleCheckoutPayement } from '@/helpers/HandleCheckoutPayement';
+import PaymentButton from './PaymentButton';
 
 interface PricingPlan {
   title: string;
@@ -191,11 +193,9 @@ const PricingPage: React.FC = () => {
         </ul>
       </div>
       <div className="text-center mt-10">
-        <Link href={"/payment-portal"}>
-          <Button variant="default" size="lg" className="px-10 py-4 bg-indigo-600 text-white rounded-lg shadow hover:bg-indigo-700">
-            Pay ₹2000
-          </Button>
-        </Link>
+        {/* <Link href={"/payment-portal"}> */}
+          <PaymentButton/>
+        {/* </Link> */}
     </div>  
 </div>
 
