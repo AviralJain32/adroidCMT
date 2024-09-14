@@ -68,10 +68,11 @@ import * as React from "react";
 
 interface PlaidVerifyIdentityEmailProps {
   otp?: string;
+  username?:string;
 }
 
 export const PlaidVerifyIdentityEmail = ({
-  otp,
+  otp,username
 }: PlaidVerifyIdentityEmailProps) => (
   <Html>
     <Head />
@@ -87,7 +88,7 @@ export const PlaidVerifyIdentityEmail = ({
         </Heading>
         
         <Text style={description}>
-          Thank you for registering with Android CMT. Please use the following one-time code to verify your identity:
+          Thank you {username} for registering with Android CMT. Please use the following one-time code to verify your identity:
         </Text>
         
         <Section style={codeContainer}>
