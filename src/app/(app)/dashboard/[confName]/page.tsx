@@ -20,7 +20,6 @@ const Page = () => {
             setConferenceDetails(data.getConferenceDetails);
         }
     }, [data]);
-    console.log(data)
 
     const baseUrl = `${window.location.protocol}//${window.location.host}`;
     const profileUrl = `${baseUrl}/submit-paper/${confName}`;
