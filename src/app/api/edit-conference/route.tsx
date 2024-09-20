@@ -133,6 +133,7 @@ export async function PUT(request: NextRequest) {
     conferenceEstimatedNumberOfSubmissions: formData.conferenceEstimatedNumberOfSubmissions,
     conferenceFirstDay: formData.conferenceFirstDay,
     conferenceLastDay: formData.conferenceLastDay,
+    conferenceSubmissionsDeadlineDate:formData.conferenceSubmissionsDeadlineDate,
     conferencePrimaryArea: formData.conferencePrimaryArea,
     conferenceSecondaryArea: formData.conferenceSecondaryArea,
     conferenceOrganizerWebPage: formData.conferenceOrganizerWebPage,

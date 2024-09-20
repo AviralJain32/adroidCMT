@@ -41,9 +41,10 @@ export async function POST(request: Request) {
         conferenceSecondaryArea,
         conferenceAreaNotes,
         conferenceTitle,
+        conferenceSubmissionsDeadlineDate
     } = await request.json();
 
-    if (!conferenceTitle || !conferenceAcronym || !conferenceWebpage || !conferenceVenue || !conferenceCity || !conferenceCountry || !conferenceFirstDay || !conferenceLastDay || !conferencePrimaryArea || !conferenceTitle ) {
+    if (!conferenceSubmissionsDeadlineDate || !conferenceTitle || !conferenceAcronym || !conferenceWebpage || !conferenceVenue || !conferenceCity || !conferenceCountry || !conferenceFirstDay || !conferenceLastDay || !conferencePrimaryArea || !conferenceTitle ) {
         return new Response(
             JSON.stringify({
                 success: false,
@@ -87,6 +88,7 @@ export async function POST(request: Request) {
             conferenceEstimatedNumberOfSubmissions,
             conferenceFirstDay,
             conferenceLastDay,
+            conferenceSubmissionsDeadlineDate,
             conferencePrimaryArea,
             conferenceSecondaryArea,
             conferenceAreaNotes,

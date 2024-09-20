@@ -229,7 +229,18 @@ export default function CreateConferenceForm() {
                 <FormItem>
                   <FormLabel>Last Day</FormLabel>
                   <Input type="date" {...field} /> 
-                  {/* value={field.value ? moment(field.value).format('YYYY-MM-DD') : ''} */}
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+      <FormField
+              name="conferenceSubmissionsDeadlineDate"
+              control={form.control}
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Paper Submission Deadline</FormLabel>
+                  <Input type="date" {...field} /> 
                   <FormMessage />
                 </FormItem>
               )}

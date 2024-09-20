@@ -17,17 +17,16 @@ import Loader from '@/components/Loader';
 import EditPopup from './EditPopup';
 import { useGetSubmittedPapersQuery } from '@/store/features/PaperApiSlice';
 import  EditConferencePopup  from "./EditConferencePopup";
+import { useState } from "react";
+import { Toggle } from "@/components/ui/toggle";
 
-const Page: React.FC = () => {
 
+const OrganizedConferenceComponent=()=>{
   const { data: organizedConferences, error: conferencesError, isLoading: loadingConferences } = useGetOrganizedConferencesQuery()
-  const { data: submittedPapers, error: SubmittedPaperError, isLoading: loadingPapers } = useGetSubmittedPapersQuery()
-  console.log(organizedConferences)
 
   return (
-    <div className='container mx-auto p-4'>
-      <div className='flex flex-col gap-8 md:flex-row'>
-        <Card className='w-full md:w-1/2'>
+    <div className='flex justify-center items-center'>
+    <Card className='w-full md:w-3/4'>
           <CardHeader>
             <CardTitle>Organized Conferences</CardTitle>
           </CardHeader>
@@ -66,8 +65,15 @@ const Page: React.FC = () => {
             </Table>
           </CardContent>
         </Card>
+        </div>
+  )
+}
 
-        <Card className='w-full md:w-1/2'>
+const SubmittedPaperComponent=()=>{
+  const { data: submittedPapers, error: SubmittedPaperError, isLoading: loadingPapers } = useGetSubmittedPapersQuery()
+  return (
+    <div className='flex justify-center items-center'>
+    <Card className='w-full md:w-3/4'>
           <CardHeader>
             <CardTitle>Submitted Papers</CardTitle>
           </CardHeader>
@@ -121,9 +127,47 @@ const Page: React.FC = () => {
             </Table>
           </CardContent>
         </Card>
-      </div>
-    </div>
+        </div>
   )
 }
+const Page: React.FC = () => {
+  const [showConferences, setShowConferences] = useState(true);
 
-export default Page
+  const handleToggle = () => {
+    setShowConferences((prev) => !prev);
+  };
+
+  return (
+    <div className="container mx-auto p-6">
+      <div className="flex justify-around items-center mb-6">
+        <div className="w-14"></div>
+        <h1 className="text-4xl font-bold text-center text-gray-800">Dashboard</h1>
+        <div className="flex items-center gap-2">
+          {/* Your Toggle Button */}
+          <Toggle
+            aria-label="Toggle between organized conferences and submitted papers"
+            onClick={handleToggle}
+            className={`flex items-center px-4 py-2 bg-gray-200 rounded-lg cursor-pointer transition-colors duration-300
+              ${showConferences ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-600'}`}
+          >
+            {showConferences ? (
+              
+              <span className="font-medium text-sm transition-opacity duration-300">Submitted Papers</span>
+            ) : (
+              <span className="font-medium text-sm transition-opacity duration-300">Organized Conferences</span>
+            )}
+          </Toggle>
+        </div>
+      </div>
+
+      {showConferences ? (
+        <OrganizedConferenceComponent />
+      ) : (
+        <SubmittedPaperComponent />
+      )}
+    </div>
+  );
+};
+
+
+export default Page;

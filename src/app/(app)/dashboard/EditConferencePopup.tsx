@@ -60,7 +60,7 @@ const EditConferencePopup = ({conferenceDetails}:EditConferencePopupProps) => {
       console.log(error)
 
       toast({
-        title: 'Error while creating a conference',
+        title: 'Error while updating a conference',
         description:error.data.message,
         variant: 'destructive',
       });
@@ -196,6 +196,17 @@ const EditConferencePopup = ({conferenceDetails}:EditConferencePopupProps) => {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Last Day</FormLabel>
+                  <Input type="date" {...field} /> 
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              name="conferenceSubmissionsDeadlineDate"
+              control={form.control}
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Paper Submission Deadline </FormLabel>
                   <Input type="date" {...field} /> 
                   <FormMessage />
                 </FormItem>

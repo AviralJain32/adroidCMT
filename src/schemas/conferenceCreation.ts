@@ -18,20 +18,6 @@ const conferenceSchema = z.object({
         .refine((value) => !isNaN(value) && value > 0, {
             message: "Estimated number of submissions must be a positive number",
         }),
-    // conferenceFirstDay: 
-    // z.string()
-    // .transform((date) => {
-    //         console.log(date)
-    //         // const formattedDate = new Date(date); //moment(date).format("YYYY-MM-DDTHH:mm:ss")
-    //         const formattedDate = moment(date).format("YYYY-MM-DDTHH:mm:ss"); 
-    //         console.log(formattedDate)
-    //         return formattedDate;
-    //     })
-    //   ,
-    // conferenceLastDay: z.string().transform((date) => {
-    //     const formattedDate = new Date(date).toLocaleDateString();
-    //     return formattedDate;
-    // }),
     conferenceFirstDay: z.string().transform((date) => {
         const formattedDate = moment(date).format("YYYY-MM-DD");
         return formattedDate;
@@ -40,7 +26,10 @@ const conferenceSchema = z.object({
         const formattedDate = moment(date).format("YYYY-MM-DD");
         return formattedDate;
     }),
-    
+    conferenceSubmissionsDeadlineDate: z.string().transform((date) => {
+        const formattedDate = moment(date).format("YYYY-MM-DD");
+        return formattedDate;
+    }),
     conferencePrimaryArea: z.string().min(2, { message: "Primary area must be at least 2 characters" }),
     conferenceSecondaryArea: z.string().optional(),
     conferenceAreaNotes: z.string().optional(),
@@ -55,6 +44,14 @@ const conferenceSchema = z.object({
 }, {
     message: "First day must be earlier than the last day and both must be in the future",
     path: ["conferenceFirstDay", "conferenceLastDay"],
+})
+.refine((data)=>{
+    console.log("in the refine")
+    const { conferenceSubmissionsDeadlineDate,conferenceLastDay } = data;
+    return moment(conferenceSubmissionsDeadlineDate).isAfter(moment()) && moment(conferenceSubmissionsDeadlineDate).isBefore(conferenceLastDay)
+}, {
+message: "Submissions Deadline Date must be in the future and it must be earlier than the last day of conference",
+path: ["conferenceSubmissionsDeadlineDate"],
 })
 .refine((data) => data.conferencePrimaryArea !== data.conferenceSecondaryArea, {
     message: "Primary area must not be the same as secondary area",

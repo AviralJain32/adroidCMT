@@ -1,5 +1,6 @@
 import { IConference } from '@/model/Conference';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+// import { SubmittedPaper as paperType } from '@/types/SubmittedPaperType';
 
 interface ApiResponse<T> {
     success: boolean;
@@ -23,6 +24,7 @@ interface SubmittedPaper {
 export const PaperApiSlice = createApi({
   reducerPath: 'paperapi',
   baseQuery: fetchBaseQuery({ baseUrl: '/api' }),
+  tagTypes: ['paper'],
   endpoints: (builder) => ({
     getSubmittedPapers: builder.query<SubmittedPaper[], void>({
       query: () => `/get-submitted-papers`,
@@ -49,11 +51,27 @@ export const PaperApiSlice = createApi({
           throw new Error(response.message);
         }
       },
+      providesTags: ['paper'],
     }),
+    deleteConferencePaper: builder.mutation<ApiResponse<null>, {paperIdList: string[]} >({
+      query: ({paperIdList}) => ({
+        url: `/delete-papers`,
+        method: 'DELETE',
+        body: { paperIdList }
+      }),
+      invalidatesTags: ['paper'],
+      transformResponse: (response: ApiResponse<null>) => {
+        if (!response.success) {
+          throw new Error(response.message);
+        }
+        return response;
+      }
+    })
   }),
 });
 
 export const { 
   useGetSubmittedPapersQuery,
-  useGetConferencePapersQuery
+  useGetConferencePapersQuery,
+  useDeleteConferencePaperMutation
 } = PaperApiSlice;

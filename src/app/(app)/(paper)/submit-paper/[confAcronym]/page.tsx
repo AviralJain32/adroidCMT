@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm, useFieldArray } from 'react-hook-form';
@@ -16,6 +16,10 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { User } from 'next-auth';
 import { useSession } from 'next-auth/react';
 import { Loader2 } from 'lucide-react';
+import { useGetConferencePapersQuery } from '@/store/features/PaperApiSlice';
+import { IConference } from '@/model/Conference';
+import moment from 'moment';
+import Link from 'next/link';
 
 export default function PaperSubmissionForm() {
   const { data: session } = useSession();
@@ -27,6 +31,16 @@ export default function PaperSubmissionForm() {
   const form = useForm<z.infer<typeof paperSubmissionSchema>>({
     resolver: zodResolver(paperSubmissionSchema)
   });
+  const { data, error, isLoading : Loading } = useGetConferencePapersQuery(params.confAcronym);
+
+  const [conferenceDetails, setConferenceDetails] = useState<IConference | null>(null);
+
+  useEffect(() => {
+      if (data) {
+          setConferenceDetails(data.getConferenceDetails);
+      }
+  }, [data]);
+
 
   const { fields, append, remove } = useFieldArray({
     control: form.control,
@@ -38,6 +52,8 @@ export default function PaperSubmissionForm() {
   const [isLoading, setIsLoading] = useState(false);
 
   const onSubmit = async (data: z.infer<typeof paperSubmissionSchema>) => {
+
+    
     setIsLoading(true);
     // Automatically add the current user's email as the last author
     data.paperAuthors.push({
@@ -85,11 +101,12 @@ export default function PaperSubmissionForm() {
     } finally {
       setIsLoading(false);
     }
-  };
+  }; 
 
+  console.log(conferenceDetails?.conferenceSubmissionsDeadlineDate)
   return (
     <div className="min-h-screen flex flex-col items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-lg w-full space-y-8 p-10 bg-white rounded-lg shadow-lg">
+      {moment(conferenceDetails?.conferenceSubmissionsDeadlineDate).isAfter(moment()) ? <div className="max-w-lg w-full space-y-8 p-10 bg-white rounded-lg shadow-lg">
         <h1 className="text-3xl font-bold text-center mb-8">Submit Your Paper</h1>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
@@ -205,7 +222,34 @@ export default function PaperSubmissionForm() {
             </Button>
           </form>
         </Form>
-      </div>
+      </div> 
+      :
+
+    <div className="flex items-center justify-center p-6">
+  <div className="bg-white shadow-lg rounded-lg p-8 max-w-lg text-center">
+    
+    <p className="text-lg text-gray-700 mb-4">
+      The last date for submitting your paper to this conference was{" "}
+      <span className="font-semibold text-red-500">
+        {conferenceDetails?.conferenceSubmissionsDeadlineDate 
+          ? new Date(conferenceDetails.conferenceSubmissionsDeadlineDate).toLocaleDateString()
+          : "N/A"}
+      </span>. Unfortunately, you can no longer submit your paper.
+    </p>
+    <p className="text-sm text-gray-500 mb-6">
+      If you need any assistance or have questions, feel free to contact our support team.
+    </p>
+
+    <Link href="/dashboard">
+      <Button className="bg-red-500 text-white py-2 px-6 rounded-lg font-medium text-lg hover:bg-red-600 transition duration-300 ease-in-out">
+        Go Back
+      </Button>
+    </Link>
+  </div>
+</div>
+
+    
+      }
     </div>
   );
 }

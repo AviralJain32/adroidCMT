@@ -19,7 +19,17 @@ import {
   ColumnDef,
   SortingState,
 } from "@tanstack/react-table";
-import { useEffect, useMemo, useState } from "react";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
+import { Checkbox } from "@/components/ui/checkbox"
+import { useEffect, useState } from "react";
 import moment from "moment";
 import { IPaper } from "@/model/PaperSchema";
 import { Button } from "@/components/ui/button";
@@ -30,6 +40,9 @@ import Link from "next/link";
 // import PaperDetailsPage from "./PaperDetailsPage";
 import { usePathname, useRouter } from "next/navigation";
 import { SubmittedPaper } from "@/types/SubmittedPaperType";
+import { DeletePapers } from "./DeletePapers";
+import { DownloadPapers } from "./DownloadBulkPapers";
+import { useForm } from "react-hook-form";
 
 interface PaperTableProps {
   data: SubmittedPaper[];
@@ -72,59 +85,53 @@ const PaperTable: React.FC<PaperTableProps> = ({ data }) => {
 
   const [sorting, setSorting] = useState<SortingState>([]);
   const [filtering, setFiltering] = useState("");
-
-  // const columns: ColumnDef<SubmittedPaper>[] = useMemo(
-  //   () => [
-  //     {
-  //       header: "ID",
-  //       accessorKey: "paperID",
-  //       cell: (id) => id.getValue<string>().split("-")[2],
-  //       footer: "ID",
-  //     },
-  //     {
-  //       header: "Authors",
-  //       accessorFn: (row) => getAuthorNames(row), //row.paperAuthor[0]?.fullname || ""
-  //       footer: "Author",
-  //     },
-  //     {
-  //       header: "Title",
-  //       accessorKey: "paperTitle",
-  //       footer: "Title",
-  //     },
-  //     {
-  //       header: "Information",
-  //       accessorFn: row=>row.paperID,
-  //       footer: "Information",
-  //       cell:info=>(
-  //         <Button variant={'outline'} onClick={()=>router.push(`${pathname}/${info.getValue()}`)}>Open</Button>
-  //       )
-  //     },
-  //     {
-  //       header: "Paper",
-  //       accessorKey: "paperFile",
-  //       cell: (info) => (
-  //         <Button variant={"ghost"} onClick={() => DownloadFile(info.getValue<string>())}>
-  //           <Download />
-  //         </Button>
-  //       ),
-  //       footer: "Paper",
-  //     },
-  //     {
-  //       header: "Time",
-  //       accessorKey: "paperSubmissionDate",
-  //       footer: "Time",
-  //       cell: (info) => moment(info.getValue<string>()).format("MMMM Do YYYY, h:mm:ss a"),
-  //     },
-  //   ],
-  //   []
-  // );
+  const [rowSelection, setRowSelection] = useState({})
+  const [pagination, setPagination] = useState({
+    pageIndex: 0, //initial page index
+    pageSize: 10, //default page size
+  });
+  const [NoOfPaper, setNoOfPaper] = useState<number>(10)
 
   const columns: ColumnDef<SubmittedPaper>[] =[
+    {
+      id: "select",
+      header: ({ table }) => (
+        <Checkbox
+          checked={
+            table.getIsAllPageRowsSelected() ||
+            (table.getIsSomePageRowsSelected() && "indeterminate")
+          }
+          onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+          aria-label="Select all"
+        />
+      ),
+      cell: ({ row }) => (
+        <Checkbox
+          checked={row.getIsSelected()}
+          onCheckedChange={(value) => row.toggleSelected(!!value)}
+          aria-label="Select row"
+        />
+      ),
+      enableSorting: false,
+      enableHiding: false,
+    },
       {
-        header: "ID",
+        // header: "ID",
+        header: ({ column }) => {
+          return (
+            <Button
+              variant="ghost"
+              onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+            >
+              ID
+              <ArrowUpDown className="ml-2 h-4 w-4" />
+            </Button>
+          )
+        },
         accessorKey: "paperID",
         cell: (id) => id.getValue<string>().split("-")[2],
         footer: "ID",
+
       },
       {
         header: "Authors",
@@ -155,41 +162,98 @@ const PaperTable: React.FC<PaperTableProps> = ({ data }) => {
         footer: "Paper",
       },
       {
-        header: "Time",
+        header:({ column }) => {
+          return (
+            <Button
+              variant="ghost"
+              onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+            >
+              Time
+              <ArrowUpDown className="ml-2 h-4 w-4" />
+            </Button>
+          )
+        },
         accessorKey: "paperSubmissionDate",
         footer: "Time",
         cell: (info) => moment(info.getValue<string>()).format("MMMM Do YYYY, h:mm:ss a"),
       },
     ]
+
+
+    const handlePagination=(value:number)=>{
+      if(value==-1){
+        setPagination({
+          pageIndex: 0, //initial page index
+          pageSize: 10000, //default page size
+          })
+      }
+      setPagination({
+        pageIndex: 0, //initial page index
+        pageSize: value, //default page size
+        })
+    }
+
   const table = useReactTable({
     data,
     columns,
+
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
+    onPaginationChange: setPagination,
     getSortedRowModel: getSortedRowModel(),
+    onRowSelectionChange: setRowSelection,
     getFilteredRowModel: getFilteredRowModel(),
     state: {
+      pagination,
       globalFilter: filtering,
       sorting: sorting,
+      rowSelection,
     },
     onSortingChange: setSorting,
     onGlobalFilterChange: setFiltering,
+    globalFilterFn:"includesString",
   });
 
   return (
     <div>
-    <div className="flex items-center py-4">
+    <div className="flex  justify-between items-center py-4">
       <Input
         placeholder="Search.."
         type="text"
         value={filtering}
-        onChange={e => setFiltering(e.target.value)}
-        className="max-w-sm"
+        onChange={(e) => table.setGlobalFilter(String(e.target.value))}
+        className="max-w-60"
       />
+      <div>Showing 
+      <div className="inline-block ">
+      <Select onValueChange={(value)=>(handlePagination(Number(value)),setNoOfPaper(Number(value)))}>
+      <SelectTrigger className="w-[50px] h-[30px] inline-block static  mx-2 my-0">
+        <SelectValue placeholder="V" className="font-extrabold" />
+      </SelectTrigger>
+      <SelectContent>
+        <SelectGroup>
+          <SelectLabel>No. of Papers</SelectLabel>
+          <SelectItem value="10">10</SelectItem>
+          <SelectItem value="20">20</SelectItem>
+          <SelectItem value="50">50</SelectItem>
+          <SelectItem value="100">100</SelectItem>
+          <SelectItem value="200">200</SelectItem>
+          <SelectItem value="500">500</SelectItem>
+          <SelectItem value="-1">all</SelectItem>
+        </SelectGroup>
+      </SelectContent>
+    </Select>
+    </div>
+        entries of {table.getFilteredRowModel().rows.length} (1 to {NoOfPaper})</div>
+      <div className="space-x-6">
+        <DeletePapers selectedRows={[...table.getFilteredSelectedRowModel().rows.map((row)=>row.original)]}/>
+        <DownloadPapers papers={[...table.getFilteredRowModel().rows.map((row)=>row.original)]} downloadPaperFunction={DownloadFile}/>
+      </div>
+
     </div>
     <div className="rounded-md border">
       <Table>
-        <TableHeader>
+        <TableHeader >
           {table.getHeaderGroups().map((headerGroup) => (
             <TableRow key={headerGroup.id}>
               {headerGroup.headers.map((header) => {
@@ -205,8 +269,8 @@ const PaperTable: React.FC<PaperTableProps> = ({ data }) => {
           ))}
         </TableHeader>
         <TableBody>
-          {table.getCoreRowModel().rows?.length ? (
-            table.getCoreRowModel().rows.map((row) => (
+          {table.getRowModel().rows?.length ? (
+            table.getRowModel().rows.map((row) => (
               <TableRow key={row.id} data-state={row.getIsSelected() && "selected"}>
                 {row.getVisibleCells().map((cell) => (
                   <TableCell key={cell.id}>
@@ -225,7 +289,13 @@ const PaperTable: React.FC<PaperTableProps> = ({ data }) => {
         </TableBody>
       </Table>
 
-      <div className="flex items-center justify-end space-x-2 py-4">
+      <div className="flex items-center justify-between space-x-2 py-4 px-4">
+      <div className="flex-1 text-sm text-muted-foreground">
+        
+        {table.getFilteredSelectedRowModel().rows.length} of{" "}
+        {table.getFilteredRowModel().rows.length} row(s) selected.
+      </div>
+        <div>
         <Button
           variant="outline"
           size="sm"
@@ -242,6 +312,7 @@ const PaperTable: React.FC<PaperTableProps> = ({ data }) => {
         >
           Next
         </Button>
+        </div>
       </div>
     </div>
     </div>
@@ -251,3 +322,4 @@ const PaperTable: React.FC<PaperTableProps> = ({ data }) => {
 
 
 export default PaperTable;
+
