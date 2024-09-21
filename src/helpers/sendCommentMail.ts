@@ -7,7 +7,7 @@ sgMail.setApiKey(process.env.SENDGRID_API_KEY as string);
 
 
 
-export async function sendVerificationEmail(
+export async function sendCommentMail(
     email:string,
     username:string,
     verifyCode:string

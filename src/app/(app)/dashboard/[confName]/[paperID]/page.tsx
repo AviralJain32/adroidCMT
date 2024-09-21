@@ -81,7 +81,6 @@ const Page = () => {
     correspondingAuthor,
   } = paperDetails;
 
-  console.log(params)
 
   return (
     <div className="container mx-auto p-6 bg-white rounded-lg">

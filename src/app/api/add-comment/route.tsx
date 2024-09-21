@@ -2,6 +2,7 @@ import dbConnect from "@/lib/dbConnect";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../auth/[...nextauth]/options";
 import PaperModel from "@/model/PaperSchema";
+import { sendCommentMail } from "@/helpers/sendCommentMail";
 
 export async function PATCH(request: Request) {
     await dbConnect();
@@ -19,42 +20,29 @@ export async function PATCH(request: Request) {
     }
 
     try {
-        const { review, reviewType } = await request.json();
-        const { searchParams } = new URL(request.url);
-        const paperID = searchParams.get('paperID');
+        const { comment, status,paperID,authorEmails} = await request.json();
 
-        if (!review || !paperID) {
+        console.log(authorEmails)
+
+        if (!comment || !paperID) {
             return new Response(
                 JSON.stringify({
                     success: false,
-                    message: "Review or Paper ID is missing",
+                    message: "Comment or PaperId is missing",
                 }),
                 { status: 400 }
             );
         }
 
         // Prepare the review object to be pushed into the history
-        const reviewObject = {
-            review,
+        const commentObject = {
+            comment,
             updatedAt: new Date(), // Add a timestamp
         };
 
         // Determine which review field to update (paperReview1History or paperReview2History)
-        let updateQuery;
 
-        if (reviewType === "review1") {
-            updateQuery = { $push: { paperReview1History: reviewObject } };
-        } else if (reviewType === "review2") {
-            updateQuery = { $push: { paperReview2History: reviewObject } };
-        } else {
-            return new Response(
-                JSON.stringify({
-                    success: false,
-                    message: "Invalid review type",
-                }),
-                { status: 400 }
-            );
-        }
+        const updateQuery = { $push: { paperCommentHistory: commentObject } };
 
         // Update the paper document by pushing the new review into the appropriate history array
         const updatedPaper = await PaperModel.findOneAndUpdate(
@@ -73,19 +61,52 @@ export async function PATCH(request: Request) {
             );
         }
 
+        const updatePaperStatus= await PaperModel.findOneAndUpdate(
+            {paperID},
+            {paperStatus:status}
+        )
+
+        if (!updatePaperStatus) {
+            return new Response(
+                JSON.stringify({
+                    success: false,
+                    message: "Paper status not updated",
+                }),
+                { status: 404 }
+            );
+        }
+        
+
         return new Response(
             JSON.stringify({
                 success: true,
-                message: "Review added successfully",
+                message: "Comment added and status updated successfully",
             }),
             { status: 200 }
         );
+
+        // const emailResponse=await sendCommentMail(
+        //     conferenceEmail,
+        //     user.fullname as string,
+        //     conferenceTitle,
+        //     conferenceFirstDay
+        // )
+
+        // if(!emailResponse.success){
+        //     return Response.json({
+        //         success:false,
+        //         message:emailResponse.message
+        //     },{
+        //         status:500
+        //     })
+        // }
+
     } catch (error) {
         console.log("An unexpected error occurred: ", error);
         return new Response(
             JSON.stringify({
                 success: false,
-                message: "Error occurred while adding review",
+                message: "Error occurred while adding comment",
             }),
             { status: 500 }
         );

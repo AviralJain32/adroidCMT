@@ -12,10 +12,13 @@ export interface IPaper extends Document {
   conference: mongoose.Types.ObjectId;
   paperStatus: 'submitted' | 'accepted' | 'rejected' | 'review';
   paperID:string,
-  paperComment:string,
-  paperReview1:string,
-  paperReview2:string,
-  comment:string,
+  // paperComment:string,
+  // paperReview1:string,
+  // paperReview2:string,
+  // comment:string,
+  paperCommentHistory: { comment: string; updatedAt: Date }[];
+  paperReview1History: { review: string; updatedAt: Date }[];
+  paperReview2History: { review: string; updatedAt: Date }[];
 }
 
 // Paper schema definition
@@ -65,18 +68,29 @@ const PaperSchema: Schema<IPaper> = new Schema({
     type:String,
     required:true
   },
-  paperComment: {
-    type: String
-  },
-  paperReview1:{
-    type:String
-  },
-  paperReview2:{
-    type:String
-  },
-  comment:{
-    type:String
-  }
+  // paperComment: {
+  //   type: String
+  // },
+  paperCommentHistory: [
+    {
+      comment: String,
+      updatedAt: { type: Date, default: Date.now },
+    },
+  ],
+  // Array to store the history of paperReview1 with timestamps
+  paperReview1History: [
+    {
+      review: String,
+      updatedAt: { type: Date, default: Date.now },
+    },
+  ],
+  // Array to store the history of paperReview2 with timestamps
+  paperReview2History: [
+    {
+      review: String,
+      updatedAt: { type: Date, default: Date.now },
+    },
+  ]
 },{timestamps:true});
 
 // Paper model

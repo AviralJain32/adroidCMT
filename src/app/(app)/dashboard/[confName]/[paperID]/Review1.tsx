@@ -15,6 +15,7 @@ import { toast } from "@/components/ui/use-toast";
 import { Loader2 } from "lucide-react"; // Import a loader icon
 
 export function Review1Dialog({ Review1, paperID }: { Review1: string; paperID: string }) {
+  console.log(Review1)
   const [reviewText, setReviewText] = useState(Review1 || "No existing Review");
   const [loading, setLoading] = useState(false);
   // const [successMessage, setSuccessMessage] = useState<string | null>(null);
