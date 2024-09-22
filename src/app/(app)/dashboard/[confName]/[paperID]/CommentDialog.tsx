@@ -16,6 +16,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import { useParams } from 'next/navigation';
 
 // Define the validation schema
 const paperSubmissionSchema = z.object({
@@ -31,6 +32,7 @@ type Author = {
 };
 
 export function CommentDialog({ comment, paperID, Authors }: { comment: string; paperID: string; Authors: Author[] }) {
+  const params=useParams()
   const authorEmailArray = Authors.map((author) => {return {email:author.email,fullname:author.fullname}});
 
   const form = useForm<z.infer<typeof paperSubmissionSchema>>({
@@ -42,13 +44,13 @@ export function CommentDialog({ comment, paperID, Authors }: { comment: string; 
   });
 
   const onSubmit = async (data: FormValues) => {
-    console.log("option is selected")
     console.log(data);
     try {
       const result = await axios.patch('/api/add-comment', {
         ...data,
         paperID,
         authorEmails: authorEmailArray,
+        conferenceAcronmym:params.confName
       });
 
       // Handle success (e.g., close dialog, show success message)

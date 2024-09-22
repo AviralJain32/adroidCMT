@@ -20,7 +20,7 @@ export async function PATCH(request: Request) {
     }
 
     try {
-        const { comment, status,paperID,authorEmails} = await request.json();
+        const { comment, status,paperID,authorEmails,conferenceAcronmym} = await request.json();
 
         console.log(authorEmails)
 
@@ -65,6 +65,7 @@ export async function PATCH(request: Request) {
             {paperID},
             {paperStatus:status}
         )
+        console.log(updatePaperStatus)
 
         if (!updatePaperStatus) {
             return new Response(
@@ -76,6 +77,26 @@ export async function PATCH(request: Request) {
             );
         }
         
+        const  paperReview1=updatePaperStatus.paperReview1History[updatePaperStatus.paperReview1History.length-1]
+        const paperReview2=updatePaperStatus.paperReview2History[updatePaperStatus.paperReview2History.length-1]
+        const emailResponse=await sendCommentMail(
+            authorEmails,
+            paperID,
+            status,
+            conferenceAcronmym,
+            comment,
+            paperReview1,
+            paperReview2
+        )
+
+        if(!emailResponse.success){
+            return Response.json({
+                success:false,
+                message:emailResponse.message
+            },{
+                status:500
+            })
+        }
 
         return new Response(
             JSON.stringify({
@@ -84,22 +105,6 @@ export async function PATCH(request: Request) {
             }),
             { status: 200 }
         );
-
-        // const emailResponse=await sendCommentMail(
-        //     conferenceEmail,
-        //     user.fullname as string,
-        //     conferenceTitle,
-        //     conferenceFirstDay
-        // )
-
-        // if(!emailResponse.success){
-        //     return Response.json({
-        //         success:false,
-        //         message:emailResponse.message
-        //     },{
-        //         status:500
-        //     })
-        // }
 
     } catch (error) {
         console.log("An unexpected error occurred: ", error);
