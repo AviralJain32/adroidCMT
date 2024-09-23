@@ -4,6 +4,7 @@ import "./globals.css";
 import AuthProvider from "@/context/AuthProvider";
 import { Toaster } from "@/components/ui/toaster";
 import StoreProvider from "./StoreProvider";
+import Head from "next/head";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -18,6 +19,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <Head>
+      <link rel="shortcut icon" href="/favicon.png" />
+    </Head>
       <AuthProvider>
       <body className={inter.className}>
       <StoreProvider>

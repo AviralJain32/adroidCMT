@@ -7,6 +7,10 @@ import { useSession, signOut } from 'next-auth/react';
 import { Button } from './ui/button';
 import { User } from 'next-auth';
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
+// import AppBar from '@mui/material/AppBar'
+// import Toolbar from '@mui/material/Toolbar'
+// import Typography from '@mui/material/Typography'
 
 function Navbar() {
   const { data: session } = useSession();
@@ -18,7 +22,7 @@ function Navbar() {
     <nav className=" p-2 backdrop-blur-3xl shadow-background sticky top-0 z-50">
       <div className="container mx-auto flex flex-col md:flex-row justify-between items-center">
         <Link href="/" className="text-xl font-bold">
-          Adroid CMT
+          <Image src={"/AdroidCMTLogo.png"} alt={"Adroid CMS"} width={150} height={100} />
         </Link>
         <div className='flex gap-6'>
         <Link href="/" className="hover:underline">
