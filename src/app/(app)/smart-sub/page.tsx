@@ -11,10 +11,6 @@ const SmartSubPage = () => {
 
   const { data, error, isLoading } = useGetAllAcceptedConferencesQuery();
 
-
-  const baseUrl = `${window.location.protocol}//${window.location.host}`;
-  // const profileUrl = `${baseUrl}/submit-paper/${confName}`;
-
   if(isLoading ){
     return <Loader/>
   }
