@@ -1,7 +1,7 @@
 import dbConnect from "@/lib/dbConnect";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../auth/[...nextauth]/options";
-import PaperModel from "@/model/PaperSchema";
+import ConferenceModel from "@/model/Conference";
 
 export async function GET(request: Request) {
     await dbConnect();
@@ -17,31 +17,33 @@ export async function GET(request: Request) {
             { status: 401 }
         );
     }
+
     try {
         const { searchParams } = new URL(request.url);
         const queryParams = {
-        paperID: searchParams.get('paperID'),
+            conferenceID: searchParams.get('conferenceID'),
         };
 
+        // Find the conference by the provided ID
+        const getConferenceDetails = await ConferenceModel.findOne({
+            conferenceID: queryParams.conferenceID
+        }).populate('conferenceOrganizer',"fullname");
 
-        const getPaperDetails=await PaperModel.findOne({
-            paperID:queryParams.paperID
-        }).populate('paperAuthor').populate('correspondingAuthor')
-
-        if(!getPaperDetails){
+        if (!getConferenceDetails) {
             return new Response(
-            JSON.stringify({
-                success: false,
-                message: "Error occurred while fetching conference Details",
-            }),
-            { status: 500 });
+                JSON.stringify({
+                    success: false,
+                    message: "Error occurred while fetching conference details",
+                }),
+                { status: 500 }
+            );
         }
 
         return new Response(
             JSON.stringify({
                 success: true,
-                message: "Papers details for the conference",
-                data: getPaperDetails,
+                message: "Conference details fetched successfully",
+                data: getConferenceDetails,
             }),
             { status: 200 }
         );
@@ -50,7 +52,7 @@ export async function GET(request: Request) {
         return new Response(
             JSON.stringify({
                 success: false,
-                message: "Error occurred while fetching paper details",
+                message: "Error occurred while fetching conference details",
             }),
             { status: 500 }
         );

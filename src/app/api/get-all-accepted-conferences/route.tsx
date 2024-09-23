@@ -1,7 +1,9 @@
 import dbConnect from "@/lib/dbConnect";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../auth/[...nextauth]/options";
-import PaperModel from "@/model/PaperSchema";
+import ConferenceModel from "@/model/Conference";
+
+
 
 export async function GET(request: Request) {
     await dbConnect();
@@ -18,21 +20,16 @@ export async function GET(request: Request) {
         );
     }
     try {
-        const { searchParams } = new URL(request.url);
-        const queryParams = {
-        paperID: searchParams.get('paperID'),
-        };
 
+        const getConferenceDetails=await ConferenceModel.find({
+            conferenceStatus:"accepted"
+        })
 
-        const getPaperDetails=await PaperModel.findOne({
-            paperID:queryParams.paperID
-        }).populate('paperAuthor').populate('correspondingAuthor')
-
-        if(!getPaperDetails){
+        if(!getConferenceDetails){
             return new Response(
             JSON.stringify({
                 success: false,
-                message: "Error occurred while fetching conference Details",
+                message: "conference Details not found",
             }),
             { status: 500 });
         }
@@ -40,8 +37,8 @@ export async function GET(request: Request) {
         return new Response(
             JSON.stringify({
                 success: true,
-                message: "Papers details for the conference",
-                data: getPaperDetails,
+                message: "Conference Details Found by conference id",
+                data: getConferenceDetails,
             }),
             { status: 200 }
         );
@@ -50,7 +47,7 @@ export async function GET(request: Request) {
         return new Response(
             JSON.stringify({
                 success: false,
-                message: "Error occurred while fetching paper details",
+                message: "Error occurred while fetching papers for the conference",
             }),
             { status: 500 }
         );

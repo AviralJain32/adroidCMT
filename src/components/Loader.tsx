@@ -1,17 +1,13 @@
 import React from 'react'
-import {Hourglass} from "react-loader-spinner"
+import {ClipLoader} from "react-spinners"
 const Loader = () => {
   return (
-    <div>
-      <Hourglass
-        visible={true}
-        height="80"
-        width="80"
-        ariaLabel="hourglass-loading"
-        wrapperStyle={{}}
-        wrapperClass=""
-        colors={['#306cce', '#72a1ed']}
-        />
+    <div className='min-h-screen min-w-full flex justify-center items-center'>
+      <ClipLoader
+  color="#007cf7"
+  size={50}
+  speedMultiplier={2}
+/>
     </div>
   )
 }
