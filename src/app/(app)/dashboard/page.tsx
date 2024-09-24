@@ -25,8 +25,8 @@ const OrganizedConferenceComponent=()=>{
   const { data: organizedConferences, error: conferencesError, isLoading: loadingConferences } = useGetOrganizedConferencesQuery()
 
   return (
-    <div className='flex justify-center items-center'>
-    <Card className='w-full md:w-3/4'>
+    <div className='flex justify-center min-h-[80vh]'>
+    <Card className='w-full md:w-3/4 '>
           <CardHeader>
             <CardTitle>Organized Conferences</CardTitle>
           </CardHeader>
@@ -42,7 +42,7 @@ const OrganizedConferenceComponent=()=>{
               <TableBody>
                 {loadingConferences ? (
                   <TableRow>
-                    <TableCell colSpan={3}>Loading...</TableCell>
+                    <TableCell colSpan={3}><Loader /></TableCell>
                   </TableRow>
                 ) :organizedConferences && organizedConferences.length > 0 ? (
                   organizedConferences.map((organizedConference:any) => (
@@ -72,7 +72,7 @@ const OrganizedConferenceComponent=()=>{
 const SubmittedPaperComponent=()=>{
   const { data: submittedPapers, error: SubmittedPaperError, isLoading: loadingPapers } = useGetSubmittedPapersQuery()
   return (
-    <div className='flex justify-center items-center'>
+    <div className='flex justify-center items-start min-h-[80vh]'>
     <Card className='w-full md:w-3/4'>
           <CardHeader>
             <CardTitle>Submitted Papers</CardTitle>
