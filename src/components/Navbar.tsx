@@ -1,193 +1,160 @@
+//  'use client';
 
-'use client'
-
-import React from 'react';
-import Link from 'next/link';
-import { useSession, signOut } from 'next-auth/react';
-import { Button } from './ui/button';
-import { User } from 'next-auth';
-import { useRouter } from 'next/navigation';
-import Image from 'next/image';
-// import AppBar from '@mui/material/AppBar'
-// import Toolbar from '@mui/material/Toolbar'
-// import Typography from '@mui/material/Typography'
-
-function Navbar() {
-  const { data: session } = useSession();
-  // const user: User = session?.user;
-  // console.log(user)
-  const router = useRouter();
-
-  return (
-    <nav className=" p-2 backdrop-blur-3xl shadow-background sticky top-0 z-50">
-      <div className="container mx-auto flex flex-col md:flex-row justify-between items-center">
-        <Link href="/" className="text-xl font-bold">
-          <Image src={"/AdroidCMTLogo.png"} alt={"Adroid CMS"} width={150} height={100} />
-        </Link>
-        <div className='flex gap-6'>
-        <Link href="/" className="hover:underline">
-            Home
-          </Link>
-          <Link href="/smart-sub" className="hover:underline">
-            SmartSub
-          </Link>
-        <Link href="/pricing" className="hover:underline">
-            Pricing
-          </Link>
-          <Link href="/about-us" className="hover:underline">
-             About Us
-          </Link>
-          <Link href="/contact-us" className="hover:underline">
-            Contact Us
-          </Link>
-        </div>
-        <div className="flex gap-6">
-          
-          {session ? (
-            <>
-              {/* <span className="mr-4">
-                Welcome, {user.fullname}
-              </span> */}
-              <div className='flex gap-3'>
-                <Link href="/create-conference">
-                  <Button variant={'default'}>
-                    Create Conference
-                  </Button>
-                </Link>
-                <Link href="/dashboard">
-                  <Button className="w-full md:w-auto bg-slate-100 text-black" variant='outline'>
-                    Dashboard
-                  </Button>
-                </Link>
-                <Button onClick={() => signOut()} variant='ghost'>
-                  Logout
-                </Button>
-              </div>
-            </>
-          ) : (
-            <div className='flex gap-4 items-center'>
-            <Link href="/sign-in">
-              <Button className='p-2 h-8 rounded-sm' variant={'ghost'}>
-                Login
-              </Button>
-            </Link>
-            <Link href="/sign-up"> 
-            <Button className='p-2 h-8 rounded-sm' variant={'default'}>
-              Sign up
-            </Button>
-          </Link>
-          </div>
-          )}
-        </div>
-      </div>
-    </nav>
-  );
-}
-
-export default Navbar;
-
-
-
-// 'use client'
-
-// import React from 'react';
+// import React, { useState } from 'react';
 // import Link from 'next/link';
-// import { useSession, signOut } from 'next-auth/react';
+// import { useSession } from 'next-auth/react';
 // import { Button } from './ui/button';
+// import { User } from 'next-auth';
 // import { useRouter } from 'next/navigation';
+// import Image from 'next/image';
+// import { TiThMenu } from "react-icons/ti";
+// import { Account } from './AccountNavbar';
+// import { motion, AnimatePresence } from 'framer-motion'; // Importing framer-motion
 
 // function Navbar() {
 //   const { data: session } = useSession();
+//   const [open, setopen] = useState(false);
+//   const user: User = session?.user;
 //   const router = useRouter();
 
-//   return (
-//     <nav className="p-4 backdrop-blur-3xl shadow-lg sticky top-0 z-50">
-//       <div className="container mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
-//         {/* Logo */}
-//         <Link 
-//           href="/" 
-//           className="text-2xl font-bold hover:scale-105 transform transition-all duration-200 ease-in-out"
-//         >
-//           Adroid CMT
-//         </Link>
+//   // Framer motion variants for opening and closing the menu
+//   const menuVariants = {
+//     hidden: {
+//       opacity: 0,
+//       y: "-100%", // Slide up when hidden
+//     },
+//     visible: {
+//       opacity: 1,
+//       y: 0, // Slide down into view when visible
+//       transition: {
+//         duration: 0.5,
+//         ease: "easeInOut",
+//       },
+//     },
+//     exit: {
+//       opacity: 0,
+//       y: "-100%", // Slide back up when exiting
+//       transition: {
+//         duration: 0.5,
+//         ease: "easeInOut",
+//       },
+//     },
+//   };
 
-//         {/* Menu Links */}
-//         <div className="flex flex-col md:flex-row items-center gap-4">
-//           <Link 
-//             href="/" 
-//             className="hover:underline hover:text-blue-500 transition-all duration-200"
-//           >
-//             Home
-//           </Link>
-//           <Link 
-//             href="/smart-sub" 
-//             className="hover:underline hover:text-blue-500 transition-all duration-200"
-//           >
-//             SmartSub
-//           </Link>
-//           <Link 
-//             href="/pricing" 
-//             className="hover:underline hover:text-blue-500 transition-all duration-200"
-//           >
-//             Pricing
-//           </Link>
-//           <Link 
-//             href="/about-us" 
-//             className="hover:underline hover:text-blue-500 transition-all duration-200"
-//           >
-//             About Us
-//           </Link>
-//           <Link 
-//             href="/contact-us" 
-//             className="hover:underline hover:text-blue-500 transition-all duration-200"
-//           >
-//             Contact Us
+//   return (
+//     <nav className="p-2 backdrop-blur-3xl shadow-background sticky top-0 z-50">
+//       {/* Mobile Navigation */}
+//       <div className='lg:hidden flex justify-between items-center'>
+//         <div className='flex gap-2'>
+//           <TiThMenu size={25} onClick={() => setopen(!open)} />
+//           <Link href="/" className="text-xl font-bold">
+//             <Image src={"/AdroidCMTLogo.png"} alt={"Adroid CMS"} width={150} height={100} />
 //           </Link>
 //         </div>
-
-//         {/* Authentication & Buttons */}
-//         <div className="flex flex-col md:flex-row gap-4 items-center">
-//           {session ? (
-//             <div className="flex flex-col md:flex-row items-center gap-3">
-//               <Link href="/create-conference">
-//                 <Button 
-//                   className="hover:scale-105 transition-transform duration-200 ease-in-out"
-//                   variant="default"
-//                 >
-//                   Create Conference
-//                 </Button>
-//               </Link>
-//               <Link href="/dashboard">
-//                 <Button 
-//                   className="w-full md:w-auto bg-slate-100 text-black hover:bg-gray-300 transition-colors duration-200"
-//                   variant="outline"
-//                 >
-//                   Dashboard
-//                 </Button>
-//               </Link>
-//               <Button 
-//                 onClick={() => signOut()} 
-//                 className="hover:opacity-75 transition-opacity duration-200"
-//                 variant="ghost"
-//               >
-//                 Logout
-//               </Button>
-//             </div>
-//           ) : (
-//             <div className="flex flex-col md:flex-row gap-4 items-center">
+        
+//         <div>
+//           {session ? <Account {...user} /> : (
+//             <div className='flex gap-4 items-center'>
 //               <Link href="/sign-in">
-//                 <Button 
-//                   className="p-2 h-8 rounded-sm hover:bg-gray-200 transition-colors duration-200"
-//                   variant="ghost"
-//                 >
+//                 <Button className='p-2 h-8 rounded-sm' variant={'ghost'}>
 //                   Login
 //                 </Button>
 //               </Link>
 //               <Link href="/sign-up">
-//                 <Button 
-//                   className="p-2 h-8 rounded-sm hover:scale-105 transition-transform duration-200 ease-in-out"
-//                   variant="default"
-//                 >
+//                 <Button className='p-2 h-8 rounded-sm' variant={'default'}>
+//                   Sign up
+//                 </Button>
+//               </Link>
+//             </div>
+//           )}
+//         </div>
+//       </div>
+
+//       {/* Animate Presence for handling open/close transitions */}
+//       <AnimatePresence>
+//         {open && (
+//           <motion.div
+//             className="container mx-auto flex flex-col justify-center items-center lg:hidden"
+            
+//           >
+//             <motion.div variants={menuVariants}
+//             initial="hidden"
+//             animate="visible"
+//             exit="exit" className='flex flex-col gap-6 text-center mt-4'>
+//               <Link href="/" className="hover:font-bold">
+//                 Home
+//               </Link>
+//               <Link href="/dashboard" className="hover:font-bold">
+//                 Dashboard
+//               </Link>
+//               <Link href="/create-conference" className="hover:font-bold">
+//                 Create Conference
+//               </Link>
+//               <Link href="/smart-sub" className="hover:font-bold">
+//                 SmartSub
+//               </Link>
+//               <Link href="/pricing" className="hover:font-bold">
+//                 Pricing
+//               </Link>
+//               <Link href="/about-us" className="hover:font-bold">
+//                 About Us
+//               </Link>
+//               <Link href="/contact-us" className="hover:font-bold">
+//                 Contact Us
+//               </Link>
+//             </motion.div>
+//           </motion.div>
+//         )}
+//       </AnimatePresence>
+
+//       {/* Desktop Navigation */}
+//       <div className="hidden container mx-auto lg:flex flex-col md:flex-row justify-between items-center">
+//         <Link href="/" className="text-xl font-bold">
+//           <Image src={"/AdroidCMTLogo.png"} alt={"Adroid CMS"} width={150} height={100} />
+//         </Link>
+//         <div className='flex flex-col lg:flex-row gap-6 text-center'>
+//           <Link href="/" className="hover:font-bold">
+//             Home
+//           </Link>
+//           <Link href="/smart-sub" className="hover:font-bold">
+//             SmartSub
+//           </Link>
+//           <Link href="/pricing" className="hover:font-bold">
+//             Pricing
+//           </Link>
+//           <Link href="/about-us" className="hover:font-bold">
+//             About Us
+//           </Link>
+//           <Link href="/contact-us" className="hover:font-bold">
+//             Contact Us
+//           </Link>
+//         </div>
+//         <div className="flex flex-col lg:flex-row gap-6">
+//           {session ? (
+//             <>
+//               <div className='flex flex-col lg:flex-row gap-3'>
+//                 <Link href="/create-conference">
+//                   <Button variant={'default'}>
+//                     Create Conference
+//                   </Button>
+//                 </Link>
+//                 <Link href="/dashboard">
+//                   <Button className="w-full md:w-auto bg-slate-100 text-black" variant='outline'>
+//                     Dashboard
+//                   </Button>
+//                 </Link>
+//                 <Account {...user} />
+//               </div>
+//             </>
+//           ) : (
+//             <div className='flex gap-4 items-center'>
+//               <Link href="/sign-in">
+//                 <Button className='p-2 h-8 rounded-sm' variant={'ghost'}>
+//                   Login
+//                 </Button>
+//               </Link>
+//               <Link href="/sign-up">
+//                 <Button className='p-2 h-8 rounded-sm' variant={'default'}>
 //                   Sign up
 //                 </Button>
 //               </Link>
@@ -200,3 +167,199 @@ export default Navbar;
 // }
 
 // export default Navbar;
+
+
+
+'use client';
+
+import React, { useState } from 'react';
+import Link from 'next/link';
+import { useSession } from 'next-auth/react';
+import { Button } from './ui/button';
+import { User } from 'next-auth';
+import { useRouter } from 'next/navigation';
+import Image from 'next/image';
+import { TiThMenu } from "react-icons/ti";
+import { AiOutlineClose } from "react-icons/ai"; // Import the close icon
+import { Account } from './AccountNavbar';
+import { motion, AnimatePresence } from 'framer-motion';
+
+function Navbar() {
+  const { data: session } = useSession();
+  const [open, setOpen] = useState(false);
+  const user: User = session?.user;
+  const router = useRouter();
+
+  // Framer motion variants for opening and closing the menu
+  const menuVariants = {
+    hidden: {
+      opacity: 0,
+      y: "-100%", // Slide up when hidden
+    },
+    visible: {
+      opacity: 1,
+      y: 0, // Slide down into view when visible
+      transition: {
+        duration: 0.4,
+        ease: "easeInOut",
+      },
+    },
+    exit: {
+      opacity: 0,
+      y: "-100%", // Slide back up when exiting
+      transition: {
+        duration: 0.4,
+        ease: "easeInOut",
+      },
+    },
+  };
+
+  // Icon animation for hamburger to cross
+  const iconVariants = {
+    closed: { rotate: 0 },
+    open: { rotate: 180 }, // Smooth icon rotation when menu is open
+  };
+
+  return (
+    <nav className="p-2 backdrop-blur-3xl shadow-background sticky top-0 z-50">
+      {/* Mobile Navigation */}
+      <div className="lg:hidden flex justify-between items-center">
+        <div className="flex gap-2">
+          {/* Animate the Hamburger Menu to Cross */}
+          <motion.div
+            className="cursor-pointer"
+            onClick={() => setOpen(!open)}
+            initial={false}
+            animate={open ? "open" : "closed"}
+            variants={iconVariants}
+          >
+            {open ? (
+              <AiOutlineClose size={25} />
+            ) : (
+              <TiThMenu size={25} />
+            )}
+          </motion.div>
+
+          <Link href="/" className="text-xl font-bold">
+            <Image src={"/AdroidCMTLogo.png"} alt={"Adroid CMS"} width={150} height={100} />
+          </Link>
+        </div>
+
+        <div>
+          {session ? <Account {...user} /> : (
+            <div className="flex gap-4 items-center">
+              <Link href="/sign-in">
+                <Button className="p-2 h-8 rounded-sm" variant={'ghost'}>
+                  Login
+                </Button>
+              </Link>
+              <Link href="/sign-up">
+                <Button className="p-2 h-8 rounded-sm" variant={'default'}>
+                  Sign up
+                </Button>
+              </Link>
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* Animate Presence for handling open/close transitions */}
+      <AnimatePresence>
+        {open && (
+          <motion.div
+            className="absolute min-h-screen min-w-full bg-white z-40 flex flex-col justify-center items-center" // Full screen overlay
+            variants={menuVariants}
+            initial="hidden"
+            animate="visible"
+            exit="exit"
+          >
+            <motion.div
+              className="flex flex-col gap-6 text-center mt-4"
+              initial="hidden"
+              animate="visible"
+              exit="exit"
+            >
+              <Link href="/" className="hover:font-bold" onClick={() => setOpen(false)}>
+                Home
+              </Link>
+              <Link href="/dashboard" className="hover:font-bold" onClick={() => setOpen(false)}>
+                Dashboard
+              </Link>
+              <Link href="/create-conference" className="hover:font-bold" onClick={() => setOpen(false)}>
+                Create Conference
+              </Link>
+              <Link href="/smart-sub" className="hover:font-bold" onClick={() => setOpen(false)}>
+                SmartSub
+              </Link>
+              <Link href="/pricing" className="hover:font-bold" onClick={() => setOpen(false)}>
+                Pricing
+              </Link>
+              <Link href="/about-us" className="hover:font-bold" onClick={() => setOpen(false)}>
+                About Us
+              </Link>
+              <Link href="/contact-us" className="hover:font-bold" onClick={() => setOpen(false)}>
+                Contact Us
+              </Link>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Desktop Navigation */}
+      <div className="hidden container mx-auto lg:flex flex-col md:flex-row justify-between items-center">
+        <Link href="/" className="text-xl font-bold">
+          <Image src={"/AdroidCMTLogo.png"} alt={"Adroid CMS"} width={150} height={100} />
+        </Link>
+        <div className="flex flex-col lg:flex-row gap-6 text-center">
+          <Link href="/" className="hover:font-bold">
+            Home
+          </Link>
+          <Link href="/smart-sub" className="hover:font-bold">
+            SmartSub
+          </Link>
+          <Link href="/pricing" className="hover:font-bold">
+            Pricing
+          </Link>
+          <Link href="/about-us" className="hover:font-bold">
+            About Us
+          </Link>
+          <Link href="/contact-us" className="hover:font-bold">
+            Contact Us
+          </Link>
+        </div>
+        <div className="flex flex-col lg:flex-row gap-6">
+          {session ? (
+            <>
+              <div className="flex flex-col lg:flex-row gap-3">
+                <Link href="/create-conference">
+                  <Button variant={'default'}>Create Conference</Button>
+                </Link>
+                <Link href="/dashboard">
+                  <Button className="w-full md:w-auto bg-slate-100 text-black" variant="outline">
+                    Dashboard
+                  </Button>
+                </Link>
+                <Account {...user} />
+              </div>
+            </>
+          ) : (
+            <div className="flex gap-4 items-center">
+              <Link href="/sign-in">
+                <Button className="p-2 h-8 rounded-sm" variant="ghost">
+                  Login
+                </Button>
+              </Link>
+              <Link href="/sign-up">
+                <Button className="p-2 h-8 rounded-sm" variant="default">
+                  Sign up
+                </Button>
+              </Link>
+            </div>
+          )}
+        </div>
+      </div>
+    </nav>
+  );
+}
+
+export default Navbar;
