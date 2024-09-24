@@ -221,9 +221,9 @@ function Navbar() {
   };
 
   return (
-    <nav className="p-2 backdrop-blur-3xl shadow-background sticky top-0 z-50">
+    <nav className="p-2 backdrop-blur-3xl shadow-background sticky top-0 z-50 ">
       {/* Mobile Navigation */}
-      <div className="lg:hidden flex justify-between items-center">
+      <div className="lg:hidden flex justify-between items-center ">
         <div className="flex gap-2">
           {/* Animate the Hamburger Menu to Cross */}
           <motion.div

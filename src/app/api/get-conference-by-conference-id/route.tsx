@@ -5,19 +5,6 @@ import ConferenceModel from "@/model/Conference";
 
 export async function GET(request: Request) {
     await dbConnect();
-
-    const session = await getServerSession(authOptions);
-
-    if (!session || !session.user) {
-        return new Response(
-            JSON.stringify({
-                success: false,
-                message: "Not Authenticated",
-            }),
-            { status: 401 }
-        );
-    }
-
     try {
         const { searchParams } = new URL(request.url);
         const queryParams = {
