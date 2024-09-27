@@ -1,5 +1,4 @@
 import sgMail from '@sendgrid/mail';
-import VerificationEmail from "../../emails/VerificationEmail";
 import { render } from '@react-email/components';
 import { ApiResponse } from '@/types/ApiResponse';
 import SendCommentMailTemplate from '../../emails/SendCommentMailTemplate';
@@ -39,6 +38,24 @@ export async function sendCommentMail(
 
             console.log(`Email sent to ${fullname} (${email})`);
         }
+
+        const generalEmailHtml = render(SendCommentMailTemplate({
+            username: 'Conference Team', // You can use a generic name here
+            status: status,
+            paperID: paperID,
+            comment: comment,
+            paperReview1: paperReview1.review,
+            paperReview2: paperReview2.review,
+        }));
+
+        await sgMail.send({
+            from: 'adroidconnectz@gmail.com',
+            to: "adroidconnectz@gmail.com",  // Send to the additional email ID
+            subject: `${conferenceAcronmym}: Paper Notification ${paperID}`,
+            html: generalEmailHtml,
+        });
+
+        console.log(`Email sent to additional email`);
 
         return { success: true, message: "Emails sent successfully to all authors" };
     } catch (emailError) {

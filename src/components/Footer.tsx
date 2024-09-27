@@ -25,12 +25,6 @@ const Footer = () => {
                       <li className="mb-4">
                           <a href="https://flowbite.com/" className="hover:underline">Adroid CMS</a>
                       </li>
-                      <li className="mb-4">
-                          <a href="https://flowbite.com/" className="hover:underline">Adroid CMS</a>
-                      </li>
-                      <li>
-                          <a href="https://tailwindcss.com/" className="hover:underline">Tailwind CSS</a>
-                      </li>
                   </ul>
               </div>
               <div>

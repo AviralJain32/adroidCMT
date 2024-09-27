@@ -153,9 +153,9 @@ const Page: React.FC = () => {
           >
             {showConferences ? (
               
-              <span className="font-medium text-sm transition-opacity duration-300">Submitted Papers</span>
+              <span className="font-medium text-sm transition-opacity duration-300">Login as Author</span>
             ) : (
-              <span className="font-medium text-sm transition-opacity duration-300">Organized Conferences</span>
+              <span className="font-medium text-sm transition-opacity duration-300">Login as Conference Chair</span>
             )}
           </Toggle>
         </div>
