@@ -19,13 +19,14 @@ import { useGetSubmittedPapersQuery } from '@/store/features/PaperApiSlice';
 import  EditConferencePopup  from "./EditConferencePopup";
 import { useState } from "react";
 import { Toggle } from "@/components/ui/toggle";
+import { PulseLoader } from "react-spinners";
 
 
 const OrganizedConferenceComponent=()=>{
   const { data: organizedConferences, error: conferencesError, isLoading: loadingConferences } = useGetOrganizedConferencesQuery()
 
   return (
-    <div className='flex justify-center min-h-[80vh]'>
+    <div className='flex justify-center'>
     <Card className='w-full md:w-3/4 '>
           <CardHeader>
             <CardTitle>Organized Conferences</CardTitle>
@@ -41,8 +42,8 @@ const OrganizedConferenceComponent=()=>{
               </TableHeader>
               <TableBody>
                 {loadingConferences ? (
-                  <TableRow>
-                    <TableCell colSpan={3}><Loader /></TableCell>
+                  <TableRow className="w-full justify-center items-center text-center ">
+                    <TableCell colSpan={3}><span className="">Loading <PulseLoader className="inline-block" size={6}/></span></TableCell>
                   </TableRow>
                 ) :organizedConferences && organizedConferences.length > 0 ? (
                   organizedConferences.map((organizedConference:any) => (
@@ -72,7 +73,7 @@ const OrganizedConferenceComponent=()=>{
 const SubmittedPaperComponent=()=>{
   const { data: submittedPapers, error: SubmittedPaperError, isLoading: loadingPapers } = useGetSubmittedPapersQuery()
   return (
-    <div className='flex justify-center items-start min-h-[80vh]'>
+    <div className='flex justify-center items-start'>
     <Card className='w-full md:w-3/4'>
           <CardHeader>
             <CardTitle>Submitted Papers</CardTitle>
@@ -89,9 +90,9 @@ const SubmittedPaperComponent=()=>{
               </TableHeader>
               <TableBody>
                 {loadingPapers ? (
-                  <TableRow>
-                    <TableCell colSpan={3}>Loading...</TableCell>
-                  </TableRow>
+                  <TableRow className="w-full justify-center items-center text-center ">
+                  <TableCell colSpan={3}><span className="">Loading <PulseLoader className="inline-block" size={6}/></span></TableCell>
+                </TableRow>
                 ) : submittedPapers && submittedPapers.length > 0 ? (
                   submittedPapers.map((submittedPaper) => (
                     <TableRow key={submittedPaper.paperTitle}>
@@ -159,12 +160,13 @@ const Page: React.FC = () => {
           </Toggle>
         </div>
       </div>
-
+      <div className="min-h-screen">
       {showConferences ? (
         <OrganizedConferenceComponent />
       ) : (
         <SubmittedPaperComponent />
       )}
+      </div>
     </div>
   );
 };

@@ -51,6 +51,7 @@ interface PaperTableProps {
 const PaperTable: React.FC<PaperTableProps> = ({ data }) => {
   const router = useRouter()
   const pathname=usePathname()
+  console.log(pathname)
 
 
   const DownloadFile = (file: string) => {

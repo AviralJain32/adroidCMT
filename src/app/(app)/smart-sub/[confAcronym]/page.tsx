@@ -1,23 +1,3 @@
-// "use client"
-// import { IConference } from '@/model/Conference'
-// import { useGetConferenceByConferenceIDQuery } from '@/store/features/ConferenceApiSlice'
-// import { useParams } from 'next/navigation'
-// import React, { useEffect, useState } from 'react'
-
-// const page = () => {
-//     const params = useParams()
-//     console.log(params)
-//     const { data, error, isLoading } = useGetConferenceByConferenceIDQuery(params.confAcronym as string);
-//     console.log(data)
-
-//   return (
-//     <div>
-//       {}
-//     </div>
-//   )
-// }
-
-// export default page
 
 
 "use client";

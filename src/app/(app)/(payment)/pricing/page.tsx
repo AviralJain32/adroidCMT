@@ -179,10 +179,10 @@ const PricingPage: React.FC = () => {
       
       {/* Information Section */}
       <div className="p-12 bg-gray-50 rounded-lg shadow-lg">
-      <h2 className="text-5xl font-bold text-center mb-10 text-indigo-600">How It Works</h2>
+      <h2 className="text-5xl font-bold text-center mb-10 text-blue-600">How It Works</h2>
       <div className="text-xl text-gray-800 text-center mb-8 space-y-6">
         <p className="font-semibold">
-          Start with <span className="font-extrabold text-indigo-700">100 papers for free.</span>
+          Start with <span className="font-extrabold text-blue-700">100 papers for free.</span>
         </p>
         <ul className="list-disc list-inside text-left inline-block space-y-3">
           <li>Once you exceed the 100 paper limit, submit ₹2000 (23.82 USD) to our platform.</li>

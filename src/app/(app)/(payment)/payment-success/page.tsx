@@ -1,5 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
+import { Button } from '@/components/ui/button';
 
 const PaymentSuccess = () => {
   return (
@@ -16,9 +17,9 @@ const PaymentSuccess = () => {
         </p>
 
         <Link href="/">
-          <a className="bg-green-500 text-white py-2 px-6 rounded-lg font-medium text-lg hover:bg-green-600 transition duration-300 ease-in-out">
+          <Button className="bg-green-500 text-white py-2 px-6 rounded-lg font-medium text-lg hover:bg-green-600 transition duration-300 ease-in-out">
             Go to Home
-          </a>
+          </Button>
         </Link>
       </div>
     </div>
