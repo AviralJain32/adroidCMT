@@ -63,13 +63,7 @@ const TableSmartSub: React.FC<conferencesType> = ({ conferences }) => {
       accessorKey: "conferenceTitle",
       footer: "Name",
     },
-    {
-      // Location Column (comprising Venue, City, Country)
-      header: "Location",
-      accessorFn: (row) =>
-        `${row.conferenceVenue}, ${row.conferenceCity}, ${row.conferenceCountry}`,
-      footer: "Location",
-    },
+     
     {
       // Submission Deadline Column
       header: "Submission Deadline",

@@ -21,15 +21,11 @@ interface updateType {
   confAcronym: string;
   conferenceDetails: z.infer<typeof conferenceSchema>;
 }
-
 // Creating a mapped type that modifies conferenceOrganizer to be a string
 type IModifiedConference = Omit<IConference, 'conferenceOrganizer'| 'conferenceStatus' > & {
   conferenceOrganizer: {_id:string,fullname:string};
   conferenceStatus:"outline" | "accepted" | "submitted" | "rejected" | "review" | null | undefined
 };
-
-
-
 export const ConferenceApiSlice = createApi({
   reducerPath: 'conferenceapi',
   baseQuery: fetchBaseQuery({ baseUrl: '/api' }),

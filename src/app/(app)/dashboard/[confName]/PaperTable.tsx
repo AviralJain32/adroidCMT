@@ -35,20 +35,21 @@ import { IPaper } from "@/model/PaperSchema";
 import { Button } from "@/components/ui/button";
 import { Download } from "lucide-react";
 import { ArrowUpDown, MoreHorizontal } from "lucide-react"
-import { Input } from "../../../../../components/ui/input";
+import { Input } from "../../../../components/ui/input";
 import Link from "next/link";
 // import PaperDetailsPage from "./PaperDetailsPage";
 import { usePathname, useRouter } from "next/navigation";
 import { SubmittedPaper } from "@/types/SubmittedPaperType";
-import { DeletePapers } from "./DeletePapers";
-import { DownloadPapers } from "./DownloadBulkPapers";
+import { DeletePapers } from "./[paperID]/DeletePapers";
+import { DownloadPapers } from "./[paperID]/DownloadBulkPapers";
 import { useForm } from "react-hook-form";
 
 interface PaperTableProps {
   data: SubmittedPaper[];
+  ispaidSecurityAmountof2000:boolean
 }
 
-const PaperTable: React.FC<PaperTableProps> = ({ data }) => {
+const PaperTable: React.FC<PaperTableProps> = ({ data,ispaidSecurityAmountof2000 }) => {
   const router = useRouter()
   const pathname=usePathname()
   console.log(pathname)
@@ -215,6 +216,10 @@ const PaperTable: React.FC<PaperTableProps> = ({ data }) => {
     globalFilterFn:"includesString",
   });
 
+  const isBlurred = (ispaidSecurityAmountof2000: boolean, paperIndex: number) => {
+    return !ispaidSecurityAmountof2000 && paperIndex >= 100;
+  };
+
   return (
     <div>
     <div className="flex  justify-between items-center py-4">
@@ -229,7 +234,7 @@ const PaperTable: React.FC<PaperTableProps> = ({ data }) => {
       <div className="inline-block ">
       <Select onValueChange={(value)=>(handlePagination(Number(value)),setNoOfPaper(Number(value)))}>
       <SelectTrigger className="w-[50px] h-[30px] inline-block static  mx-2 my-0">
-        <SelectValue placeholder="V" className="font-extrabold" />
+        <SelectValue placeholder="v" className="font-extrabold" />
       </SelectTrigger>
       <SelectContent>
         <SelectGroup>
@@ -255,11 +260,11 @@ const PaperTable: React.FC<PaperTableProps> = ({ data }) => {
     <div className="rounded-md border">
       <Table>
         <TableHeader >
-          {table.getHeaderGroups().map((headerGroup) => (
+          {table.getHeaderGroups().map((headerGroup,index) => (
             <TableRow key={headerGroup.id}>
               {headerGroup.headers.map((header) => {
                 return (
-                  <TableHead key={header.id}>
+                  <TableHead key={header.id} >
                     {header.isPlaceholder
                       ? null
                       : flexRender(header.column.columnDef.header, header.getContext())}
@@ -271,8 +276,8 @@ const PaperTable: React.FC<PaperTableProps> = ({ data }) => {
         </TableHeader>
         <TableBody>
           {table.getRowModel().rows?.length ? (
-            table.getRowModel().rows.map((row) => (
-              <TableRow key={row.id} data-state={row.getIsSelected() && "selected"}>
+            table.getRowModel().rows.map((row,index) => (
+              <TableRow key={row.id} data-state={row.getIsSelected() && "selected"} className={isBlurred(ispaidSecurityAmountof2000, index) ? 'backdrop-blur-3xl pointer-events-none' : ""}>
                 {row.getVisibleCells().map((cell) => (
                   <TableCell key={cell.id}>
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}

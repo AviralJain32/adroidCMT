@@ -1,5 +1,4 @@
 import mongoose, { Schema, Document } from 'mongoose';
-
 // Interface for Conference document
 export interface IConference extends Document {
   conferenceOrganizer: mongoose.Types.ObjectId;
@@ -27,6 +26,7 @@ export interface IConference extends Document {
   conferenceStatus: string;
   conferenceStatusComment:string
   conferenceSubmissionsDeadlineDate:Date;
+  conferenceSecurityDeposit2000Paid:boolean
 }
 
 // Conference schema definition
@@ -54,7 +54,8 @@ const ConferenceSchema: Schema<IConference> = new Schema({
   conferenceIsAcceptingPaper: { type: Boolean, default: true },
   conferenceStatus: { type: String, required: true,enum:["submitted","accepted","rejected","review"],default:"submitted" },
   conferenceStatusComment:{type:String},
-  conferenceSubmissionsDeadlineDate:{type:Date,required:true}
+  conferenceSubmissionsDeadlineDate:{type:Date,required:true},
+  conferenceSecurityDeposit2000Paid:{type:Boolean,default:false}
 });
 
 // Conference model
