@@ -29,7 +29,7 @@ const UnderSubmission = () => (
 
 // RejectedConference.tsx
 interface TypeRejectedConf {
-    conferenceStatusComment: string;
+    conferenceStatusComment: {comment: String,updatedAt:Date,}[];
 }
 
 const RejectedConference = ({ conferenceStatusComment }: TypeRejectedConf) => (
@@ -41,7 +41,7 @@ const RejectedConference = ({ conferenceStatusComment }: TypeRejectedConf) => (
                 </CardTitle>
             </CardHeader>
             <CardContent>
-                <p className="mt-2 text-red-700">{conferenceStatusComment}</p>
+                <p className="mt-2 text-red-700">{conferenceStatusComment[conferenceStatusComment.length-1].comment}</p>
                 <p className="mt-2 text-red-700">Unfortunately, your conference did not meet the necessary criteria for acceptance.</p>
                 <p className="mt-2 text-red-700">Please contact support for more information.</p>
             </CardContent>
@@ -51,7 +51,7 @@ const RejectedConference = ({ conferenceStatusComment }: TypeRejectedConf) => (
 
 // ReviewConference.tsx
 interface TypeReviewConf {
-    conferenceStatusComment: string;
+    conferenceStatusComment: {comment: String,updatedAt:Date,}[];
 }
 
 const ReviewConference = ({ conferenceStatusComment }: TypeReviewConf) => (
@@ -65,7 +65,7 @@ const ReviewConference = ({ conferenceStatusComment }: TypeReviewConf) => (
             <CardContent>
                 <p className="mt-2 text-blue-700">Adroid CMT System have left the following comments for you to review:</p>
                 <ul className="mt-2 list-disc list-inside text-blue-700">
-                    {conferenceStatusComment}
+                    {conferenceStatusComment[conferenceStatusComment.length-1].comment}
                 </ul>
                 <p className="mt-4 text-blue-700">
                     Please address the comments and resubmit your conference for review.
@@ -142,9 +142,9 @@ const Page = () => {
             )}
         </div>
     ) : conferenceDetails.conferenceStatus === "review" ? (
-        <ReviewConference conferenceStatusComment={conferenceDetails.conferenceStatusComment} />
+        <ReviewConference conferenceStatusComment={conferenceDetails.conferenceStatusComment || []} />
     ) : (
-        <RejectedConference conferenceStatusComment={conferenceDetails.conferenceStatusComment} />
+        <RejectedConference conferenceStatusComment={conferenceDetails.conferenceStatusComment || []} />
     );
 };
 

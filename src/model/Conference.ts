@@ -24,7 +24,7 @@ export interface IConference extends Document {
   // conferenceDescription: string;
   conferenceIsAcceptingPaper: boolean;
   conferenceStatus: string;
-  conferenceStatusComment:string
+  conferenceStatusComment:{ comment: string; updatedAt: Date }[];
   conferenceSubmissionsDeadlineDate:Date;
   conferenceSecurityDeposit2000Paid:boolean
 }
@@ -53,7 +53,12 @@ const ConferenceSchema: Schema<IConference> = new Schema({
   conferenceCreatedAt: { type: Date, required: true, default: Date.now },
   conferenceIsAcceptingPaper: { type: Boolean, default: true },
   conferenceStatus: { type: String, required: true,enum:["submitted","accepted","rejected","review"],default:"submitted" },
-  conferenceStatusComment:{type:String},
+  conferenceStatusComment:[
+    {
+      comment: String,
+      updatedAt: { type: Date, default: Date.now },
+    }
+  ],
   conferenceSubmissionsDeadlineDate:{type:Date,required:true},
   conferenceSecurityDeposit2000Paid:{type:Boolean,default:false}
 });
