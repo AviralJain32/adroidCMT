@@ -36,7 +36,6 @@ const Page = () => {
   const form = useForm<z.infer<typeof signUpSchema>>({
     resolver: zodResolver(signUpSchema)
   })
-  console.log(isSubmitting)
   const onSubmit = async (data: z.infer<typeof signUpSchema>) => {
     setIsSubmitting(true)
     console.log(data)

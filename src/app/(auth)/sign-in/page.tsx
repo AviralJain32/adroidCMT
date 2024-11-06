@@ -17,13 +17,16 @@ import Link from 'next/link';
 import { useRouter, useSearchParams} from 'next/navigation';
 import { useToast } from '@/components/ui/use-toast';
 import { signInSchema } from '@/schemas/signInSchema';
-import { Suspense } from 'react';
+import { Suspense, useState } from 'react';
+import { Loader2 } from 'lucide-react';
 
 function SignInForm() {
   const router = useRouter();
   const searchParams = useSearchParams(); // Extract query parameters
   // const params = new URLSearchParams(window.location.search);
   const callbackUrl = searchParams.get('callbackUrl') || '/dashboard'; // Fallback to dashboard if no callbackUrl
+
+  const [isSubmitting, setIsSubmitting] = useState(false)
 
   const form = useForm<z.infer<typeof signInSchema>>({
     resolver: zodResolver(signInSchema),
@@ -36,6 +39,7 @@ function SignInForm() {
   const { toast } = useToast();
 
   const onSubmit = async (data: z.infer<typeof signInSchema>) => {
+    setIsSubmitting(true)
     const result = await signIn('credentials', {
       redirect: false,
       identifier: data.identifier,
@@ -60,6 +64,8 @@ function SignInForm() {
         });
       }
     }
+
+    setIsSubmitting(false)
 
     if (result?.url) {
       router.replace(result.url); // Redirect to the URL provided by NextAuth.js (callbackUrl)
@@ -106,8 +112,12 @@ function SignInForm() {
                 </FormItem>
               )}
             />
-            <Button type="submit" className="w-full bg-blue-600 hover:bg-blue-700 text-white">
-              Sign In
+            <Button type="submit" className="w-full bg-blue-600 text-white" disabled={isSubmitting}>
+              {isSubmitting ? (
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Please Wait
+                </>
+              ) : ('Sign In')}
             </Button>
           </form>
         </Form>
