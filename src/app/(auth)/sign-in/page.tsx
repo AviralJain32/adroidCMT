@@ -68,7 +68,8 @@ function SignInForm() {
     setIsSubmitting(false)
 
     if (result?.url) {
-      router.replace(result.url); // Redirect to the URL provided by NextAuth.js (callbackUrl)
+      // router.replace(result.url); // Redirect to the URL provided by NextAuth.js (callbackUrl)
+      router.push(result.url)
     }
   };
 
