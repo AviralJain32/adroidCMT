@@ -18,6 +18,7 @@ import axios from "axios";
 import { CommentDialog } from "./CommentDialog";
 import { Review1Dialog } from "./Review1";
 import { Review2Dialog } from "./Review2";
+import { useGetPaperDetailsByPaperIDQuery } from "@/store/features/ConferenceDashboardPaperSlice";
 
 interface PaperDetails {
   correspondingAuthor: AuthorDetails[];
@@ -40,30 +41,19 @@ interface AuthorDetails {
   affilation: string;
   webpage: string; // ye abhi dalega,
 }
-
+type params={
+  paperID:string
+}
 const Page = () => {
-  const params = useParams();
-  const [loadingPaper, setLoadingPaper] = useState(true);
-  const [paperDetails, setPaperDetails] = useState<PaperDetails | null>(null);
+  const params = useParams() as params;
+  // const [paperDetails, setPaperDetails] = useState<PaperDetails | null>(null);
 
-  useEffect(() => {
-    const loadPaperDetails = async () => {
-      setLoadingPaper(true);
-      try {
-        const response = await axios.get(
-          `/api/get-paper-details-by-paper-id?paperID=${params.paperID}`
-        );
-        setPaperDetails(response.data.data);
-      } catch (error) {
-        console.error("Error loading paper details:", error);
-      } finally {
-        setLoadingPaper(false);
-      }
-    };
-    loadPaperDetails();
-  }, [params.paperID]);
-
-  if (loadingPaper) {
+  const {data:paperDetails,isLoading,error}=useGetPaperDetailsByPaperIDQuery(params.paperID)
+  console.log(error)
+  if(error){
+    return <div className="text-center py-10 text-red-400 text-lg">Sorry, An Unexpected Error has been occured</div>
+  }
+  if (isLoading) {
     return <div className="text-center py-10">Loading...</div>;
   }
 

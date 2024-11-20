@@ -28,11 +28,13 @@ export async function GET(request: Request) {
             paperID:queryParams.paperID
         }).populate('paperAuthor').populate('correspondingAuthor')
 
+        console.log(getPaperDetails)
         if(!getPaperDetails){
             return new Response(
             JSON.stringify({
                 success: false,
-                message: "Error occurred while fetching conference Details",
+                message: "Paper Details not found",
+                data:null
             }),
             { status: 500 });
         }
@@ -51,8 +53,9 @@ export async function GET(request: Request) {
             JSON.stringify({
                 success: false,
                 message: "Error occurred while fetching paper details",
+                data:null
             }),
-            { status: 500 }
+            { status: 500 },
         );
     }
 }

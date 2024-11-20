@@ -17,9 +17,10 @@ import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { useParams } from 'next/navigation';
-import { toast } from '@/components/ui/use-toast';
+import { toast, useToast } from '@/components/ui/use-toast';
 import { useState } from 'react';
 import { Loader2 } from 'lucide-react';
+import { InputParamsTypeForSendComment, useSendCommentForPaperMutation } from '@/store/features/ConferenceDashboardPaperSlice';
 
 // Define the validation schema
 const paperSubmissionSchema = z.object({
@@ -48,30 +49,35 @@ export function CommentDialog({ comment, paperID, Authors }: { comment: string; 
     },
   });
 
+  const [SendCommentFunction]=useSendCommentForPaperMutation()
+
+  
+  const { toast } = useToast();
   const onSubmit = async (data: FormValues) => {
     setSubmitting(true)
-    console.log(data);
     try {
-      const result = await axios.patch('/api/add-comment', {
-        ...data,
-        paperID,
-        authorEmails: authorEmailArray,
-        conferenceAcronmym:params.confName
-      });
+      const newParams={paperID,
+              authorEmails: authorEmailArray,
+              conferenceAcronmym:params.confName}
+      const InputParams:InputParamsTypeForSendComment={...data,...newParams}
+      const response = await SendCommentFunction(InputParams).unwrap(); // Use .unwrap() to directly get the fulfilled response or throw an error if it failed
       toast({
         title: 'Success',
-        description: result.data.message,
-        variant: "default"
+        description: response.message,
       });
-    } catch (error:any) {
+
+    }
+    catch (error:any) {
+      console.log(error)
+
       toast({
-        title: 'Error',
-        description: error.response?.data?.message || 'An unexpected error occurred',
+        title: 'Error while creating a conference',
+        description:error.data.message,
         variant: 'destructive',
       });
     }
     finally{
-      setSubmitting(false);
+      setSubmitting(false)
     }
   };
 
