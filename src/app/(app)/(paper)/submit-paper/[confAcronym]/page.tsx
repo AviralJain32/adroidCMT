@@ -20,6 +20,7 @@ import { useGetConferencePapersQuery } from '@/store/features/PaperApiSlice';
 import { IConference } from '@/model/Conference';
 import moment from 'moment';
 import Link from 'next/link';
+import Loader from '@/components/Loader';
 
 export default function PaperSubmissionForm() {
   const { data: session } = useSession();
@@ -103,6 +104,9 @@ export default function PaperSubmissionForm() {
     }
   }; 
 
+  if(Loading){
+    return <Loader/>
+  }
   console.log(conferenceDetails?.conferenceSubmissionsDeadlineDate)
   return (
     <div className="min-h-screen flex flex-col items-center justify-center py-12 px-4 sm:px-6 lg:px-8">

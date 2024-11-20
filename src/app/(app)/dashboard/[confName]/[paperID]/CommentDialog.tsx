@@ -17,6 +17,9 @@ import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { useParams } from 'next/navigation';
+import { toast } from '@/components/ui/use-toast';
+import { useState } from 'react';
+import { Loader2 } from 'lucide-react';
 
 // Define the validation schema
 const paperSubmissionSchema = z.object({
@@ -32,6 +35,8 @@ type Author = {
 };
 
 export function CommentDialog({ comment, paperID, Authors }: { comment: string; paperID: string; Authors: Author[] }) {
+
+  const [submitting, setSubmitting] = useState(false)
   const params=useParams()
   const authorEmailArray = Authors.map((author) => {return {email:author.email,fullname:author.fullname}});
 
@@ -44,6 +49,7 @@ export function CommentDialog({ comment, paperID, Authors }: { comment: string; 
   });
 
   const onSubmit = async (data: FormValues) => {
+    setSubmitting(true)
     console.log(data);
     try {
       const result = await axios.patch('/api/add-comment', {
@@ -52,12 +58,20 @@ export function CommentDialog({ comment, paperID, Authors }: { comment: string; 
         authorEmails: authorEmailArray,
         conferenceAcronmym:params.confName
       });
-
-      // Handle success (e.g., close dialog, show success message)
-      console.log('Success:', result.data);
-    } catch (error) {
-      // Handle error (e.g., show error message)
-      console.error('Error:', error);
+      toast({
+        title: 'Success',
+        description: result.data.message,
+        variant: "default"
+      });
+    } catch (error:any) {
+      toast({
+        title: 'Error',
+        description: error.response?.data?.message || 'An unexpected error occurred',
+        variant: 'destructive',
+      });
+    }
+    finally{
+      setSubmitting(false);
     }
   };
 
@@ -131,9 +145,11 @@ export function CommentDialog({ comment, paperID, Authors }: { comment: string; 
               )}
             />
 
-              <Button type="submit" className="w-full ">Submit</Button>
-            {/* <DialogFooter className="mt-6">
-            </DialogFooter> */}
+              <Button type="submit" className="w-full ">{submitting ? 
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Please Wait
+                </> 
+                : "Submit"}</Button>
           </form>
         </Form>
       </DialogContent>
