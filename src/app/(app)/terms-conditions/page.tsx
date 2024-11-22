@@ -9,12 +9,12 @@ const PrivacyPolicy: React.FC = () => {
             <strong>Introduction:</strong> By using the Conference Management System (CMS) provided by adroid CMS, you agree to comply with the following terms and conditions. These terms govern the use of the system for activities such as paper submission, registration, and communication with the conference organizers.
           </li>
           <li>
-            <strong>Eligibility:</strong> Only individuals who meet the conference's submission guidelines and deadlines are eligible to use the system. By submitting content through the system, you confirm that the work is original and does not violate any third-party intellectual property rights.
+            <strong>Eligibility:</strong> Only individuals who meet the conference&apos;s submission guidelines and deadlines are eligible to use the system. By submitting content through the system, you confirm that the work is original and does not violate any third-party intellectual property rights.
           </li>
           <li>
             <strong>Submission Process:</strong>
             <ul className="list-disc list-inside ml-6 space-y-2">
-              <li>All submissions must adhere to the conference’s specified guidelines in terms of format, content, and deadlines.</li>
+              <li>All submissions must adhere to the conference&apos;s specified guidelines in terms of format, content, and deadlines.</li>
               <li>Submissions are subject to peer review, and the decision of the review committee is final. No appeals will be accepted once decisions have been made.</li>
             </ul>
           </li>
