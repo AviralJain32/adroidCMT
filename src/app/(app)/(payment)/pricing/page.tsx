@@ -128,7 +128,7 @@ const PricingPage: React.FC = () => {
   const pricingData: PricingPlan[] = [
             {
               title: "Small Size Conference",
-              price: "₹0/paper",
+              price: "$0/paper",
               description: "1 - 100 Papers",
               tagline:"No money, no problem",
               features: [
@@ -140,7 +140,7 @@ const PricingPage: React.FC = () => {
             },
             {
               title: "Medium Size Conference",
-              price: "₹100/paper",
+              price: "$1.5/paper",
               description: "101 - 300 Papers",
               tagline:"per conference",
               features: [
@@ -151,7 +151,7 @@ const PricingPage: React.FC = () => {
             },
             {
               title: "Large Size Conference",
-              price: "₹70/paper",
+              price: "$1.25/paper",
               description: "301 - 500 Papers",
               tagline:"per conference",
               features: [
@@ -162,7 +162,7 @@ const PricingPage: React.FC = () => {
             },
             {
               title: "Extra Large Conference",
-              price: "₹50/paper",
+              price: "$1/paper",
               description: "501+ Papers",
               tagline:"per confererence",
               features: [

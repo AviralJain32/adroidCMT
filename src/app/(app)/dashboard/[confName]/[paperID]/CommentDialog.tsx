@@ -60,7 +60,9 @@ export function CommentDialog({ comment, paperID, Authors }: { comment: string; 
               authorEmails: authorEmailArray,
               conferenceAcronmym:params.confName}
       const InputParams:InputParamsTypeForSendComment={...data,...newParams}
+
       const response = await SendCommentFunction(InputParams).unwrap(); // Use .unwrap() to directly get the fulfilled response or throw an error if it failed
+      
       toast({
         title: 'Success',
         description: response.message,

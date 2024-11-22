@@ -68,7 +68,6 @@ function SignInForm() {
     setIsSubmitting(false)
 
     if (result?.url) {
-      // router.replace(result.url); // Redirect to the URL provided by NextAuth.js (callbackUrl)
       router.push(result.url)
     }
   };
@@ -113,6 +112,9 @@ function SignInForm() {
                 </FormItem>
               )}
             />
+            <div>
+            <Link href={"/"} className='text-sm mt-9 underline text-blue-500'>Forget Password</Link>
+            </div>
             <Button type="submit" className="w-full bg-blue-600 text-white" disabled={isSubmitting}>
               {isSubmitting ? (
                 <>

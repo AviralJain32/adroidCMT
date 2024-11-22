@@ -27,7 +27,7 @@ export async function GET(request: Request) {
 
         const getConferenceDetails=await ConferenceModel.findOne({
             conferenceAcronym:queryParams.confName
-        })
+        }).limit(100) 
 
         if(!getConferenceDetails){
             return new Response(

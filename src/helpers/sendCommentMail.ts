@@ -19,6 +19,7 @@ export async function sendCommentMail(
         for (const author of authorEmails) {
             const { email, fullname } = author;
 
+            console.log(paperReview1,paperReview2)
             // Render email with author-specific details
             const emailHtml = render(SendCommentMailTemplate({
                 username: fullname, 

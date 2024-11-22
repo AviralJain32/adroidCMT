@@ -6,7 +6,7 @@ import React from 'react'
 const PaymentButton = () => {
   return (
     <Button onClick={(e)=>HandleCheckoutPayement(e)} variant="default" size="lg" className="px-10 py-4 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-700">
-            Pay ₹2000
+            Pay $50
     </Button>
   )
 }

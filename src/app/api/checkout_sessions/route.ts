@@ -33,11 +33,13 @@ export async function POST(req: NextRequest) {
       line_items: [
         {
           price_data: {
-            currency: 'INR',
+            currency: 'USD',
+            // currency: 'INR',
+
             product_data: {
               name: 'Payment for Services',
             },
-            unit_amount: 200000, // 2000 INR in the smallest currency unit (paisa)
+            unit_amount: 5000, // 2000 INR in the smallest currency unit (paisa)
           },
           quantity: 1,
         },
@@ -57,7 +59,8 @@ export async function POST(req: NextRequest) {
                 value:`${conference._id}`
               }
             })
-    }}],
+    }
+  }],
       billing_address_collection:'required',
     //   phone_number_collection:true,
       mode: 'payment',
@@ -70,6 +73,7 @@ export async function POST(req: NextRequest) {
     
     return NextResponse.json({ id: session.id });
   } catch (err: any) {
+    console.log(err)
     return new NextResponse(err.message, { status: err.statusCode || 500 });
   }
 }

@@ -45,39 +45,10 @@ const AboutUs = () => {
         </ul>
       </section>
 
-      {/* Contact Us Section */}
-      <section className="mb-10 bg-gray-50 p-6 rounded-lg shadow-md">
-        <h2 className="text-3xl font-semibold text-gray-800">Contact Us</h2>
-        <p className="mt-4 text-gray-700">We’d love to hear from you! Feel free to reach out to us through the following channels:</p>
-        <div className="mt-4">
-          <div className="flex items-center">
-            <FaRegEnvelope className="text-gray-600" />
-            <span className="ml-2 text-gray-700">info@adroidcmt.com</span>
-          </div>
-          <div className="flex items-center mt-2">
-            <FaPhoneAlt className="text-gray-600" />
-            <span className="ml-2 text-gray-700">+1 (123) 456-7890</span>
-          </div>
-        </div>
-        <div className="mt-4">
-          <h3 className="text-lg font-semibold text-gray-800">Follow Us</h3>
-          <div className="flex space-x-4 mt-2">
-            <Link href="https://facebook.com" target="_blank" className="text-gray-600 hover:text-blue-600">
-              <FaFacebookF />
-            </Link>
-            <Link href="https://twitter.com" target="_blank" className="text-gray-600 hover:text-blue-600">
-              <FaTwitter />
-            </Link>
-            <Link href="https://linkedin.com" target="_blank" className="text-gray-600 hover:text-blue-600">
-              <FaLinkedinIn />
-            </Link>
-          </div>
-        </div>
-      </section>
 
       {/* Call to Action */}
       <div className="text-center">
-        <Link href="/contact">
+        <Link href="/contact-us">
           <Button className="bg-blue-600 text-white hover:bg-blue-700">
             Get in Touch
           </Button>

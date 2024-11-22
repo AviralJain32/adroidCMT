@@ -49,14 +49,14 @@ import {
             <Text style={value}>{comment || "No comments available"}</Text>
           </Section>
   
-          {paperReview1 && (
+          {(
             <Section style={infoContainer}>
               <Text style={label}>Review 1:</Text>
               <Text style={value}>{paperReview1==="" ? "No Review" :paperReview1}</Text>
             </Section>
           )}
   
-          {paperReview2 && (
+          {(
             <Section style={infoContainer}>
               <Text style={label}>Review 2:</Text>
               <Text style={value}>{paperReview2==="" ? "No Review" :paperReview2}</Text>

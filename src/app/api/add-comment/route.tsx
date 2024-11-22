@@ -79,6 +79,7 @@ export async function PATCH(request: Request) {
         
         const  paperReview1=updatePaperStatus.paperReview1History[updatePaperStatus.paperReview1History.length-1]
         const paperReview2=updatePaperStatus.paperReview2History[updatePaperStatus.paperReview2History.length-1]
+        console.log(paperReview1,paperReview2)
         const emailResponse=await sendCommentMail(
             authorEmails,
             paperID,

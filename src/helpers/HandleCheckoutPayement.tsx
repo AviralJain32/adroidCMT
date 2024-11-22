@@ -9,15 +9,6 @@ export const HandleCheckoutPayement = async (event: React.MouseEvent<HTMLButtonE
       headers: {
         'Content-Type': 'application/json',
       },
-    //   body: JSON.stringify({
-    //     priceId: 'price_1234', // Replace with your actual price ID
-    //     customerName: 'John Doe', // Customer's name
-    //     addressLine1: '123 Main Street',
-    //     addressLine2: '', // Optional
-    //     city: 'Mumbai',
-    //     state: 'MH',
-    //     postalCode: '400001',
-    //   }),
     });
   
     const session = await response.json();
