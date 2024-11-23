@@ -6,6 +6,8 @@ export interface User extends Document{
     password:string;
     verifyCode:string | undefined;
     verifyCodeExpiry:Date | undefined;
+    forgotPasswordToken: string | undefined,
+    forgotPasswordTokenExpiry: Date | undefined, // Token expires in 1 hour
     isVerified:boolean;
     affilation:string,
     country:string,
@@ -37,6 +39,13 @@ const UserSchema:Schema<User> = new Schema({
     },
     isVerified:{
         type:Boolean,
+        default:false
+    },
+    forgotPasswordTokenExpiry:{
+        type:Date,
+    },
+    forgotPasswordToken:{
+        type:String,
         default:false
     },
     affilation:{

@@ -113,7 +113,7 @@ function SignInForm() {
               )}
             />
             <div>
-            <Link href={"/"} className='text-sm mt-9 underline text-blue-500'>Forget Password</Link>
+            <Link href={"/forget-password"} className='text-sm mt-9 underline text-blue-500'>Forget Password</Link>
             </div>
             <Button type="submit" className="w-full bg-blue-600 text-white" disabled={isSubmitting}>
               {isSubmitting ? (
