@@ -26,6 +26,7 @@ export default function ForgetPasswordForm() {
   const {toast}=useToast()
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
+    
     defaultValues: {
       email: "",
     },
@@ -65,7 +66,7 @@ export default function ForgetPasswordForm() {
         <div className="text-center">
           <h1 className="text-3xl font-bold text-gray-800 mb-2">Forgot Your Password?</h1>
           <p className="text-sm text-gray-500">
-            No worries! Enter your registered email address below, and we'll send you instructions to reset your password.
+            No worries! Enter your registered email address below, and we&apos;ll send you instructions to reset your password.
           </p>
         </div>
         <Form {...form}>
@@ -80,7 +81,7 @@ export default function ForgetPasswordForm() {
                     <Input placeholder="Enter your registered email" {...field} />
                   </FormControl>
                   <FormDescription>
-                    We'll send a password reset link to this email.
+                    We&apos;ll send a password reset link to this email.
                   </FormDescription>
                   <FormMessage />
                 </FormItem>
