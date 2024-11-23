@@ -16,6 +16,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { resetPasswordAction } from "./resetPasswordServerAction"; // Replace with your actual server action
 import { useToast } from "@/components/ui/use-toast";
+import { Suspense } from "react";
 
 // Schema for password validation
 const formSchema = z
@@ -28,7 +29,7 @@ const formSchema = z
     path: ["confirmPassword"], // Set the error to confirmPassword
   });
 
-export default function ResetPasswordPage() {
+function ResetPasswordPageUtility() {
   const searchParams = useSearchParams();
   const token = searchParams.get("token"); // Get the token from the URL
   const {toast}=useToast()
@@ -43,6 +44,11 @@ export default function ResetPasswordPage() {
 
   const onSubmit = (values: z.infer<typeof formSchema>) => {
     if (!token) {
+      toast({
+        title: 'Error',
+          description:"Token is missing in the URL.",
+          variant: 'destructive',
+      })
       console.error("Token is missing in the URL.");
       return;
     }
@@ -115,4 +121,12 @@ export default function ResetPasswordPage() {
       </div>
     </div>
   );
+}
+
+export default function ResetPasswordPage(){
+  return (
+    <Suspense>
+      <ResetPasswordPageUtility/>
+    </Suspense>
+  )
 }
