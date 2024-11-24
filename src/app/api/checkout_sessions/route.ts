@@ -13,6 +13,17 @@ export async function POST(req: NextRequest) {
 
     const session = await getServerSession(authOptions);
     const user: User = session?.user as User;
+    console.log(user)
+
+    if (!session || !session.user) {
+      return NextResponse.json(
+        {
+          success: false,
+          message: 'Not Authenticated',
+        },
+        { status: 401 }
+      );
+    }
 
   try {
     const { origin } = req.nextUrl; // Get the origin from the request
@@ -74,6 +85,6 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ id: session.id });
   } catch (err: any) {
     console.log(err)
-    return new NextResponse(err.message, { status: err.statusCode || 500 });
+    return NextResponse.json(err.message, { status: err.statusCode || 500 });
   }
 }

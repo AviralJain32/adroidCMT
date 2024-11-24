@@ -14,7 +14,7 @@ export async function sendConferenceCreationMail(
     console.log(conferenceEmail,conferenceOrganizer,conferenceTitle,conferenceStartDate)
     try {
         await sgMail.send({
-            from: 'adroidconnectz@gmail.com',
+            from: 'conference@adroidcms.com',
             to: conferenceEmail,
             subject: 'New Conference Created',
             html:render(ConferenceCreationEmailTemplate({username:conferenceOrganizer,conferenceTitle,conferenceDate:conferenceStartDate})),

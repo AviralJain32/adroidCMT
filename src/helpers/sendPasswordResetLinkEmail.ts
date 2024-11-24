@@ -13,8 +13,8 @@ export async function sendPasswordResetLinkEmail(
     email:string
 ):Promise<ApiResponse>{
     try {
-        await sgMail.send({
-            from: 'adroidconnectz@gmail.com',
+        await sgMail.send({ 
+            from: 'noreply@adroidcms.com',
             to: email,
             subject: 'Adroid CMT Account Reset Link',
             html:render(ResetPasswordEmailTemplate({hashedToken})),

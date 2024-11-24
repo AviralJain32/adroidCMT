@@ -32,7 +32,7 @@ export async function sendCommentMail(
 
             // Send the email
             await sgMail.send({
-                from: 'adroidconnectz@gmail.com',
+                from: 'review@adroidcms.com',
                 to: email,  // Send to individual author's email
                 subject: `${conferenceAcronmym}: Paper Notification ${paperID}`,
                 html: emailHtml,  // Use the rendered HTML

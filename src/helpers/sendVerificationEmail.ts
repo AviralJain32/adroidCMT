@@ -15,7 +15,7 @@ export async function sendVerificationEmail(
     try {
         console.log(email)
         await sgMail.send({
-            from: 'adroidconnectz@gmail.com',
+            from: 'noreply@adroidcms.com',
             to: email,
             subject: 'Adroid CMT Account Verification code',
             html:render(VerificationEmail({username,otp:verifyCode})),

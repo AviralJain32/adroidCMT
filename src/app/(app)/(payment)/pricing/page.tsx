@@ -195,6 +195,7 @@ const PricingPage: React.FC = () => {
       <div className="text-center mt-10">
         {/* <Link href={"/payment-portal"}> */}
           <PaymentButton/>
+          
         {/* </Link> */}
     </div>  
 </div>
