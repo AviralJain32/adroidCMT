@@ -112,7 +112,6 @@ import { Button } from '@/components/ui/button';
 import PricingCard from './pricingCard';
 import Link from 'next/link';
 import { Faqs } from './faqs';
-import { HandleCheckoutPayement } from '@/helpers/HandleCheckoutPayement';
 import PaymentButton from './PaymentButton';
 
 interface PricingPlan {
