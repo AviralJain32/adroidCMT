@@ -31,6 +31,8 @@
     "@stripe/stripe-js": "^4.3.0",
     "@tanstack/react-table": "^8.19.2",
     "@types/mongoose": "^5.11.97",
+    "@vercel/analytics": "^1.4.1",
+    "@vercel/speed-insights": "^1.1.0",
     "axios": "^1.7.2",
     "bcryptjs": "^2.4.3",
     "class-variance-authority": "^0.7.0",

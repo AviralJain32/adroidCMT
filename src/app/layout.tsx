@@ -6,6 +6,8 @@ import { Toaster } from "@/components/ui/toaster";
 import StoreProvider from "./StoreProvider";
 import Head from "next/head";
 const inter = Inter({ subsets: ["latin"] });
+import { Analytics } from "@vercel/analytics/react"
+import { SpeedInsights } from "@vercel/speed-insights/next"
 
 export const metadata: Metadata = {
   title: "Adroid CMS",
@@ -23,10 +25,13 @@ export default function RootLayout({
       <link rel="shortcut icon" href="/favicon.png" />
     </Head>
       <AuthProvider>
+        
       <body className={inter.className}>
       <StoreProvider>
         {children}
       <Toaster />
+      <Analytics/>
+      <SpeedInsights/>
       </StoreProvider>
         </body>
       </AuthProvider>
