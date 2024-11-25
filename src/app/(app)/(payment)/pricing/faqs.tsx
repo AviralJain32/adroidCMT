@@ -13,7 +13,7 @@ import {
       },
       {
         ques: "What happens when I exceed 100 papers?",
-        ans: "Once you exceed the 100 paper limit, you'll need to submit ₹2000 to our platform to access the 'Unlimited Plan.' This plan allows you to add as many papers as you need, with additional costs per paper according to the pricing tiers.",
+        ans: "Once you exceed the 100 paper limit, you'll need to submit $50 to our platform to access the 'Unlimited Plan.' This plan allows you to add as many papers as you need, with additional costs per paper according to the pricing tiers.",
       },
       {
         ques: "How is the invoice generated?",
@@ -21,7 +21,7 @@ import {
       },
       {
         ques: "Can I switch plans after starting a conference?",
-        ans: "Yes, you can switch from the 'Small Size Conference' plan to the 'Unlimited Plan' at any time. The transition is seamless, and you will only need to submit ₹2000 to activate the unlimited paper submission option.",
+        ans: "Yes, you can switch from the 'Small Size Conference' plan to the 'Unlimited Plan' at any time. The transition is seamless, and you will only need to submit $50 to activate the unlimited paper submission option.",
       },
       {
         ques: "What support is provided with the 'Unlimited Plan'?",

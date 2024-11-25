@@ -1,5 +1,4 @@
 import React from 'react';
-import { Button } from '@/components/ui/button';
 import {
   Card,
   CardContent,
@@ -9,7 +8,6 @@ import {
   CardDescription,
 } from '@/components/ui/card';
 import { TiTick } from "react-icons/ti";
-import { motion } from "framer-motion"
 interface PricingCardProps {
   title: string;
   price: string;
