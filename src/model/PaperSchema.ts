@@ -12,13 +12,23 @@ export interface IPaper extends Document {
   conference: mongoose.Types.ObjectId;
   paperStatus: 'submitted' | 'accepted' | 'rejected' | 'review';
   paperID:string,
-  // paperComment:string,
-  // paperReview1:string,
-  // paperReview2:string,
-  // comment:string,
   paperCommentHistory: { comment: string; updatedAt: Date }[];
-  paperReview1History: { review: string; updatedAt: Date }[];
-  paperReview2History: { review: string; updatedAt: Date }[];
+  // paperReview1History: { review: string; updatedAt: Date }[];
+  // paperReview2History: { review: string; updatedAt: Date }[];
+  reviewers: {
+    Id: mongoose.Types.ObjectId;
+    status: "pending" | "accepted" | "rejected";
+    assignedAt?: Date;
+    reviewedAt?: Date;
+    comments?: string;
+  }[];
+  reviewRequests: {
+    reviewerId: mongoose.Types.ObjectId;
+    requestedBy:mongoose.Types.ObjectId;
+    status: "pending" | "accepted" | "rejected";
+    requestedAt?: Date;
+    resolvedAt?: Date;
+  }[];
 }
 
 // Paper schema definition
@@ -78,19 +88,53 @@ const PaperSchema: Schema<IPaper> = new Schema({
     },
   ],
   // Array to store the history of paperReview1 with timestamps
-  paperReview1History: [
+  // paperReview1History: [
+  //   {
+  //     review: String,
+  //     updatedAt: { type: Date, default: Date.now },
+  //   },
+  // ],
+  // // Array to store the history of paperReview2 with timestamps
+  // paperReview2History: [
+  //   {
+  //     review: String,
+  //     updatedAt: { type: Date, default: Date.now },
+  //   },
+  // ],
+  reviewers: [
     {
-      review: String,
-      updatedAt: { type: Date, default: Date.now },
+      Id: { 
+        type: Schema.Types.ObjectId,
+        ref: "User",
+        required: true
+      },
+      status: {
+        type: String,
+        enum: ["pending", "completed"],
+        default: "pending",
+      },
+      assignedAt: { type: Date, default: Date.now },
+      reviewedAt: { type: Date },
+      comments: String, // Reviewer's comments
     },
   ],
-  // Array to store the history of paperReview2 with timestamps
-  paperReview2History: [
+  reviewRequests: [
     {
-      review: String,
-      updatedAt: { type: Date, default: Date.now },
+      reviewerId: {  type: Schema.Types.ObjectId,
+        ref: "User",
+        required: true },
+      status: {
+        type: String,
+        enum: ["pending", "accepted", "rejected"],
+        default: "pending",
+      },
+      requestedBy:{  type: Schema.Types.ObjectId,
+        ref: "User",
+        required: true },
+      requestedAt: { type: Date, default: Date.now },
+      resolvedAt: { type: Date },
     },
-  ]
+  ],
 },{timestamps:true});
 
 // Paper model

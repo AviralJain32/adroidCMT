@@ -12,6 +12,7 @@ export interface User extends Document{
     affilation:string,
     country:string,
     contactNumber:number,
+    isReviewer:boolean
     // Organizedconferences:mongoose.Types.ObjectId[],
     // submittedPapers:mongoose.Types.ObjectId[]
 }
@@ -60,6 +61,10 @@ const UserSchema:Schema<User> = new Schema({
     contactNumber:{
         type:Number,
         required:true,
+    },
+    isReviewer:{
+        type:Boolean,
+        default:true
     }
     // Organizedconferences:[{
     //     type:mongoose.Schema.Types.ObjectId,

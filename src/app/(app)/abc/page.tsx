@@ -10,14 +10,8 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import moment from "moment";
-import { useParams } from "next/navigation";
+import { useParams, useSearchParams } from "next/navigation";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { useEffect, useState } from "react";
-import axios from "axios";
-import { CommentDialog } from "./CommentDialog";
-import { Review1Dialog } from "./Review1";
-// import { Review2Dialog } from "./Review2";
 import { useGetPaperDetailsByPaperIDQuery } from "@/store/features/ConferenceDashboardPaperSlice";
 
 interface PaperDetails {
@@ -45,10 +39,10 @@ type params={
   paperID:string
 }
 const Page = () => {
-  const params = useParams() as params;
+  const params = useSearchParams();
+  const paperId=String(params.get("paperId"));
   // const [paperDetails, setPaperDetails] = useState<PaperDetails | null>(null);
-
-  const {data:paperDetails,isLoading,error}=useGetPaperDetailsByPaperIDQuery(params.paperID)
+  const {data:paperDetails,isLoading,error}=useGetPaperDetailsByPaperIDQuery(paperId)
   console.log(error)
   if(error){
     return <div className="text-center py-10 text-red-400 text-lg">Sorry, An Unexpected Error has been occured</div>
@@ -78,9 +72,6 @@ const Page = () => {
         <div className="flex justify-between items-center mb-6">
           <h1 className="text-2xl font-semibold">Paper Details</h1>
           <div className="space-x-2">
-            <CommentDialog paperID={params.paperID as string} comment={paperDetails.comment} Authors={[...paperAuthor,...correspondingAuthor]}/>
-            <Review1Dialog paperID={params.paperID as string} Review1={paperDetails.paperReview1}/>
-            {/* <Review2Dialog paperID={params.paperID as string} Review1={paperDetails.paperReview1}/> */}
           </div>
         </div>
         <Table className="min-w-full">

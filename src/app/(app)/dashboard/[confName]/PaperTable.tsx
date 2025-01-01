@@ -40,8 +40,8 @@ import Link from "next/link";
 // import PaperDetailsPage from "./PaperDetailsPage";
 import { usePathname, useRouter } from "next/navigation";
 import { SubmittedPaper } from "@/types/SubmittedPaperType";
-import { DeletePapers } from "./[paperID]/DeletePapers";
-import { DownloadPapers } from "./[paperID]/DownloadBulkPapers";
+import { DeletePapers } from "./DeletePapers";
+import { DownloadPapers } from "./DownloadBulkPapers";
 import { useForm } from "react-hook-form";
 
 interface PaperTableProps {
@@ -222,41 +222,70 @@ const PaperTable: React.FC<PaperTableProps> = ({ data,ispaidSecurityAmountof2000
 
   return (
     <div>
-    <div className="flex  justify-between items-center py-4">
-      <Input
-        placeholder="Search.."
-        type="text"
-        value={filtering}
-        onChange={(e) => table.setGlobalFilter(String(e.target.value))}
-        className="max-w-60"
-      />
-      <div>Showing 
-      <div className="inline-block ">
-      <Select onValueChange={(value)=>(handlePagination(Number(value)),setNoOfPaper(Number(value)))}>
-      <SelectTrigger className="w-[50px] h-[30px] inline-block static  mx-2 my-0">
-        <SelectValue placeholder="v" className="font-extrabold" />
-      </SelectTrigger>
-      <SelectContent>
-        <SelectGroup>
-          <SelectLabel>No. of Papers</SelectLabel>
-          <SelectItem value="10">10</SelectItem>
-          <SelectItem value="20">20</SelectItem>
-          <SelectItem value="50">50</SelectItem>
-          <SelectItem value="100">100</SelectItem>
-          <SelectItem value="200">200</SelectItem>
-          <SelectItem value="500">500</SelectItem>
-          <SelectItem value="-1">all</SelectItem>
-        </SelectGroup>
-      </SelectContent>
-    </Select>
-    </div>
-        entries of {table.getFilteredRowModel().rows.length} (1 to {NoOfPaper})</div>
-      <div className="space-x-6">
-        <DeletePapers selectedRows={[...table.getFilteredSelectedRowModel().rows.map((row)=>row.original)]}/>
-        <DownloadPapers papers={[...table.getFilteredRowModel().rows.map((row)=>row.original)]} downloadPaperFunction={DownloadFile}/>
-      </div>
+      <div className="flex flex-wrap justify-between items-center py-4 gap-4">
+  {/* Search Input */}
+  <div className="w-full md:w-auto">
+    <Input
+      placeholder="Search.."
+      type="text"
+      value={filtering}
+      onChange={(e) => table.setGlobalFilter(String(e.target.value))}
+      className="w-full md:max-w-[240px]"
+    />
+  </div>
 
+  {/* Entries Information */}
+  <div className="text-sm sm:text-base flex flex-wrap items-center">
+    Showing 
+    <div className="inline-block mx-2">
+      <Select
+        onValueChange={(value) => {
+          handlePagination(Number(value));
+          setNoOfPaper(Number(value));
+        }}
+      >
+        <SelectTrigger className="w-[60px] h-[30px] inline-block static">
+          <SelectValue placeholder="v" className="font-bold" />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectGroup>
+            <SelectLabel>No. of Papers</SelectLabel>
+            <SelectItem value="10">10</SelectItem>
+            <SelectItem value="20">20</SelectItem>
+            <SelectItem value="50">50</SelectItem>
+            <SelectItem value="100">100</SelectItem>
+            <SelectItem value="200">200</SelectItem>
+            <SelectItem value="500">500</SelectItem>
+            <SelectItem value="-1">All</SelectItem>
+          </SelectGroup>
+        </SelectContent>
+      </Select>
     </div>
+    entries of {table.getFilteredRowModel().rows.length} (1 to {NoOfPaper})
+  </div>
+
+  {/* Action Buttons */}
+  <div className="flex space-x-4 w-full md:w-auto justify-end">
+    <DeletePapers
+      selectedRows={[
+        ...table.getFilteredSelectedRowModel().rows.map((row) => row.original),
+      ]}
+    />
+    <DownloadPapers
+      papers={[
+        ...table.getFilteredRowModel().rows.map((row) => row.original),
+      ]}
+      downloadPaperFunction={DownloadFile}
+    />
+    {/* <DownloadPapers
+      papers={[
+        ...table.getFilteredRowModel().rows.map((row) => row.original),
+      ]}
+      downloadPaperFunction={DownloadFile}
+    /> */}
+  </div>
+</div>
+    
     <div className="rounded-md border">
       <Table>
         <TableHeader >
