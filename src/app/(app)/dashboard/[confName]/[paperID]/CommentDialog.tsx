@@ -94,7 +94,7 @@ export function CommentDialog({ comment, paperID, Authors }: { comment: string; 
             <DialogHeader>
               <DialogTitle>Add a Comment for Paper</DialogTitle>
               <DialogDescription className="text-sm text-gray-500">
-                Note: By clicking on submit, the paper author will receive this comment along with Review 1 and Review 2 via email.
+                Note: By clicking on submit, the paper author will receive this comment along with comments from other reviewers via email.
               </DialogDescription>
             </DialogHeader>
 

@@ -9,13 +9,13 @@ import {
   } from "@react-email/components";
   import * as React from "react";
   
+type ReviewComment = { [key: string]: string }; // Key-value pair for comments (e.g., "review 1": "Excellent work")
   interface SendCommentMailTemplateProps {
     username: string;
     status: string;
     paperID: string;
     comment: string;
-    paperReview1?: string;
-    paperReview2?: string;
+    reviewerComments:ReviewComment
   }
   
   export const SendCommentMailTemplate = ({
@@ -23,8 +23,7 @@ import {
     status,
     paperID,
     comment,
-    paperReview1,
-    paperReview2,
+    reviewerComments
   }: SendCommentMailTemplateProps) => (
     <Html>
       <Head />
@@ -49,18 +48,13 @@ import {
             <Text style={value}>{comment || "No comments available"}</Text>
           </Section>
   
-          {(
-            <Section style={infoContainer}>
-              <Text style={label}>Review 1:</Text>
-              <Text style={value}>{paperReview1==="" ? "No Review" :paperReview1}</Text>
-            </Section>
-          )}
-  
-          {(
-            <Section style={infoContainer}>
-              <Text style={label}>Review 2:</Text>
-              <Text style={value}>{paperReview2==="" ? "No Review" :paperReview2}</Text>
-            </Section>
+          {(Object.entries(reviewerComments)
+            .map(([review, comment]) => (
+                <Section style={infoContainer}>
+                    <Text style={label}>{review}</Text>
+                    <Text style={value}>{comment}</Text>
+                  </Section>
+            ))
           )}
   
           <Text style={paragraph}>
@@ -79,8 +73,6 @@ import {
     status: "Approved",
     paperID: "123456",
     comment: "Great work! Please address the minor feedback.",
-    paperReview1: "Well-written paper with clear results.",
-    paperReview2: "Needs more references for background research.",
   } as SendCommentMailTemplateProps;
   
   export default SendCommentMailTemplate;
