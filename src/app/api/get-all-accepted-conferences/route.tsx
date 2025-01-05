@@ -1,11 +1,9 @@
 import dbConnect from "@/lib/dbConnect";
-import { getServerSession } from "next-auth";
-import { authOptions } from "../auth/[...nextauth]/options";
 import ConferenceModel from "@/model/Conference";
 
 
 
-export async function GET(request: Request) {
+export async function GET() {
     await dbConnect();
     
     try {
@@ -26,7 +24,7 @@ export async function GET(request: Request) {
         return new Response(
             JSON.stringify({
                 success: true,
-                message: "Conference Details Found by conference id",
+                message: "all accepted conference are sended",
                 data: getConferenceDetails,
             }),
             { status: 200 }
