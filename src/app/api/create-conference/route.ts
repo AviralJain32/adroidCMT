@@ -24,7 +24,7 @@ export async function POST(request: Request) {
     }
 
     const {
-        conferenceEmail,
+        // conferenceEmail,
         conferenceOrganizerWebPage,
         conferenceOrganizerPhoneNumber,
         conferenceOrganizerRole,
@@ -78,7 +78,7 @@ export async function POST(request: Request) {
             conferenceOrganizerPhoneNumber,
             conferenceOrganizerRole,
             conferenceTitle,
-            conferenceEmail,
+            conferenceEmail:user.email,
             conferenceAnyOtherInformation,
             conferenceAcronym,
             conferenceWebpage,
@@ -106,7 +106,7 @@ export async function POST(request: Request) {
         //email bhejna hai conference ka
         console.log(user)
         const emailResponse=await sendConferenceCreationMail(
-            conferenceEmail,
+            user.email as string,
             user.fullname as string,
             conferenceTitle,
             conferenceFirstDay

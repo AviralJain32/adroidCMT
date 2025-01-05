@@ -3,7 +3,7 @@ import { z } from "zod";
 
 // Define the conference creation schema
 const conferenceSchema = z.object({
-    conferenceEmail: z.string().email({ message: "Please provide a professional email" }),
+    // conferenceEmail: z.string().email({ message: "Please provide a professional email" }),
     conferenceOrganizerWebPage: z.string().url({ message: "Invalid URL for organizer web page" }),
     conferenceOrganizerPhoneNumber: z.string().min(10, { message: "Phone number must be at least 10 digits" }),
     conferenceOrganizerRole: z.string().min(2, { message: "Role must be at least 2 characters" }),

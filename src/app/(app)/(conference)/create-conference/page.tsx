@@ -78,7 +78,7 @@ export default function CreateConferenceForm() {
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
 
-          <div className='font-bold text-xl'>Conference Email ID</div>
+          {/* <div className='font-bold text-xl'>Conference Email ID</div>
             <FormField
               name="conferenceEmail"
               control={form.control}
@@ -95,7 +95,7 @@ export default function CreateConferenceForm() {
                 </FormItem>
               )}
             />
-            <Separator className='my-4'></Separator>
+            <Separator className='my-4'></Separator> */}
 
             <div className='font-bold text-xl'>Title and Acronym</div>
             <FormField

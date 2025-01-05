@@ -211,7 +211,7 @@ const OrganizedConferenceComponent = () => {
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>Conference</TableHead>
+              <TableHead>Conference Id</TableHead>
               <TableHead>Role</TableHead>
               <TableHead>Created At</TableHead>
               <TableHead>Actions</TableHead>
@@ -227,7 +227,7 @@ const OrganizedConferenceComponent = () => {
             ) : organizedConferences && organizedConferences?.length > 0 ? (
               organizedConferences.map((conference: any) => (
                 <TableRow key={conference._id}>
-                  <TableCell className="font-medium">
+                  <TableCell className="font-bold">
                     {conference.conferenceAcronym}
                   </TableCell>
                   <TableCell>{conference.conferenceOrganizerRole}</TableCell>
@@ -286,7 +286,11 @@ const SubmittedPaperComponent = () => {
               </TableRow>
             ) : submittedPapers && submittedPapers?.length > 0 ? (
               submittedPapers.map((paper: any) => (
+                
                 <TableRow key={paper.paperTitle}>
+                  <TableCell className="font-bold">
+                    {paper.paperID}
+                  </TableCell>
                   <TableCell className="font-medium">
                     {paper.paperTitle}
                   </TableCell>
