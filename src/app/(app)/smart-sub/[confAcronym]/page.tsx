@@ -1,5 +1,3 @@
-
-
 "use client";
 
 import {
@@ -25,16 +23,48 @@ import Loader from "@/components/Loader";
 const ConferencePage = () => {
   const params = useParams();
   const [loading, setLoading] = useState(true);
-  // const [conferenceDetails, setConferenceDetails] = useState<IConference | null>(null);
+  const [conferenceDetails, setConferenceDetails] = useState<IConference | null>(null);
 
-  const baseUrl = `${window.location.protocol}//${window.location.host}`;
+  // const baseUrl = `${window.location.protocol}//${window.location.host}`;
+  // const profileUrl = `${baseUrl}/submit-paper/${params.confAcronym}`;
+
+  const [baseUrl, setBaseUrl] = useState("hello");
+
+  useEffect(() => {
+    setBaseUrl(`${window.location.protocol}//${window.location.host}`);
+  }, []);
+  
   const profileUrl = `${baseUrl}/submit-paper/${params.confAcronym}`;
+  console.log(profileUrl)
+    // const { data:conferenceDetails, error, isLoading } = useGetConferenceByConferenceIDQuery(params.confAcronym as string);
 
-    const { data:conferenceDetails, error, isLoading } = useGetConferenceByConferenceIDQuery(params.confAcronym as string);
+    const getConferenceByConferenceID = async (conferenceAcronym: string) => {
+      try {
+        setLoading(true);
+        const response = await axios.get(`/api/get-conference-by-conference-id?conferenceAcronym=${conferenceAcronym}`);
+        if (response.data.success) {
+          setConferenceDetails(response.data.data)
+          console.log(response)
+          return response.data.data; // Returning the conference details
+        } else {
+          throw new Error(response.data.message); // Throwing an error if not successful
+        }
+      } catch (error) {
+        setLoading(false)
+        console.error("Error fetching conference details:", error);
+        throw error; // Propagating the error for the caller to handle
+      }
+      finally{
+        setLoading(false)
+      }
+    };
 
-    console.log(conferenceDetails)
+    useEffect(()=>{
+      console.log(params.confAcronym)
+      getConferenceByConferenceID(params.confAcronym as string)
+  },[])
 
-  if (isLoading) {
+  if (loading) {
     return <Loader/>
   }
 

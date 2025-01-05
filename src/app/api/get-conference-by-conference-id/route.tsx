@@ -1,6 +1,4 @@
 import dbConnect from "@/lib/dbConnect";
-import { getServerSession } from "next-auth";
-import { authOptions } from "../auth/[...nextauth]/options";
 import ConferenceModel from "@/model/Conference";
 
 export async function GET(request: Request) {
@@ -8,12 +6,23 @@ export async function GET(request: Request) {
     try {
         const { searchParams } = new URL(request.url);
         const queryParams = {
-            conferenceID: searchParams.get('conferenceID'),
+            conferenceAcronym: searchParams.get('conferenceAcronym'),
         };
+        console.log(queryParams)
+
+        if(!queryParams.conferenceAcronym){
+            return new Response(
+                JSON.stringify({
+                    success: false,
+                    message: "Do not have conference id",
+                }),
+                { status: 500 }
+            );
+        }
 
         // Find the conference by the provided ID
         const getConferenceDetails = await ConferenceModel.findOne({
-            conferenceID: queryParams.conferenceID
+            conferenceAcronym: queryParams.conferenceAcronym
         }).populate('conferenceOrganizer',"fullname");
 
         if (!getConferenceDetails) {
