@@ -86,7 +86,7 @@ const EditConferencePopup = ({conferenceDetails}:EditConferencePopupProps) => {
           <div className="p-6 max-w-lg mx-auto">
             <Form {...form}>
               <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-                <FormField
+                {/* <FormField
                   name="conferenceEmail"
                   control={form.control}
                   render={({ field }) => (
@@ -96,7 +96,7 @@ const EditConferencePopup = ({conferenceDetails}:EditConferencePopupProps) => {
                       <FormMessage />
                     </FormItem>
                   )}
-                />
+                /> */}
                 <FormField
                   name="conferenceTitle"
                   control={form.control}
