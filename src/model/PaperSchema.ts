@@ -17,7 +17,7 @@ export interface IPaper extends Document {
   // paperReview2History: { review: string; updatedAt: Date }[];
   reviewers: {
     Id: mongoose.Types.ObjectId;
-    status: "pending" | "accepted" | "rejected";
+    status: "review" | "accepted" | "rejected";
     assignedAt?: Date;
     reviewedAt?: Date;
     comments?: string;
