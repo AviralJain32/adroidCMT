@@ -110,8 +110,8 @@ const PaperSchema: Schema<IPaper> = new Schema({
       },
       status: {
         type: String,
-        enum: ["pending", "completed"],
-        default: "pending",
+        enum: ["accepted", "review","rejected"],
+        default: "review",
       },
       assignedAt: { type: Date, default: Date.now },
       reviewedAt: { type: Date },

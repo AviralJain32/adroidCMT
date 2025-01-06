@@ -17,26 +17,9 @@ import { useState } from "react";
 import axios from "axios";
 import { Download } from "lucide-react";
 import { useGetPaperDetailsByPaperIDQuery } from "@/store/features/ConferenceDashboardPaperSlice";
-
-interface PaperDetails {
-  correspondingAuthor: AuthorDetails[];
-  paperTitle: string;
-  paperKeywords: string[];
-  paperAuthor: AuthorDetails[];
-  paperAbstract: string;
-  paperSubmissionDate: Date;
-  paperStatus:
-    | "submitted"
-    | "accepted"
-    | "rejected"
-    | "review"
-    | "outline"
-    | null
-    | undefined;
-  paperID: string;
-  paperFile: string;
-  comment: string;
-}
+import { Label } from "@/components/ui/label"
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
+import { toast } from "@/components/ui/use-toast";
 
 interface AuthorDetails {
   fullname: string;
@@ -81,7 +64,13 @@ const Page = () => {
     const reviewerId=searchParams.get("reviewer");
 
   const [comment, setComment] = useState("");
+  const [status, setStatus] = useState("accepted");
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleChange = (value:string) => {
+    setStatus(value);
+    console.log("Selected Value:", value); // Log the value for debugging
+  };
 
   const handleSubmit = async () => {
     if (!comment.trim()) {
@@ -92,10 +81,14 @@ const Page = () => {
     setIsSubmitting(true);
 
     try {
-      await axios.patch(`/api/add-review-comment?reviewerId=${reviewerId}&paperId=${params.paperId}`, {
+      await axios.patch(`/api/add-review-comment?reviewerId=${reviewerId}&paperId=${params.paperId}&status=${status}`, {
         comment,
       });
-      alert("Comment submitted successfully!");
+      toast({
+        title: "Success",
+        description: "Comment added Successfully!",
+        variant:"default" ,
+      })
       setComment("");
     } catch (err) {
       console.error("Error submitting comment:", err);
@@ -200,6 +193,20 @@ const Page = () => {
           className="mb-4"
           
         />
+        <RadioGroup defaultValue="review" onValueChange={handleChange}>
+          <div className="flex items-center space-x-2">
+            <RadioGroupItem value="accepted" id="r2" />
+            <Label htmlFor="r2">Accepted</Label>
+          </div>
+          <div className="flex items-center space-x-2">
+            <RadioGroupItem value="review" id="r1" />
+            <Label htmlFor="r1">Review</Label>
+          </div>
+          <div className="flex items-center space-x-2">
+            <RadioGroupItem value="rejected" id="r3" />
+            <Label htmlFor="r3">Rejected</Label>
+          </div>
+         </RadioGroup>
         <div className="flex justify-center w-full"> 
         <Button
           onClick={handleSubmit}

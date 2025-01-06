@@ -24,9 +24,19 @@ export async function GET(request: Request) {
         };
 
 
-        const getPaperDetails=await PaperModel.findOne({
-            paperID:queryParams.paperID
-        }).populate('paperAuthor').populate('correspondingAuthor')
+        const getPaperDetails = await PaperModel.findOne({
+            paperID: queryParams.paperID
+        })
+            .populate('paperAuthor') // Populating paper authors
+            .populate('correspondingAuthor') // Populating corresponding authors
+            .populate({
+                path: 'reviewers.Id', // Path to populate reviewers
+                select: 'fullname email' // Only select name and email fields
+            })
+            .populate({
+                path: 'reviewRequests.reviewerId', // Path to populate reviewRequests
+                select: 'fullname email' // Only select name and email fields
+            });
 
         console.log(getPaperDetails)
         if(!getPaperDetails){

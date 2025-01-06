@@ -6,29 +6,44 @@ interface ApiResponse<T> {
     message: string;
     data: T;
 }
+interface PaperDetails {
+  correspondingAuthor: AuthorDetails[];
+  paperTitle: string;
+  paperKeywords: string[];
+  paperAuthor: AuthorDetails[];
+  paperAbstract: string;
+  paperSubmissionDate: Date;
+  paperStatus: "submitted" | "accepted" | "rejected" | "review" | "outline" | null | undefined;
+  paperID: string;
+  paperFile: string;
+  paperReview1: string;
+  comment: string;
+  reviewers: ReviewerDetails[];
+  reviewRequests: ReviewRequestDetails[];
+}
 
 interface AuthorDetails {
-    fullname: string;
-    email: string;
-    country: string;
-    affilation: string;
-    webpage: string; // ye abhi dalega,
-  }
+  fullname: string;
+  email: string;
+  country: string;
+  affilation: string;
+  webpage: string;
+}
 
-interface PaperDetails {
-    correspondingAuthor: AuthorDetails[];
-    paperTitle: string;
-    paperKeywords: string[];
-    paperAuthor: AuthorDetails[];
-    paperAbstract: string;
-    paperSubmissionDate: Date;
-    paperStatus: "submitted" | "accepted" | "rejected" | "review" | "outline" | null | undefined,
-    paperID: string;
-    paperFile: string;
-    paperReview1:string,
-    comment:string,
-  }
+interface ReviewerDetails {
+  Id: {fullname:string,email:string};
+  status: "accepted" | "review" | "rejected";
+  assignedAt: Date;
+  reviewedAt?: Date;
+  comments?: string;
+}
 
+interface ReviewRequestDetails {
+  reviewerId: {fullname:string,email:string};
+  status: "pending" | "accepted" | "rejected";
+  requestedAt: Date;
+  resolvedAt?: Date;
+}
 export type InputParamsTypeForSendComment={
     comment: string,
     status:string,

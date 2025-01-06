@@ -53,6 +53,8 @@ export async function PATCH(request: NextRequest) {
       );
     }
 
+    paper.paperStatus="review";
+
     // Filter out duplicate reviewers
     const newReviewers = reviewerIds.filter((reviewerId) => {
       return !paper.reviewRequests.some(

@@ -25,6 +25,7 @@ export async function PATCH(request: NextRequest) {
     const { searchParams } = new URL(request.url);
     const paperID = searchParams.get("paperId");
     const reviewerId = searchParams.get("reviewerId");
+    const status=searchParams.get("status")
 
     if (!paperID || !reviewerId) {
       return NextResponse.json(
@@ -77,7 +78,7 @@ export async function PATCH(request: NextRequest) {
 
     // Add the comment
     reviewer.comments = comment;
-    reviewer.status = "completed" as any;
+    reviewer.status = status as any;
     reviewer.reviewedAt = new Date();
 
     await paper.save();

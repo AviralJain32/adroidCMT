@@ -101,7 +101,7 @@ export async function POST(request: NextRequest) {
       if (!isReviewerAlreadyAdded) {
         paper.reviewers.push({
           Id: request.reviewerId,
-          status: "pending",
+          status: "review",
           assignedAt: new Date(),
         });
       }

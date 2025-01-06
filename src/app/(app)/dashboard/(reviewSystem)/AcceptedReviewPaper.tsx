@@ -7,13 +7,11 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
-import { format } from "date-fns";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { toast } from "@/components/ui/use-toast";
 import { Badge } from "@/components/ui/badge";
 import moment from "moment";
-import { useRouter } from "next/navigation";
 import Link from "next/link";
 
 interface Reviewer {
@@ -25,17 +23,13 @@ interface AcceptedPaper {
   paperId: string;
   paperTitle: string;
   reviewer: Reviewer;
-  status: string; // e.g., "accepted"
+  status: "accepted" | "rejected" | "review"; // e.g., "accepted"
   ActualPaperId:string;
 }
 
 const AcceptedPapersTable: React.FC= () => {
   const [acceptedPapers, setAcceptedPapers] = useState<AcceptedPaper[] | null>(null);
 
-  const openPaper=(paperId:string)=>{
-
-  }
-  const router=useRouter()
   useEffect(() => {
     const fetchAcceptedRequests = async () => {
       try {
@@ -78,11 +72,10 @@ const AcceptedPapersTable: React.FC= () => {
                 : "N/A"}
             </TableCell>
             <TableCell>
-              <Badge>{paper.status}</Badge>
+              <Badge variant={paper.status}>{paper.status}</Badge>
             </TableCell>
             <TableCell>
-              {/* <Link href={`/abc?paperId=${paper.ActualPaperId}`}> */}
-              <Button disabled={paper.status==="completed"} variant="default">
+              <Button disabled={paper.status==="accepted"} variant="default">
                 <Link href={`reviewer/reviewing/${paper.ActualPaperId}?reviewer=${paper.reviewer.id}`}>
                   Open
                 </Link>
