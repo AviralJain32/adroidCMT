@@ -51,7 +51,8 @@ function Navbar() {
   };
 
   return (
-    <nav className="p-2 backdrop-blur-3xl shadow-background sticky top-0 z-50 ">
+    // backdrop-blur-3xl shadow-background
+    <nav className="p-2 bg-white sticky top-0 z-50 "> 
       {/* Mobile Navigation */}
       <div className="lg:hidden flex justify-between items-center ">
         <div className="flex gap-2">

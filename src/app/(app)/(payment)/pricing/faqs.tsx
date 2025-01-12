@@ -29,7 +29,7 @@ import {
       },
       {
         ques: "Are there any hidden fees?",
-        ans: "No, there are no hidden fees. The pricing is transparent, and all costs are clearly outlined in the pricing plan descriptions and the final invoice.",
+        ans: "No, There is no hidden fees for first 100 papers.", //The pricing is transparent, and all costs are clearly outlined in the pricing plan descriptions and the final invoice.
       },
       {
         ques: "How do I get started with my conference?",
@@ -37,7 +37,7 @@ import {
       },
       {
         ques: "What payment methods are accepted?",
-        ans: "We accept various payment methods, including credit/debit cards, UPI, and bank transfers. Details will be provided during the payment process.",
+        ans: "We accept multiple payment options, including American Express, Mastercard, and Visa. Specific details will be shared during the payment process.",
       },
       {
         ques: "Can I customize my conference features?",

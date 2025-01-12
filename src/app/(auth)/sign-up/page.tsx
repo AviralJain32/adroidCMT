@@ -24,6 +24,8 @@ import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Loader2 } from "lucide-react"
 import { Country }  from 'country-state-city';
+import Image from "next/image"
+import { signIn } from "next-auth/react"
 
 const Page = () => {
   const [email, setEmail] = useState("")
@@ -67,6 +69,22 @@ const Page = () => {
           </h1>
           <p className="text-gray-600">Create your account to get started</p>
         </div>
+                <form
+                  action={async () => await signIn('google')}
+                  className="flex justify-center"
+                >
+                  <button
+                    type="submit"
+                    className="flex items-center gap-3 px-4 py-2 bg-white text-gray-800 border border-gray-300 rounded-lg shadow-sm hover:shadow-md hover:bg-gray-100 focus:ring-2 focus:ring-blue-300"
+                  >
+                    <Image src="/Google-button-icon.png" alt="Google" width={24} height={24} />
+                    Sign up with Google
+                  </button>
+                </form>
+
+                <div className="flex items-center justify-center space-x-2">
+                  <span className="text-gray-500">or</span>
+                </div>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

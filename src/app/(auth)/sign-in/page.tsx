@@ -14,19 +14,19 @@ import {
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import Link from 'next/link';
-import { useRouter, useSearchParams} from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useToast } from '@/components/ui/use-toast';
 import { signInSchema } from '@/schemas/signInSchema';
 import { Suspense, useState } from 'react';
 import { Loader2 } from 'lucide-react';
+import Image from 'next/image';
 
 function SignInForm() {
   const router = useRouter();
-  const searchParams = useSearchParams(); // Extract query parameters
-  // const params = new URLSearchParams(window.location.search);
-  const callbackUrl = searchParams.get('callbackUrl') || '/dashboard'; // Fallback to dashboard if no callbackUrl
+  const searchParams = useSearchParams();
+  const callbackUrl = searchParams.get('callbackUrl') || '/dashboard';
 
-  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const form = useForm<z.infer<typeof signInSchema>>({
     resolver: zodResolver(signInSchema),
@@ -39,95 +39,119 @@ function SignInForm() {
   const { toast } = useToast();
 
   const onSubmit = async (data: z.infer<typeof signInSchema>) => {
-    setIsSubmitting(true)
+    setIsSubmitting(true);
     const result = await signIn('credentials', {
       redirect: false,
       identifier: data.identifier,
       password: data.password,
-      callbackUrl, // Pass the callback URL to the signIn function
+      callbackUrl,
     });
 
-    console.log(result)
-
     if (result?.error) {
-      if (result.error === 'CredentialsSignin') {
-        toast({
-          title: 'Login Failed',
-          description: 'The credentials you entered are incorrect. Please try again.',
-          variant: 'destructive',
-        });
-      } else {
-        toast({
-          title: 'Error',
-          description: `${result.error}`,
-          variant: 'destructive',
-        });
-      }
+      toast({
+        title: 'Error',
+        description: result.error === 'CredentialsSignin'
+          ? 'The credentials you entered are incorrect. Please try again.'
+          : result.error,
+        variant: 'destructive',
+      });
     }
 
-    setIsSubmitting(false)
+    setIsSubmitting(false);
 
     if (result?.url) {
-      router.push(result.url)
+      router.push(result.url);
     }
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gradient-to-r from-blue-100 to-blue-400">
-      <div className="w-full max-w-md p-8 space-y-8 bg-white rounded-xl shadow-lg">
+    <div className="flex justify-center items-center min-h-screen bg-gradient-to-r from-blue-100 to-blue-300">
+      <div className="w-full max-w-md p-6 space-y-8 bg-white rounded-lg shadow-2xl">
         <div className="text-center">
-          <h1 className="text-3xl font-bold text-gray-800 mb-2">Welcome Back!</h1>
-          <p className="text-sm text-gray-500">Sign in to access your account and manage your conferences</p>
+          <h1 className="text-3xl font-extrabold text-gray-800">Welcome Back!</h1>
+          <p className="text-sm text-gray-500">
+            Sign in to access your account and manage your conferences.
+          </p>
         </div>
+
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
             <FormField
               name="identifier"
               control={form.control}
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-sm text-gray-600">Email</FormLabel>
+                  <FormLabel className="text-sm font-medium text-gray-700">Email</FormLabel>
                   <Input
                     placeholder="Enter your email"
                     {...field}
-                    className="border-gray-300"
+                    className="w-full border-gray-300 focus:ring-blue-500 focus:border-blue-500"
                   />
                   <FormMessage />
                 </FormItem>
               )}
             />
+
             <FormField
               name="password"
               control={form.control}
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-sm text-gray-600">Password</FormLabel>
+                  <FormLabel className="text-sm font-medium text-gray-700">Password</FormLabel>
                   <Input
                     type="password"
                     placeholder="Enter your password"
                     {...field}
-                    className="border-gray-300"
+                    className="w-full border-gray-300 focus:ring-blue-500 focus:border-blue-500"
                   />
                   <FormMessage />
                 </FormItem>
               )}
             />
-            <div>
-            <Link href={"/forget-password"} className='text-sm mt-9 underline text-blue-500'>Forget Password</Link>
+
+            <div className="text-right">
+              <Link href="/forget-password" className="text-sm text-blue-600 hover:underline">
+                Forgot Password?
+              </Link>
             </div>
-            <Button type="submit" className="w-full bg-blue-600 text-white" disabled={isSubmitting}>
+
+            <Button
+              type="submit"
+              className="w-full bg-blue-600 text-white hover:bg-blue-700 focus:ring-4 focus:ring-blue-300"
+              disabled={isSubmitting}
+            >
               {isSubmitting ? (
                 <>
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Please Wait
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Signing In...
                 </>
-              ) : ('Sign In')}
+              ) : (
+                'Sign In'
+              )}
             </Button>
           </form>
         </Form>
-        <div className="text-center mt-4">
+
+        <div className="flex items-center justify-center space-x-2">
+          <span className="text-gray-500">or</span>
+        </div>
+
+        <form
+          action={async () => await signIn('google')}
+          className="flex justify-center"
+        >
+          <button
+            type="submit"
+            className="flex items-center gap-3 px-4 py-2 bg-white text-gray-800 border border-gray-300 rounded-lg shadow-sm hover:shadow-md hover:bg-gray-100 focus:ring-2 focus:ring-blue-300"
+          >
+            <Image src="/Google-button-icon.png" alt="Google" width={24} height={24} />
+            Sign in with Google
+          </button>
+        </form>
+
+        <div className="text-center">
           <p className="text-sm text-gray-600">
-            Don&apos;t have an account? &nbsp;
-            <Link href="/sign-up" className="text-blue-600 hover:text-blue-800 font-medium">
+            Don&apos;t have an account?{' '}
+            <Link href="/sign-up" className="text-blue-600 font-medium hover:underline">
               Sign up now
             </Link>
           </p>
@@ -137,10 +161,10 @@ function SignInForm() {
   );
 }
 
-export default function newSuspenseBoundaryWrappedSignInForm(){
-
-  return <Suspense fallback={<div>Loading...</div>}>
-    <SignInForm/>
-  </Suspense>
+export default function SignInSuspenseWrapper() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <SignInForm />
+    </Suspense>
+  );
 }
-

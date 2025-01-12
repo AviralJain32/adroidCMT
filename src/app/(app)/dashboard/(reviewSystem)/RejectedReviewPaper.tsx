@@ -19,7 +19,7 @@ import {
   }
   
   interface ReviewRequest {
-    reviewerId: { _id: string };
+    reviewerId: { _id: string,fullname:string };
     requestedBy: User;
     requestedAt: string; // ISO Date string
     status: string; // "pending", "accepted", or "rejected"
@@ -39,6 +39,7 @@ import {
       setLoading(true);
       try {
         const response = await axios.get("/api/fetch-rejected-review-request");
+        console.log(response.data)
         setRequests(response.data.requests);
       } catch (error) {
         console.error("Error fetching review requests:", error);
@@ -81,7 +82,7 @@ import {
               .map((request) => (
                 <TableRow key={`${paper.paperId}-${request.reviewerId._id}`}>
                   <TableCell>{paper.paperTitle}</TableCell>
-                  <TableCell>{request.reviewerId?._id || "N/A"}</TableCell>
+                  <TableCell>{request.reviewerId?.fullname || "N/A"}</TableCell>
                   <TableCell>
                     {request.requestedBy.fullname} ({request.requestedBy.email})
                   </TableCell>

@@ -211,8 +211,10 @@ const OrganizedConferenceComponent = () => {
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>Conference Id</TableHead>
+              <TableHead>Conference Name</TableHead>
               <TableHead>Role</TableHead>
+              <TableHead>Conference Dates</TableHead>
+              <TableHead>Submissions Deadline</TableHead>
               <TableHead>Created At</TableHead>
               <TableHead>Actions</TableHead>
             </TableRow>
@@ -232,7 +234,13 @@ const OrganizedConferenceComponent = () => {
                   </TableCell>
                   <TableCell>{conference.conferenceOrganizerRole}</TableCell>
                   <TableCell>
-                    {moment(conference.conferenceCreatedAt).calendar()}
+                    {moment(conference.conferenceFirstDay).calendar()} to {moment(conference.conferenceLastDay).calendar()}
+                  </TableCell>
+                  <TableCell>
+                    {moment(conference.conferenceSubmissionsDeadlineDate).calendar() }
+                  </TableCell>
+                  <TableCell>
+                    {moment(conference.conferenceCreatedAt).calendar() }
                   </TableCell>
                   <TableCell>
                     <Link
@@ -271,6 +279,7 @@ const SubmittedPaperComponent = () => {
         <Table>
           <TableHeader>
             <TableRow>
+              <TableHead>Paper Id</TableHead>
               <TableHead>Paper Title</TableHead>
               <TableHead>Conference</TableHead>
               <TableHead>Submitted At</TableHead>
