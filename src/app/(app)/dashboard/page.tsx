@@ -334,11 +334,6 @@ const Page: React.FC = () => {
   return (
     <div className="container mx-auto p-8">
 
-{/* temp code */}
-<div>
-  <pre>{JSON.stringify(session, null, 2)}</pre>
-</div>
-{/* temp code */}
 
 
       <div className="flex flex-col items-center">

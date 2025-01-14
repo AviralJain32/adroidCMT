@@ -4,7 +4,6 @@ import {
   SelectContent,
   SelectGroup,
   SelectItem,
-  SelectLabel,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
@@ -12,8 +11,7 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import * as z from "zod"
-import Link from "next/link"
-import { useEffect, useState } from "react"
+import { Suspense, useEffect, useState } from "react"
 import { useToast } from "@/components/ui/use-toast"
 import { useRouter, useSearchParams } from "next/navigation"
 import axios,{AxiosError} from "axios"
@@ -23,15 +21,12 @@ import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Loader2 } from "lucide-react"
 import { Country }  from 'country-state-city';
-import { useSession } from "next-auth/react"
 import { CompleteProfileSchema } from "@/schemas/CompleteProfileSchema"
 
-const Page = () => {
+const CompleteProfile = () => {
   const [profileDetails,setProfileDetails]=useState<{email:string,fullname:string} | null>(null)
   const [isSubmitting, setIsSubmitting] = useState(false)
 
-  // const { data: session } = useSession()
-  // console.log(session)
 
   const { toast } = useToast()
   const router = useRouter()
@@ -167,6 +162,13 @@ const Page = () => {
   )
 }
 
-export default Page
+export default function Page() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <CompleteProfile />
+    </Suspense>
+  );
+}
+
 
 
