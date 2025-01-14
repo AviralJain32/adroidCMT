@@ -77,8 +77,8 @@ export const authOptions:NextAuthOptions={
             profile(profile) {
                 console.log(profile)
                 return {
-                    id: profile.orcid,
-                    name: profile.name, // Modify based on what ORCID provides in the user info response
+                    id: profile.sub,
+                    fullname: profile.given_name+" "+profile.family_name, // Modify based on what ORCID provides in the user info response
                     email: profile.email || null,
                 };
             },
