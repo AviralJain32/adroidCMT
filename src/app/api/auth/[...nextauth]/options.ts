@@ -4,6 +4,7 @@ import bcryptjs from "bcryptjs"
 import dbConnect from "@/lib/dbConnect";
 import UserModel from "@/model/User";
 import Google from "next-auth/providers/google"
+import mongoose from "mongoose";
 
 interface NewUser extends User{
     email_verified:string
@@ -45,24 +46,43 @@ export const authOptions:NextAuthOptions={
         Google({
             clientId: process.env.AUTH_GOOGLE_ID || "",
             clientSecret: process.env.AUTH_GOOGLE_SECRET || "",
-            async profile(profile) {
-                console.log("i am in profile section of google provider");
-                console.log(profile)
-                await dbConnect();
-                const dbUser = await UserModel.findOne({ email: profile.email });
-                const userid:any=dbUser?._id  
-                const userStringID=userid.toString()
-                return { ...profile,id:userStringID }
-              },
+            // async profile(profile) {
+            //     console.log("i am in profile section of google provider");
+            //     console.log(profile)
+            //     // await dbConnect();
+            //     // const dbUser = await UserModel.findOne({ email: profile.email });
+            //     // console.log(dbUser?.email)
+            //     // const userid:any=dbUser?._id  
+            //     // const userStringID=userid.toString() //,id:userStringID
+            //     return { ...profile }
+            //   },
         }),
-        // {
-        //     id: "my-provider", // signIn("my-provider") and will be part of the callback URL
-        //     name: "My Provider", // optional, used on the default login page as the button text.
-        //     type: "oauth", // or "oauth" for OAuth 2 providers
-        //     issuer: "https://my.oidc-provider.com", // to infer the .well-known/openid-configuration URL
-        //     clientId: process.env.AUTH_CLIENT_ID, // from the provider's dashboard
-        //     clientSecret: process.env.AUTH_CLIENT_SECRET, // from the provider's dashboard
-        // }
+        {
+            id: "orcid",
+            name: "ORCID",
+            type: "oauth",
+            wellKnown: undefined, // Prevent the default .well-known resolution
+            issuer: "https://orcid.org", // Base URL for ORCID
+            authorization: {
+                url: "https://orcid.org/oauth/authorize", // ORCID authorization endpoint
+                params: {
+                    scope: "/authenticate", // ORCID's default scope for authentication
+                    response_type: "code",
+                },
+            },
+            token: "https://orcid.org/oauth/token", // ORCID token endpoint
+            userinfo: "https://orcid.org/oauth/userinfo", // ORCID user info endpoint
+            clientId: process.env.AUTH_ORCID_ID,
+            clientSecret: process.env.AUTH_ORCID_SECRET,
+            profile(profile) {
+                console.log(profile)
+                return {
+                    id: profile.orcid,
+                    name: profile.name, // Modify based on what ORCID provides in the user info response
+                    email: profile.email || null,
+                };
+            },
+        }        
     ],
     callbacks:{
         async session({ session, token }) {
@@ -79,9 +99,13 @@ export const authOptions:NextAuthOptions={
         async jwt({ token, user}) {
             console.log("bhai mai callbacks ke jwt function mai hu")
             console.log(user)
-            const newUser:any=user
+            const newUser:any=user 
             if(user){
-                token._id=user._id?.toString() || user.id
+                if(!user._id){
+                    await dbConnect();
+                    const dbUser = await UserModel.findOne({ email: user.email });
+                    token._id=dbUser?._id?.toString() || user.id
+                }
                 token.isVerified=user.isVerified || newUser?.email_verified;
                 token.email=user.email
                 token.fullname=user.fullname as string || user.name as string
@@ -99,6 +123,7 @@ export const authOptions:NextAuthOptions={
                 console.log("No user found, creating a new one...");
                 
                 user = new UserModel({
+                //   _id:new mongoose.Types.ObjectId(profile.sub) ,
                   fullname: profile.name,
                   email: profile.email,
                   password: 1234, // No password for OAuth users
@@ -116,7 +141,7 @@ export const authOptions:NextAuthOptions={
                 await user.save();
                 console.log("New user created:", user);
                 // Redirect to complete-profile page
-                return `/complete-profile`;
+                return `/complete-profile?email=${profile?.email}`;
               }
             }
       

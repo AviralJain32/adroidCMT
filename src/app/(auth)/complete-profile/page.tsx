@@ -15,7 +15,7 @@ import * as z from "zod"
 import Link from "next/link"
 import { useEffect, useState } from "react"
 import { useToast } from "@/components/ui/use-toast"
-import { useRouter } from "next/navigation"
+import { useRouter, useSearchParams } from "next/navigation"
 import axios,{AxiosError} from "axios"
 import { ApiResponse } from "@/types/ApiResponse"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
@@ -27,14 +27,28 @@ import { useSession } from "next-auth/react"
 import { CompleteProfileSchema } from "@/schemas/CompleteProfileSchema"
 
 const Page = () => {
-  const [email, setEmail] = useState("")
+  const [profileDetails,setProfileDetails]=useState<{email:string,fullname:string} | null>(null)
   const [isSubmitting, setIsSubmitting] = useState(false)
 
-  const { data: session } = useSession()
-  console.log(session)
+  // const { data: session } = useSession()
+  // console.log(session)
 
   const { toast } = useToast()
   const router = useRouter()
+  const params=useSearchParams()
+  const email=params.get("email")
+
+  useEffect(()=>{
+    const fetchUserDetails=async()=>{
+      try {
+        const response=await axios.get(`/api/complete-profile?email=${email}`)
+        setProfileDetails(response.data.data)
+      } catch (error:any) {
+        console.log(error.response.data.message)
+      }
+    } 
+    fetchUserDetails()
+  },[])
 
   // zod implementation
   const form = useForm<z.infer<typeof CompleteProfileSchema>>({
@@ -44,7 +58,7 @@ const Page = () => {
     setIsSubmitting(true)
     console.log(data)
     try {
-      const response = await axios.patch<ApiResponse>('/api/complete-profile', {...data,email:session?.user.email})
+      const response = await axios.patch<ApiResponse>('/api/complete-profile', {...data,email:profileDetails?.email})
       toast({
         title: "Success",
         description: response.data.message
@@ -75,11 +89,11 @@ const Page = () => {
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
             <div>
           <FormLabel>Name</FormLabel>
-          <Input readOnly value={session?.user.fullname} className="bg-gray-200" />
+          <Input readOnly value={profileDetails?.fullname} className="bg-gray-200" />
           </div>
           <div>
           <FormLabel>Email</FormLabel>
-          <Input readOnly value={session?.user.email} className="bg-gray-200" />
+          <Input readOnly value={profileDetails?.email} className="bg-gray-200" />
           </div>
             <FormField
               name="contactNumber"

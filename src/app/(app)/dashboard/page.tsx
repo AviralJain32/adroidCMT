@@ -196,6 +196,7 @@ import { useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { PulseLoader } from "react-spinners";
 import ReviewedPapersComponent from "./(reviewSystem)/ReviewPaperComponent";
+import { useSession } from "next-auth/react";
 
 // Organized Conferences Component
 const OrganizedConferenceComponent = () => {
@@ -328,8 +329,18 @@ const SubmittedPaperComponent = () => {
 
 // Main Page
 const Page: React.FC = () => {
+    const { data: session } = useSession()
+    console.log(session)
   return (
     <div className="container mx-auto p-8">
+
+{/* temp code */}
+<div>
+  <pre>{JSON.stringify(session, null, 2)}</pre>
+</div>
+{/* temp code */}
+
+
       <div className="flex flex-col items-center">
         <h1 className="text-5xl font-extrabold text-gray-800 mb-8">
           Dashboard

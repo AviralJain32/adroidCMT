@@ -1,6 +1,45 @@
 import dbConnect from "@/lib/dbConnect";
 import UserModel from "@/model/User";
 
+
+export async function GET(request:Request){
+  await dbConnect();
+  const { searchParams } = new URL(request.url);
+  const queryParams = {
+  email: searchParams.get('email'),
+  };
+  if (!queryParams.email) {
+    return Response.json(
+      {
+        success: false,
+        message: "Email is required",
+      },
+      { status: 400 }
+    );
+  }
+  const user=await UserModel.findOne({email:queryParams.email})
+
+  if (!user) {
+    return Response.json(
+      {
+        success: false,
+        message: "User not found. Please register first.",
+      },
+      { status: 404 }
+    );
+  }
+
+  return Response.json(
+    {
+      success: true,
+      message: "Details fetched successfully.of a user",
+      data:{email:user.email,fullname:user.fullname}
+    },
+    { status: 200 }
+  );
+
+}
+
 export async function PATCH(request:Request) {
   await dbConnect();
   try {
