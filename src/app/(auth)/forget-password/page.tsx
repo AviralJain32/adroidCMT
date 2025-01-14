@@ -17,6 +17,8 @@ import {
 import { Input } from "@/components/ui/input"
 import { resetPassword } from "./serverAction" // Replace with your actual reset password function
 import { useToast } from "@/components/ui/use-toast"
+import { Loader2 } from "lucide-react"
+import { useState } from "react"
 
 const formSchema = z.object({
   email: z.string().email({ message: "Please enter a valid email address." }),
@@ -24,6 +26,7 @@ const formSchema = z.object({
 
 export default function ForgetPasswordForm() {
   const {toast}=useToast()
+    const [isSubmitting, setIsSubmitting] = useState(false)
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     
@@ -35,6 +38,7 @@ export default function ForgetPasswordForm() {
   const onSubmit = (values: z.infer<typeof formSchema>) => {
     console.log(values)
     const func=async()=>{
+      setIsSubmitting(true)
       try {
         const response=await resetPassword(values.email)
         console.log(response);
@@ -56,6 +60,7 @@ export default function ForgetPasswordForm() {
           variant: 'destructive',
         });
       }
+      setIsSubmitting(false)
     }
     func()
   }
@@ -87,9 +92,19 @@ export default function ForgetPasswordForm() {
                 </FormItem>
               )}
             />
-            <Button type="submit" className="w-full bg-blue-600 text-white">
-              Send Reset Link
-            </Button>
+            <Button
+              type="submit"
+              className="w-full bg-blue-600 text-white hover:bg-blue-700 focus:ring-4 focus:ring-blue-300"
+              disabled={isSubmitting}
+            >
+            {isSubmitting ? (
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Sending...
+                </>
+              ) : (
+                'Send Reset Link'
+              )}
+              </Button>
           </form>
         </Form>
         <div className="text-center mt-6">

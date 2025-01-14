@@ -135,6 +135,7 @@ function SignInForm() {
           <span className="text-gray-500">or</span>
         </div>
 
+       <div className="flex gap-3 items-center justify-center">
         <form
           action={async () => await signIn('google')}
           className="flex justify-center"
@@ -144,9 +145,10 @@ function SignInForm() {
             className="flex items-center gap-3 px-4 py-2 bg-white text-gray-800 border border-gray-300 rounded-lg shadow-sm hover:shadow-md hover:bg-gray-100 focus:ring-2 focus:ring-blue-300"
           >
             <Image src="/Google-button-icon.png" alt="Google" width={24} height={24} />
-            Sign in with Google
+            Google
           </button>
         </form>
+
 
         <form
           action={async () => await signIn('orcid')}
@@ -156,10 +158,12 @@ function SignInForm() {
             type="submit"
             className="flex items-center gap-3 px-4 py-2 bg-white text-gray-800 border border-gray-300 rounded-lg shadow-sm hover:shadow-md hover:bg-gray-100 focus:ring-2 focus:ring-blue-300"
           >
-            <Image src="/Google-button-icon.png" alt="Google" width={24} height={24} />
-            Sign in with ORCID
+            <Image src="/ORCID-button-icon.svg.png" alt="Google" width={24} height={24} />
+            ORCID
           </button>
         </form>
+
+        </div>
 
         <div className="text-center">
           <p className="text-sm text-gray-600">

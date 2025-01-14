@@ -16,7 +16,8 @@ import {
 import { Input } from "@/components/ui/input";
 import { resetPasswordAction } from "./resetPasswordServerAction"; // Replace with your actual server action
 import { useToast } from "@/components/ui/use-toast";
-import { Suspense } from "react";
+import { Suspense, useState } from "react";
+import { Loader2 } from "lucide-react";
 
 // Schema for password validation
 const formSchema = z
@@ -33,6 +34,7 @@ function ResetPasswordPageUtility() {
   const searchParams = useSearchParams();
   const token = searchParams.get("token"); // Get the token from the URL
   const {toast}=useToast()
+  const [isSubmitting, setIsSubmitting] = useState(false)
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -41,6 +43,7 @@ function ResetPasswordPageUtility() {
       confirmPassword: "",
     },
   });
+
 
   const onSubmit = (values: z.infer<typeof formSchema>) => {
     if (!token) {
@@ -54,6 +57,7 @@ function ResetPasswordPageUtility() {
     }
 
     const func = async () => {
+    setIsSubmitting(true)
         // const parsedToken=URL.parse(token) as URL
         // console.log(parsedToken)
       const response = await resetPasswordAction(token, values.newPassword);
@@ -71,6 +75,7 @@ function ResetPasswordPageUtility() {
           variant: 'destructive',
         });
       }
+    setIsSubmitting(false)
     };
 
     func();
@@ -113,9 +118,19 @@ function ResetPasswordPageUtility() {
                 </FormItem>
               )}
             />
-            <Button type="submit" className="w-full bg-blue-600 text-white">
-              Reset Password
-            </Button>
+            <Button
+              type="submit"
+              className="w-full bg-blue-600 text-white hover:bg-blue-700 focus:ring-4 focus:ring-blue-300"
+              disabled={isSubmitting}
+            >
+            {isSubmitting ? (
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Resetting...
+                </>
+              ) : (
+                'Reset Password'
+              )}
+              </Button>
           </form>
         </Form>
       </div>

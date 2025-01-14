@@ -69,6 +69,8 @@ const Page = () => {
           </h1>
           <p className="text-gray-600">Create your account to get started</p>
         </div>
+        {/* google and orcid sign in */}
+            <div className="flex gap-3 items-center justify-center">
                 <form
                   action={async () => await signIn('google')}
                   className="flex justify-center"
@@ -82,6 +84,22 @@ const Page = () => {
                   </button>
                 </form>
 
+
+                <form
+                  action={async () => await signIn('orcid')}
+                  className="flex justify-center"
+                >
+                  <button
+                    type="submit"
+                    className="flex items-center gap-3 px-4 py-2 bg-white text-gray-800 border border-gray-300 rounded-lg shadow-sm hover:shadow-md hover:bg-gray-100 focus:ring-2 focus:ring-blue-300"
+                  >
+                    <Image src="/ORCID-button-icon.svg.png" alt="Google" width={24} height={24} />
+                    Sign up with ORCID
+                  </button>
+                </form>
+
+                </div>
+              
                 <div className="flex items-center justify-center space-x-2">
                   <span className="text-gray-500">or</span>
                 </div>
@@ -246,13 +264,15 @@ const Page = () => {
             </Button>
           </form>
         </Form>
-        <div className="text-center mt-6">
+        <div className="text-center mt-6 flex justify-center items-center">
+          <div className="flex gap-1">
           <p className="text-gray-600">
-            Already a member?{' '}
-            <Link href="/sign-in" className="text-blue-600 hover:text-blue-800 font-semibold">
+            Already a member?
+          </p>
+          <Link href="/sign-in" className="text-blue-600 hover:text-blue-800 font-semibold">
               Sign in
             </Link>
-          </p>
+            </div>
         </div>
       </div>
     </div>
