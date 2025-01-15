@@ -1,6 +1,7 @@
 import mongoose, { Schema, Document } from 'mongoose';
 // Interface for Conference document
 export interface IConference extends Document {
+  conferenceCategory:string,
   conferenceOrganizer: mongoose.Types.ObjectId;
   conferenceOrganizerWebPage: string;
   conferenceOrganizerPhoneNumber: number;
@@ -31,6 +32,7 @@ export interface IConference extends Document {
 
 // Conference schema definition
 const ConferenceSchema: Schema<IConference> = new Schema({
+  conferenceCategory:{type: String, required: true,enum:["Conference", "Book", "Used for teaching","Journal","Conference proceedings","Processing applications"],default:"Conference"},
   conferenceOrganizer: { type: Schema.Types.ObjectId, ref: 'User', required: true },
   conferenceOrganizerWebPage: { type: String},
   conferenceOrganizerPhoneNumber: { type: Number, required: true },

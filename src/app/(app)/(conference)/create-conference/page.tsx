@@ -19,7 +19,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useRouter } from 'next/navigation';
 import { useToast } from '@/components/ui/use-toast';
-import { conferenceSchema } from '@/schemas/conferenceCreation';
+import { conferenceCategoryValues, conferenceSchema } from '@/schemas/conferenceCreation';
 import axios, { AxiosError } from 'axios';
 import { ApiResponse } from '@/types/ApiResponse';
 import { Separator } from '@/components/ui/separator';
@@ -77,7 +77,6 @@ export default function CreateConferenceForm() {
         </div>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-
           {/* <div className='font-bold text-xl'>Conference Email ID</div>
             <FormField
               name="conferenceEmail"
@@ -94,8 +93,33 @@ export default function CreateConferenceForm() {
                   <FormMessage />
                 </FormItem>
               )}
+            /> */}
+          <div className='font-bold text-xl'>Type Of Conference</div>
+            <FormField
+              name="conferenceCategory"
+              control={form.control}
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Installation type
+                  </FormLabel>
+                  <FormDescription>
+                  Specify the type of your installation
+                  </FormDescription>
+                  <Select onValueChange={field.onChange} value={field.value}>
+                      <SelectTrigger >
+                        <SelectValue placeholder="Select Installation type" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectGroup>
+                          {conferenceCategoryValues.map((value)=>(<SelectItem key={value} value={value}>{value}</SelectItem>))}
+                        </SelectGroup>
+                      </SelectContent>
+                    </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
             />
-            <Separator className='my-4'></Separator> */}
+            <Separator className='my-4'></Separator>
 
             <div className='font-bold text-xl'>Title and Acronym</div>
             <FormField

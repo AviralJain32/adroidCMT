@@ -68,7 +68,7 @@ const PricingPage: React.FC = () => {
     <div className="max-w-7xl mx-auto p-6">
       
       {/* Information Section */}
-      <div className="p-12 bg-gray-50 rounded-lg shadow-lg">
+      {/* <div className="p-12 bg-gray-50 rounded-lg shadow-lg">
       <h2 className="text-5xl font-bold text-center mb-10 text-blue-600">How It Works</h2>
       <div className="text-xl text-gray-800 text-center mb-8 space-y-6">
         <p className="font-semibold">
@@ -83,16 +83,13 @@ const PricingPage: React.FC = () => {
         </ul>
       </div>
       <div className="text-center mt-10">
-        {/* <Link href={"/payment-portal"}> */}
           <PaymentButton/>
-          
-        {/* </Link> */}
     </div>  
-</div>
+</div> */}
 
       
       {/* Pricing Section */}
-      <h1 className="text-5xl font-medium text-center my-12">Conference Pricing Plans</h1>
+      {/* <h1 className="text-5xl font-medium text-center my-12">Conference Pricing Plans</h1>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
         {pricingData.map((plan, index) => (
           <PricingCard
@@ -105,8 +102,8 @@ const PricingPage: React.FC = () => {
             tagline={plan.tagline}
           />
         ))}
-      </div>
-      <h2 className="text-4xl font-semibold text-center mb-6">Frequently Asked Questions</h2>
+      </div> */}
+      <h2 className="text-4xl font-semibold text-center mb-6">Frequently Asked Questions About Pricing</h2>
       <Faqs/>
     </div>
   );

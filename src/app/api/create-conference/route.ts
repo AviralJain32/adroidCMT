@@ -4,8 +4,7 @@ import { authOptions } from "../auth/[...nextauth]/options";
 import { User } from "next-auth";
 import ConferenceModel from "@/model/Conference";
 import { sendConferenceCreationMail } from "@/helpers/sendConferenceCreationMail";
-import UserModel from "@/model/User";
-// import UserModel from "@/model/User";
+
 
 export async function POST(request: Request) {
     await dbConnect();
@@ -24,6 +23,7 @@ export async function POST(request: Request) {
     }
 
     const {
+        conferenceCategory,
         // conferenceEmail,
         conferenceOrganizerWebPage,
         conferenceOrganizerPhoneNumber,
@@ -44,7 +44,7 @@ export async function POST(request: Request) {
         conferenceSubmissionsDeadlineDate
     } = await request.json();
 
-    if (!conferenceSubmissionsDeadlineDate || !conferenceTitle || !conferenceAcronym || !conferenceWebpage || !conferenceVenue || !conferenceCity || !conferenceCountry || !conferenceFirstDay || !conferenceLastDay || !conferencePrimaryArea || !conferenceTitle ) {
+    if (!conferenceCategory || !conferenceSubmissionsDeadlineDate || !conferenceTitle || !conferenceAcronym || !conferenceWebpage || !conferenceVenue || !conferenceCity || !conferenceCountry || !conferenceFirstDay || !conferenceLastDay || !conferencePrimaryArea || !conferenceTitle ) {
         return new Response(
             JSON.stringify({
                 success: false,
@@ -73,6 +73,7 @@ export async function POST(request: Request) {
 
     try {
         const newConference = new ConferenceModel({
+            conferenceCategory,
             conferenceOrganizer: user._id,
             conferenceOrganizerWebPage,
             conferenceOrganizerPhoneNumber,
