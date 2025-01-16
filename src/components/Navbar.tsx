@@ -123,7 +123,7 @@ function Navbar() {
                 SmartSub
               </Link>
               <Link href="/pricing" className="hover:font-bold" onClick={() => setOpen(false)}>
-                Pricing
+                FAQ
               </Link>
               <Link href="/about-us" className="hover:font-bold" onClick={() => setOpen(false)}>
                 About Us
@@ -149,7 +149,7 @@ function Navbar() {
             SmartSub
           </Link>
           <Link href="/pricing" className="hover:font-bold">
-            Pricing
+            FAQ
           </Link>
           <Link href="/about-us" className="hover:font-bold">
             About Us
