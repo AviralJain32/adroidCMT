@@ -3,8 +3,9 @@ import { createContext, useContext, useEffect, useRef, useState } from "react";
 import { io, Socket } from "socket.io-client";
 import Peer from "peerjs";
 import { v4 as UUIDv4 } from "uuid";
+import { useSession } from "next-auth/react"
 
-const WS_Server = "http://localhost:5500";
+const WS_Server = "http://localhost:5000";
 
 // Context Type
 interface SocketContextType {
@@ -33,10 +34,15 @@ export const ConferenceSocketProvider: React.FC<{ children: React.ReactNode }> =
   const socket = useRef<Socket | null>(null);
   const peerRef = useRef<Peer | null>(null);
 
-  useEffect(() => {
+  const { data: session } = useSession()
+  console.log(session)
+
+  const initialize=async()=>{
     // Initialize only when the conference starts
     socket.current = io(WS_Server);
-    const userId = UUIDv4();
+    console.log(socket)
+    const user=await session
+    const userId =user && user._id;
 
     const newPeer = new Peer(userId, {
       host: "localhost",
@@ -51,6 +57,12 @@ export const ConferenceSocketProvider: React.FC<{ children: React.ReactNode }> =
     navigator.mediaDevices.getUserMedia({ video: true, audio: true }).then((userStream) => {
       setStream(userStream);
     });
+    const enterRoom = ({ roomId }: { roomId: string }) => {
+      navigate(`/room/${roomId}`);
+  };
+
+    // Listen for 'room-created' events from the server
+    socket.current.on("room-created", enterRoom);
 
     return () => {
       // Clean up socket and peer connection when leaving the conference
@@ -66,6 +78,10 @@ export const ConferenceSocketProvider: React.FC<{ children: React.ReactNode }> =
       setStream(null);
       setPeers({});
     };
+  }
+
+  useEffect(() => {
+    initialize()
   }, []);
 
   useEffect(() => {
@@ -86,7 +102,7 @@ export const ConferenceSocketProvider: React.FC<{ children: React.ReactNode }> =
     });
 
     socket.current?.emit("ready");
-  }, [stream]);
+  }, [stream]); 
 
   return (
     <ConferenceSocketContext.Provider value={{ socket: socket.current!, user, stream, peers }}>

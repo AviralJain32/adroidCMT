@@ -2,7 +2,7 @@
 
 import { useConferenceSocket } from "@/context/VideoCallConferenceContext";
 
-const page = () => {
+const Page = () => {
   const { stream, peers } = useConferenceSocket();
 
   return (
@@ -17,4 +17,4 @@ const page = () => {
   );
 };
 
-export default page
+export default Page
