@@ -43,9 +43,6 @@ export async function middleware(request: NextRequest) {
   const meetingRoutes = [
     '/room',
   ];
-  const allCookies = request.cookies.getAll()
-  console.log(allCookies) // => [{ name: 'nextjs', value: 'fast' }]
-  console.log(request.cookies.has("meet-config"))
 
   if(request.cookies.has("meet-owner")){
     return NextResponse.next();
