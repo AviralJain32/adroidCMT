@@ -3,6 +3,9 @@ import React, { useEffect, useState } from "react";
 import { ConferenceMeetingSchedule } from "../ConferenceMeetingSchedule";
 import { useParams } from "next/navigation";
 import axios from "axios";
+import { useConferenceSocket } from "@/context/VideoCallConferenceContext";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
 
 interface Meeting {
   meeting_id: string;
@@ -19,6 +22,13 @@ const MeetingPage = () => {
   const [meetings, setMeetings] = useState<Meeting[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  const {socket} = useConferenceSocket();
+
+  const initRoom=(roomId:string)=>{
+    console.log(socket)
+    console.log("Room is created in the backend")
+    socket.emit("create-room",{roomId:roomId})
+}
 
   const fetchMeetings = async () => {
     // ${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1
@@ -78,14 +88,15 @@ const MeetingPage = () => {
               }`}>
                 Status: {meeting.status}
               </p>
-              <a
-                href={meeting.join_link}
-                target="_blank"
-                rel="noopener noreferrer"
+              <Button
+                onClick={() => {
+                  initRoom(meeting.room_id);
+                  window.open(meeting.join_link, "_blank", "noopener,noreferrer");
+                }}
                 className="block mt-4 bg-blue-600 text-white text-center py-2 rounded-md hover:bg-blue-700 transition"
               >
                 Join Meeting
-              </a>
+              </Button>
             </div>
           ))}
         </div>

@@ -42,7 +42,8 @@ export const ConferenceSocketProvider: React.FC<{ children: React.ReactNode }> =
     socket.current = io(WS_Server);
     console.log(socket)
     const user=await session
-    const userId =user && user._id;
+    const userObjectId =user && user._id;
+    const userId=UUIDv4()
 
     const newPeer = new Peer(userId, {
       host: "localhost",
@@ -57,12 +58,6 @@ export const ConferenceSocketProvider: React.FC<{ children: React.ReactNode }> =
     navigator.mediaDevices.getUserMedia({ video: true, audio: true }).then((userStream) => {
       setStream(userStream);
     });
-    const enterRoom = ({ roomId }: { roomId: string }) => {
-      navigate(`/room/${roomId}`);
-  };
-
-    // Listen for 'room-created' events from the server
-    socket.current.on("room-created", enterRoom);
 
     return () => {
       // Clean up socket and peer connection when leaving the conference
