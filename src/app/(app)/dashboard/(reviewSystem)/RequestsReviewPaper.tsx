@@ -5,9 +5,9 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
-import { Button } from "@/components/ui/button";
-import { format } from "date-fns"; // Ensure this package is installed
+} from '@/components/ui/table';
+import { Button } from '@/components/ui/button';
+import { format } from 'date-fns'; // Ensure this package is installed
 
 // Define the types for the props
 interface User {
@@ -31,7 +31,11 @@ interface Paper {
 
 interface ReviewRequestTableProps {
   requests: Paper[] | null; // Allow requests to be null
-  handleAction: (reviewerId: string, action: "accept" | "reject", paperId: string) => void;
+  handleAction: (
+    reviewerId: string,
+    action: 'accept' | 'reject',
+    paperId: string,
+  ) => void;
 }
 
 const ReviewRequestTable: React.FC<ReviewRequestTableProps> = ({
@@ -39,7 +43,9 @@ const ReviewRequestTable: React.FC<ReviewRequestTableProps> = ({
   handleAction,
 }) => {
   if (!requests || requests.length === 0) {
-    return <p className="text-center text-gray-500">No review requests available.</p>;
+    return (
+      <p className="text-center text-gray-500">No review requests available.</p>
+    );
   }
 
   return (
@@ -53,26 +59,29 @@ const ReviewRequestTable: React.FC<ReviewRequestTableProps> = ({
         </TableRow>
       </TableHeader>
       <TableBody>
-        {requests.map((request) => (
+        {requests.map(request => (
           <TableRow key={request.paperId}>
             <TableCell>{request.paperTitle}</TableCell>
             <TableCell>
-              {request.reviewRequests[0]?.requestedBy?.fullname || "N/A"} (
-              {request.reviewRequests[0]?.requestedBy?.email || "N/A"})
+              {request.reviewRequests[0]?.requestedBy?.fullname || 'N/A'} (
+              {request.reviewRequests[0]?.requestedBy?.email || 'N/A'})
             </TableCell>
             <TableCell>
               {request.reviewRequests[0]?.requestedAt
-                ? format(new Date(request.reviewRequests[0].requestedAt), "dd MMM yyyy, hh:mm a")
-                : "N/A"}
+                ? format(
+                    new Date(request.reviewRequests[0].requestedAt),
+                    'dd MMM yyyy, hh:mm a',
+                  )
+                : 'N/A'}
             </TableCell>
             <TableCell>
               <Button
                 variant="default"
                 onClick={() =>
                   handleAction(
-                    request.reviewRequests[0]?.reviewerId._id || "",
-                    "accept",
-                    request.paperId
+                    request.reviewRequests[0]?.reviewerId._id || '',
+                    'accept',
+                    request.paperId,
                   )
                 }
                 className="mr-2"
@@ -83,9 +92,9 @@ const ReviewRequestTable: React.FC<ReviewRequestTableProps> = ({
                 variant="destructive"
                 onClick={() =>
                   handleAction(
-                    request.reviewRequests[0]?.reviewerId._id || "",
-                    "reject",
-                    request.paperId
+                    request.reviewRequests[0]?.reviewerId._id || '',
+                    'reject',
+                    request.paperId,
                   )
                 }
               >

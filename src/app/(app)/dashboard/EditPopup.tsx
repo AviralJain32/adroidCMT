@@ -1,4 +1,4 @@
-"use client"
+'use client';
 import {
   Sheet,
   SheetClose,
@@ -8,66 +8,79 @@ import {
   SheetHeader,
   SheetTitle,
   SheetTrigger,
-} from "@/components/ui/sheet"
+} from '@/components/ui/sheet';
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm, useFieldArray } from 'react-hook-form';
 import { Button } from '@/components/ui/button';
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui/form';
 import { toast } from '@/components/ui/use-toast';
 import * as z from 'zod';
 import { useParams, useRouter } from 'next/navigation';
 import { paperSubmissionSchema } from '@/schemas/paperCreation';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
-import { Checkbox } from "@/components/ui/checkbox";
-import { Loader2 } from 'lucide-react';  // Loading spinner icon
+import { Checkbox } from '@/components/ui/checkbox';
+import { Loader2 } from 'lucide-react'; // Loading spinner icon
 
 interface DefaultValues {
-    paperAuthor: [];
-    correspondingAuthor:[];
-    paperTitle: string;
-    paperFile: string;
-    paperKeywords: string[];
-    paperAbstract: string;
-    paperSubmissionDate: Date;
-    conference: {conferenceAcronym:string};
-    paperStatus: 'submitted' | 'accepted' | 'rejected' | 'review';
-    paperID:string
+  paperAuthor: [];
+  correspondingAuthor: [];
+  paperTitle: string;
+  paperFile: string;
+  paperKeywords: string[];
+  paperAbstract: string;
+  paperSubmissionDate: Date;
+  conference: { conferenceAcronym: string };
+  paperStatus: 'submitted' | 'accepted' | 'rejected' | 'review';
+  paperID: string;
 }
 
-const EditPopup = ({ paperID,paperTitle,paperKeywords,paperAbstract,paperAuthor,correspondingAuthor }: DefaultValues) => {
-
-  const CorrespondingAuthors = correspondingAuthor.map((author:Object) => ({
+const EditPopup = ({
+  paperID,
+  paperTitle,
+  paperKeywords,
+  paperAbstract,
+  paperAuthor,
+  correspondingAuthor,
+}: DefaultValues) => {
+  const CorrespondingAuthors = correspondingAuthor.map((author: Object) => ({
     ...author,
     isCorrespondingAuthor: true,
   }));
-  console.log(CorrespondingAuthors)
-  
+  console.log(CorrespondingAuthors);
+
   const params = useParams<{ confAcronym: string }>();
   const router = useRouter();
 
   const form = useForm<z.infer<typeof paperSubmissionSchema>>({
     resolver: zodResolver(paperSubmissionSchema),
     defaultValues: {
-              paperTitle:paperTitle,
-              paperKeywords:paperKeywords.join(", "),
-              paperAbstract:paperAbstract,
-              paperAuthors:[...paperAuthor,...CorrespondingAuthors],
-          }
+      paperTitle: paperTitle,
+      paperKeywords: paperKeywords.join(', '),
+      paperAbstract: paperAbstract,
+      paperAuthors: [...paperAuthor, ...CorrespondingAuthors],
+    },
   });
 
   const { fields, append, remove } = useFieldArray({
     control: form.control,
-    name: "paperAuthors"
+    name: 'paperAuthors',
   });
 
-  const fileRef = form.register("paperFile");
+  const fileRef = form.register('paperFile');
   const [isLoading, setIsLoading] = useState(false);
 
   const onSubmit = async (data: z.infer<typeof paperSubmissionSchema>) => {
-    console.log(data)
+    console.log(data);
     setIsLoading(true);
     const formData = new FormData();
     formData.append('paperTitle', data.paperTitle);
@@ -77,19 +90,23 @@ const EditPopup = ({ paperID,paperTitle,paperKeywords,paperAbstract,paperAuthor,
     formData.append('paperAuthors', JSON.stringify(data.paperAuthors));
 
     try {
-      const response = await axios.put(`/api/edit-paper?paperID=${paperID}`, formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
+      const response = await axios.put(
+        `/api/edit-paper?paperID=${paperID}`,
+        formData,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
         },
-      });
+      );
 
-      console.log(response)
+      console.log(response);
 
       if (response.data.success) {
         toast({
           title: 'Success',
           description: response.data.message,
-          variant: "default",
+          variant: 'default',
         });
         router.replace('/dashboard');
       } else {
@@ -102,7 +119,8 @@ const EditPopup = ({ paperID,paperTitle,paperKeywords,paperAbstract,paperAuthor,
     } catch (error: any) {
       toast({
         title: 'Error',
-        description: error.response?.data?.message || 'An unexpected error occurred',
+        description:
+          error.response?.data?.message || 'An unexpected error occurred',
         variant: 'destructive',
       });
     } finally {
@@ -125,7 +143,10 @@ const EditPopup = ({ paperID,paperTitle,paperKeywords,paperAbstract,paperAuthor,
           </SheetHeader>
           <div className="p-6 max-w-lg mx-auto">
             <Form {...form}>
-              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+              <form
+                onSubmit={form.handleSubmit(onSubmit)}
+                className="space-y-6"
+              >
                 <FormField
                   name="paperTitle"
                   control={form.control}
@@ -165,10 +186,13 @@ const EditPopup = ({ paperID,paperTitle,paperKeywords,paperAbstract,paperAuthor,
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Paper File</FormLabel>
-                      <Input type="file" {...fileRef}
-                        onChange={(event) => {
+                      <Input
+                        type="file"
+                        {...fileRef}
+                        onChange={event => {
                           field.onChange(event.target?.files?.[0] ?? undefined);
-                        }} />
+                        }}
+                      />
                       <FormMessage />
                     </FormItem>
                   )}
@@ -177,7 +201,10 @@ const EditPopup = ({ paperID,paperTitle,paperKeywords,paperAbstract,paperAuthor,
                   <legend className="text-lg font-medium">Authors</legend>
                   <div className="space-y-4 mt-4">
                     {fields.map((field, index) => (
-                      <div key={field.id} className="space-y-4 mb-4 border-b pb-4">
+                      <div
+                        key={field.id}
+                        className="space-y-4 mb-4 border-b pb-4"
+                      >
                         {/* <FormField
                           name={`paperAuthors.${index}.FirstName`}
                           control={form.control}
@@ -255,28 +282,46 @@ const EditPopup = ({ paperID,paperTitle,paperKeywords,paperAbstract,paperAuthor,
                                   onCheckedChange={field.onChange}
                                 />
                               </FormControl>
-                              <FormLabel className="leading-none">Corresponding Author</FormLabel>
+                              <FormLabel className="leading-none">
+                                Corresponding Author
+                              </FormLabel>
                             </FormItem>
                           )}
                         />
-                        <Button type="button" variant="outline" onClick={() => remove(index)}>Remove Author</Button>
+                        <Button
+                          type="button"
+                          variant="outline"
+                          onClick={() => remove(index)}
+                        >
+                          Remove Author
+                        </Button>
                       </div>
                     ))}
-                    <Button type="button" variant="ghost" onClick={() => append({
-                      // FirstName: "",
-                      // LastName: "",
-                      email: "",
-                      // Country: "",
-                      // Affiliation: "",
-                      // WebPage: "",
-                      isCorrespondingAuthor: false,
-                    })}>
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      onClick={() =>
+                        append({
+                          // FirstName: "",
+                          // LastName: "",
+                          email: '',
+                          // Country: "",
+                          // Affiliation: "",
+                          // WebPage: "",
+                          isCorrespondingAuthor: false,
+                        })
+                      }
+                    >
                       Add Author
                     </Button>
                   </div>
                 </fieldset>
                 <Button className="w-full" type="submit" disabled={isLoading}>
-                  {isLoading ? <Loader2 className="animate-spin" /> : 'Submit Paper'}
+                  {isLoading ? (
+                    <Loader2 className="animate-spin" />
+                  ) : (
+                    'Submit Paper'
+                  )}
                 </Button>
               </form>
             </Form>
@@ -290,6 +335,6 @@ const EditPopup = ({ paperID,paperTitle,paperKeywords,paperAbstract,paperAuthor,
       </Sheet>
     </div>
   );
-}
+};
 
 export default EditPopup;

@@ -21,7 +21,6 @@
 // import { Toggle } from "@/components/ui/toggle";
 // import { PulseLoader } from "react-spinners";
 
-
 // const OrganizedConferenceComponent=()=>{
 //   const { data: organizedConferences, error: conferencesError, isLoading: loadingConferences } = useGetOrganizedConferencesQuery()
 
@@ -47,7 +46,7 @@
 //                   </TableRow>
 //                 ) :organizedConferences && organizedConferences.length > 0 ? (
 //                   organizedConferences.map((organizedConference:any) => (
-                    
+
 //                     <TableRow key={organizedConference._id}>
 //                       <TableCell className="font-medium">{organizedConference.conferenceAcronym}</TableCell>
 //                       <TableCell>{organizedConference.conferenceOrganizerRole}</TableCell>
@@ -104,7 +103,7 @@
 //                             switch (submittedPaper.paperStatus) {
 //                               case "submitted":
 //                                 return <Badge variant="submitted">Submitted</Badge>;
-//                               case "accepted": 
+//                               case "accepted":
 //                                 return <Badge variant="accepted">Accepted</Badge>;
 //                               case "rejected":
 //                                 return <Badge variant="rejected">Rejected</Badge>;
@@ -116,7 +115,7 @@
 //                           })()}
 //                       </TableCell>
 //                       <TableCell><EditPopup {...submittedPaper}/></TableCell>
-                      
+
 //                     </TableRow>
 //                   ))
 //                 ) : (
@@ -152,7 +151,7 @@
 //               ${showConferences ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-600'}`}
 //           >
 //             {showConferences ? (
-              
+
 //               <span className="font-medium text-sm transition-opacity duration-300">Login as Author</span>
 //             ) : (
 //               <span className="font-medium text-sm transition-opacity duration-300">Login as Conference Chair</span>
@@ -171,11 +170,9 @@
 //   );
 // };
 
-
 // export default Page;
 
-
-"use client";
+'use client';
 import {
   Table,
   TableBody,
@@ -183,20 +180,20 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
-import moment from "moment";
-import { Badge } from "@/components/ui/badge";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
-import { useGetOrganizedConferencesQuery } from "@/store/features/ConferenceApiSlice";
-import { useGetSubmittedPapersQuery } from "@/store/features/PaperApiSlice";
+} from '@/components/ui/table';
+import moment from 'moment';
+import { Badge } from '@/components/ui/badge';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import Link from 'next/link';
+import { Button } from '@/components/ui/button';
+import { useGetOrganizedConferencesQuery } from '@/store/features/ConferenceApiSlice';
+import { useGetSubmittedPapersQuery } from '@/store/features/PaperApiSlice';
 // import { useGetReviewedPapersQuery } from "@/store/features/ReviewerApiSlice"; // Add Reviewer API
-import { useState } from "react";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { PulseLoader } from "react-spinners";
-import ReviewedPapersComponent from "./(reviewSystem)/ReviewPaperComponent";
-import { useSession } from "next-auth/react";
+import { useState } from 'react';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { PulseLoader } from 'react-spinners';
+import ReviewedPapersComponent from './(reviewSystem)/ReviewPaperComponent';
+import { useSession } from 'next-auth/react';
 
 // Organized Conferences Component
 const OrganizedConferenceComponent = () => {
@@ -235,13 +232,16 @@ const OrganizedConferenceComponent = () => {
                   </TableCell>
                   <TableCell>{conference.conferenceOrganizerRole}</TableCell>
                   <TableCell>
-                    {moment(conference.conferenceFirstDay).calendar()} to {moment(conference.conferenceLastDay).calendar()}
+                    {moment(conference.conferenceFirstDay).calendar()} to{' '}
+                    {moment(conference.conferenceLastDay).calendar()}
                   </TableCell>
                   <TableCell>
-                    {moment(conference.conferenceSubmissionsDeadlineDate).calendar() }
+                    {moment(
+                      conference.conferenceSubmissionsDeadlineDate,
+                    ).calendar()}
                   </TableCell>
                   <TableCell>
-                    {moment(conference.conferenceCreatedAt).calendar() }
+                    {moment(conference.conferenceCreatedAt).calendar()}
                   </TableCell>
                   <TableCell>
                     <Link
@@ -296,11 +296,8 @@ const SubmittedPaperComponent = () => {
               </TableRow>
             ) : submittedPapers && submittedPapers?.length > 0 ? (
               submittedPapers.map((paper: any) => (
-                
                 <TableRow key={paper.paperTitle}>
-                  <TableCell className="font-bold">
-                    {paper.paperID}
-                  </TableCell>
+                  <TableCell className="font-bold">{paper.paperID}</TableCell>
                   <TableCell className="font-medium">
                     {paper.paperTitle}
                   </TableCell>
@@ -309,7 +306,9 @@ const SubmittedPaperComponent = () => {
                     {moment(paper.paperSubmissionDate).calendar()}
                   </TableCell>
                   <TableCell>
-                    <Badge variant={paper.paperStatus}>{paper.paperStatus}</Badge>
+                    <Badge variant={paper.paperStatus}>
+                      {paper.paperStatus}
+                    </Badge>
                   </TableCell>
                 </TableRow>
               ))
@@ -329,13 +328,10 @@ const SubmittedPaperComponent = () => {
 
 // Main Page
 const Page: React.FC = () => {
-    const { data: session } = useSession()
-    console.log(session)
+  const { data: session } = useSession();
+  console.log(session);
   return (
     <div className="container mx-auto p-8">
-
-
-
       <div className="flex flex-col items-center">
         <h1 className="text-5xl font-extrabold text-gray-800 mb-8">
           Dashboard
@@ -383,4 +379,3 @@ const Page: React.FC = () => {
 };
 
 export default Page;
-

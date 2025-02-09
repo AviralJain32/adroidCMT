@@ -4,7 +4,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import Stripe from 'stripe';
 
 // Initialize Stripe with the secret key
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || "");
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || '');
 
 export async function POST(req: NextRequest) {
   await dbConnect();
@@ -19,11 +19,14 @@ export async function POST(req: NextRequest) {
     event = stripe.webhooks.constructEvent(
       rawBody,
       sig || '',
-      process.env.STRIPE_WEBHOOK_SECRET || ""
+      process.env.STRIPE_WEBHOOK_SECRET || '',
     );
   } catch (err: any) {
     console.error('⚠️ Webhook signature verification failed.', err.message);
-    return NextResponse.json({ message: `Webhook Error: ${err.message}`, success: false }, { status: 400 });
+    return NextResponse.json(
+      { message: `Webhook Error: ${err.message}`, success: false },
+      { status: 400 },
+    );
   }
 
   // Handle the event
@@ -52,14 +55,17 @@ export async function POST(req: NextRequest) {
 
 // Fulfillment logic (e.g., update database, etc.)
 async function fulfillOrder(session: Stripe.Checkout.Session) {
-  console.log("****************************************************") 
+  console.log('****************************************************');
   console.log(session);
-  console.log("session dropdown value");
-  console.log("****************************************************")
+  console.log('session dropdown value');
+  console.log('****************************************************');
   console.log('Fulfilling order for session ID:', session.id);
-  console.log(session.custom_fields[0].dropdown?.value)
-  await ConferenceModel.updateOne({ _id: session.custom_fields[0].dropdown?.value }, {
-    $set: { conferenceSecurityDeposit2000Paid: true }
-  });
-  console.log("field updated")
+  console.log(session.custom_fields[0].dropdown?.value);
+  await ConferenceModel.updateOne(
+    { _id: session.custom_fields[0].dropdown?.value },
+    {
+      $set: { conferenceSecurityDeposit2000Paid: true },
+    },
+  );
+  console.log('field updated');
 }

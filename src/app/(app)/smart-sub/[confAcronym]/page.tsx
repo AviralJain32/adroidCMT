@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import {
   Table,
@@ -7,69 +7,72 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
-import moment from "moment";
-import { useParams } from "next/navigation";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { useEffect, useState } from "react";
-import axios from "axios";
-import Link from "next/link";
-import { IConference } from "@/model/Conference";
-import { useGetConferenceByConferenceIDQuery } from "@/store/features/ConferenceApiSlice";
-import Loader from "@/components/Loader";
-
+} from '@/components/ui/table';
+import moment from 'moment';
+import { useParams } from 'next/navigation';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { useEffect, useState } from 'react';
+import axios from 'axios';
+import Link from 'next/link';
+import { IConference } from '@/model/Conference';
+import { useGetConferenceByConferenceIDQuery } from '@/store/features/ConferenceApiSlice';
+import Loader from '@/components/Loader';
 
 const ConferencePage = () => {
   const params = useParams();
   const [loading, setLoading] = useState(true);
-  const [conferenceDetails, setConferenceDetails] = useState<IConference | null>(null);
+  const [conferenceDetails, setConferenceDetails] =
+    useState<IConference | null>(null);
 
   // const baseUrl = `${window.location.protocol}//${window.location.host}`;
   // const profileUrl = `${baseUrl}/submit-paper/${params.confAcronym}`;
 
-  const [baseUrl, setBaseUrl] = useState("hello");
+  const [baseUrl, setBaseUrl] = useState('hello');
 
   useEffect(() => {
     setBaseUrl(`${window.location.protocol}//${window.location.host}`);
   }, []);
-  
+
   const profileUrl = `${baseUrl}/submit-paper/${params.confAcronym}`;
-  console.log(profileUrl)
-    // const { data:conferenceDetails, error, isLoading } = useGetConferenceByConferenceIDQuery(params.confAcronym as string);
+  console.log(profileUrl);
+  // const { data:conferenceDetails, error, isLoading } = useGetConferenceByConferenceIDQuery(params.confAcronym as string);
 
-    const getConferenceByConferenceID = async (conferenceAcronym: string) => {
-      try {
-        setLoading(true);
-        const response = await axios.get(`/api/get-conference-by-conference-id?conferenceAcronym=${conferenceAcronym}`);
-        if (response.data.success) {
-          setConferenceDetails(response.data.data)
-          console.log(response)
-          return response.data.data; // Returning the conference details
-        } else {
-          throw new Error(response.data.message); // Throwing an error if not successful
-        }
-      } catch (error) {
-        setLoading(false)
-        console.error("Error fetching conference details:", error);
-        throw error; // Propagating the error for the caller to handle
+  const getConferenceByConferenceID = async (conferenceAcronym: string) => {
+    try {
+      setLoading(true);
+      const response = await axios.get(
+        `/api/get-conference-by-conference-id?conferenceAcronym=${conferenceAcronym}`,
+      );
+      if (response.data.success) {
+        setConferenceDetails(response.data.data);
+        console.log(response);
+        return response.data.data; // Returning the conference details
+      } else {
+        throw new Error(response.data.message); // Throwing an error if not successful
       }
-      finally{
-        setLoading(false)
-      }
-    };
+    } catch (error) {
+      setLoading(false);
+      console.error('Error fetching conference details:', error);
+      throw error; // Propagating the error for the caller to handle
+    } finally {
+      setLoading(false);
+    }
+  };
 
-    useEffect(()=>{
-      console.log(params.confAcronym)
-      getConferenceByConferenceID(params.confAcronym as string)
-  },[])
+  useEffect(() => {
+    console.log(params.confAcronym);
+    getConferenceByConferenceID(params.confAcronym as string);
+  }, []);
 
   if (loading) {
-    return <Loader/>
+    return <Loader />;
   }
 
   if (!conferenceDetails) {
-    return <div className="text-center py-10">No conference details found.</div>;
+    return (
+      <div className="text-center py-10">No conference details found.</div>
+    );
   }
 
   const {
@@ -104,9 +107,7 @@ const ConferencePage = () => {
           <h1 className="text-2xl font-semibold">{conferenceTitle}</h1>
           {conferenceIsAcceptingPaper && (
             <Link href={profileUrl} target="_blank">
-            <Button>
-              Submit Paper
-            </Button>
+              <Button>Submit Paper</Button>
             </Link>
           )}
         </div>
@@ -128,31 +129,35 @@ const ConferencePage = () => {
             <TableRow>
               <TableHead>Conference website</TableHead>
               <Link href={conferenceOrganizerWebPage}>
-              <TableCell className="font-medium">{conferenceOrganizerWebPage}</TableCell>
+                <TableCell className="font-medium">
+                  {conferenceOrganizerWebPage}
+                </TableCell>
               </Link>
             </TableRow>
             <TableRow>
               <TableHead>Submission link</TableHead>
               <Link href={profileUrl}>
-              <TableCell className="font-medium">{profileUrl}</TableCell>
+                <TableCell className="font-medium">{profileUrl}</TableCell>
               </Link>
             </TableRow>
             <TableRow>
               <TableHead>Submission Deadline</TableHead>
               <TableCell className="font-medium">
-                {moment(conferenceSubmissionsDeadlineDate).format("MMMM Do YYYY")}
+                {moment(conferenceSubmissionsDeadlineDate).format(
+                  'MMMM Do YYYY',
+                )}
               </TableCell>
             </TableRow>
             <TableRow>
               <TableHead>Conference Start Date</TableHead>
               <TableCell className="font-medium">
-                {moment(conferenceFirstDay).format("MMMM Do YYYY")}
+                {moment(conferenceFirstDay).format('MMMM Do YYYY')}
               </TableCell>
             </TableRow>
             <TableRow>
               <TableHead>Conference End Date</TableHead>
               <TableCell className="font-medium">
-                {moment(conferenceLastDay).format("MMMM Do YYYY")}
+                {moment(conferenceLastDay).format('MMMM Do YYYY')}
               </TableCell>
             </TableRow>
             <TableRow>
@@ -163,17 +168,24 @@ const ConferencePage = () => {
             </TableRow>
             <TableRow>
               <TableHead>Primary Area</TableHead>
-              <TableCell className="font-medium">{conferencePrimaryArea}</TableCell>
+              <TableCell className="font-medium">
+                {conferencePrimaryArea}
+              </TableCell>
             </TableRow>
             <TableRow>
               <TableHead>Secondary Area</TableHead>
-              <TableCell className="font-medium">{conferenceSecondaryArea}</TableCell>
+              <TableCell className="font-medium">
+                {conferenceSecondaryArea}
+              </TableCell>
             </TableRow>
             <TableRow>
               <TableHead>Area Notes</TableHead>
-              <TableCell className="font-medium">{conferenceAreaNotes || "No Area Notes are present for this conference"}</TableCell>
+              <TableCell className="font-medium">
+                {conferenceAreaNotes ||
+                  'No Area Notes are present for this conference'}
+              </TableCell>
             </TableRow>
-{/*             
+            {/*             
             <TableRow>
               <TableHead>Status</TableHead>
               <TableCell className="font-medium">
@@ -184,7 +196,9 @@ const ConferencePage = () => {
             </TableRow> */}
             <TableRow>
               <TableHead>Additional Information</TableHead>
-              <TableCell className="font-medium">{conferenceAnyOtherInformation}</TableCell>
+              <TableCell className="font-medium">
+                {conferenceAnyOtherInformation}
+              </TableCell>
             </TableRow>
           </TableBody>
         </Table>

@@ -1,6 +1,6 @@
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm, useFieldArray } from "react-hook-form";
-import * as z from "zod";
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm, useFieldArray } from 'react-hook-form';
+import * as z from 'zod';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -11,9 +11,9 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
+} from '@/components/ui/alert-dialog';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
 import {
   Form,
   FormField,
@@ -21,30 +21,32 @@ import {
   FormLabel,
   FormControl,
   FormMessage,
-} from "@/components/ui/form";
-import { SubmittedPaper } from "@/types/SubmittedPaperType";
-import { useState } from "react";
+} from '@/components/ui/form';
+import { SubmittedPaper } from '@/types/SubmittedPaperType';
+import { useState } from 'react';
 
 // Define validation schema using Zod for multiple ranges
 const downloadRangeSchema = z.object({
   ranges: z.array(
-    z.object({
-      lowerRange: z
-        .string()
-        .transform((value) => parseFloat(value))
-        .refine((value) => !isNaN(value) && value > 0, {
-          message: "Lower range must be a positive number",
-        }),
-      upperRange: z
-        .string()
-        .transform((value) => parseFloat(value))
-        .refine((value) => !isNaN(value) && value > 0, {
-          message: "Upper range must be a positive number",
-        }),
-    }).refine((data) => data.upperRange > data.lowerRange, {
-      message: "Upper range must be greater than lower range",
-      path: ["upperRange"],
-    })
+    z
+      .object({
+        lowerRange: z
+          .string()
+          .transform(value => parseFloat(value))
+          .refine(value => !isNaN(value) && value > 0, {
+            message: 'Lower range must be a positive number',
+          }),
+        upperRange: z
+          .string()
+          .transform(value => parseFloat(value))
+          .refine(value => !isNaN(value) && value > 0, {
+            message: 'Upper range must be a positive number',
+          }),
+      })
+      .refine(data => data.upperRange > data.lowerRange, {
+        message: 'Upper range must be greater than lower range',
+        path: ['upperRange'],
+      }),
   ),
 });
 
@@ -67,27 +69,34 @@ export function DownloadPapers({ papers, downloadPaperFunction }: PaperType) {
 
   const { fields, append, remove } = useFieldArray({
     control: form.control,
-    name: "ranges",
+    name: 'ranges',
   });
 
   // Function to check if papers are downloadable based on the entered ranges
-  const checkDownloadablePapers = (ranges: DownloadRangeFormData["ranges"], papers: SubmittedPaper[]) => {
-    const downloadablePapers = papers.filter((paper) => {
-      const paperId = parseInt(paper.paperID.split("-").pop()!); // Extract the numeric ID from 'aviral-1234-1'
-      return ranges.some((range) => paperId >= range.lowerRange && paperId <= range.upperRange);
+  const checkDownloadablePapers = (
+    ranges: DownloadRangeFormData['ranges'],
+    papers: SubmittedPaper[],
+  ) => {
+    const downloadablePapers = papers.filter(paper => {
+      const paperId = parseInt(paper.paperID.split('-').pop()!); // Extract the numeric ID from 'aviral-1234-1'
+      return ranges.some(
+        range => paperId >= range.lowerRange && paperId <= range.upperRange,
+      );
     });
     setAvailablePapers(downloadablePapers);
   };
 
   // Function to download papers based on the entered ranges
-  const downloadBulkPapers = (ranges: DownloadRangeFormData["ranges"]) => {
-    const downloadablePapers = papers.filter((paper) => {
-      const paperId = parseInt(paper.paperID.split("-").pop()!); // Extract the numeric ID from 'aviral-1234-1'
-      return ranges.some((range) => paperId >= range.lowerRange && paperId <= range.upperRange);
+  const downloadBulkPapers = (ranges: DownloadRangeFormData['ranges']) => {
+    const downloadablePapers = papers.filter(paper => {
+      const paperId = parseInt(paper.paperID.split('-').pop()!); // Extract the numeric ID from 'aviral-1234-1'
+      return ranges.some(
+        range => paperId >= range.lowerRange && paperId <= range.upperRange,
+      );
     });
 
     // Trigger the download function for each paper
-    downloadablePapers.forEach((paper) => {
+    downloadablePapers.forEach(paper => {
       downloadPaperFunction(paper.paperFile);
     });
   };
@@ -109,9 +118,12 @@ export function DownloadPapers({ papers, downloadPaperFunction }: PaperType) {
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
             <AlertDialogHeader>
-              <AlertDialogTitle>Enter the range of papers you want to download</AlertDialogTitle>
+              <AlertDialogTitle>
+                Enter the range of papers you want to download
+              </AlertDialogTitle>
               <AlertDialogDescription>
-                Provide multiple ranges of paper numbers to download (e.g., 1-10, 15-30).
+                Provide multiple ranges of paper numbers to download (e.g.,
+                1-10, 15-30).
               </AlertDialogDescription>
             </AlertDialogHeader>
 
@@ -125,7 +137,11 @@ export function DownloadPapers({ papers, downloadPaperFunction }: PaperType) {
                     <FormItem>
                       <FormLabel>From (Lower Range)</FormLabel>
                       <FormControl>
-                        <Input {...field} type="number" placeholder="Enter lower range" />
+                        <Input
+                          {...field}
+                          type="number"
+                          placeholder="Enter lower range"
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -138,7 +154,11 @@ export function DownloadPapers({ papers, downloadPaperFunction }: PaperType) {
                     <FormItem>
                       <FormLabel>To (Upper Range)</FormLabel>
                       <FormControl>
-                        <Input {...field} type="number" placeholder="Enter upper range" />
+                        <Input
+                          {...field}
+                          type="number"
+                          placeholder="Enter upper range"
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -169,7 +189,11 @@ export function DownloadPapers({ papers, downloadPaperFunction }: PaperType) {
             </Button>
 
             {/* Button to trigger the check */}
-            <Button type="button" onClick={form.handleSubmit(onSubmit)} variant="outline">
+            <Button
+              type="button"
+              onClick={form.handleSubmit(onSubmit)}
+              variant="outline"
+            >
               Check Available Papers
             </Button>
 
@@ -187,10 +211,8 @@ export function DownloadPapers({ papers, downloadPaperFunction }: PaperType) {
           <div className="mt-4">
             <h3 className="font-bold">Available Papers for Download:</h3>
             <ul className="list-disc list-inside">
-              {availablePapers.map((paper) => (
-                <li key={paper.paperID}>
-                  Paper ID: {paper.paperID}
-                </li>
+              {availablePapers.map(paper => (
+                <li key={paper.paperID}>Paper ID: {paper.paperID}</li>
               ))}
             </ul>
           </div>

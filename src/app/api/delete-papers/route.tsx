@@ -17,7 +17,7 @@ export async function DELETE(request: NextRequest) {
         success: false,
         message: 'Not Authenticated',
       },
-      { status: 401 }
+      { status: 401 },
     );
   }
 
@@ -32,13 +32,13 @@ export async function DELETE(request: NextRequest) {
           success: false,
           message: 'Please add at least one paper to delete.',
         },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
     // Delete papers in bulk
     const result = await PaperModel.deleteMany({
-      paperID: { $in: paperIdList }
+      paperID: { $in: paperIdList },
     });
 
     // Log how many papers were deleted
@@ -58,7 +58,7 @@ export async function DELETE(request: NextRequest) {
         message: 'Failed to delete papers. Please try again later.',
         error: error.message,
       },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

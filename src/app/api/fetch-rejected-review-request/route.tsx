@@ -1,8 +1,8 @@
-import { NextRequest, NextResponse } from "next/server";
-import dbConnect from "@/lib/dbConnect";
-import { getServerSession, User } from "next-auth";
-import { authOptions } from "../auth/[...nextauth]/options";
-import PaperModel from "@/model/PaperSchema";
+import { NextRequest, NextResponse } from 'next/server';
+import dbConnect from '@/lib/dbConnect';
+import { getServerSession, User } from 'next-auth';
+import { authOptions } from '../auth/[...nextauth]/options';
+import PaperModel from '@/model/PaperSchema';
 
 export async function GET(request: NextRequest) {
   try {
@@ -15,9 +15,9 @@ export async function GET(request: NextRequest) {
       return NextResponse.json(
         {
           success: false,
-          message: "Unauthorized access. Please log in to proceed.",
+          message: 'Unauthorized access. Please log in to proceed.',
         },
-        { status: 401 }
+        { status: 401 },
       );
     }
 
@@ -26,66 +26,70 @@ export async function GET(request: NextRequest) {
 
     // Fetch all pending review requests for the current user
     const papers = await PaperModel.find({
-      "reviewRequests.reviewerId": user._id,
-      "reviewRequests.status": "rejected",
-    }).select("paperTitle reviewRequests")
-    .populate([
-      {
-        path: "reviewRequests.reviewerId",
-        model: "User", // Ensure the model name matches exactly
-        select: "fullname email", // Fetch specific fields
-      },
-      {
-        path: "reviewRequests.requestedBy",
-        model: "User", // Ensure the model name matches exactly
-        select: "fullname email", // Fetch specific fields
-      },
-    ])
-      console.log(papers)
+      'reviewRequests.reviewerId': user._id,
+      'reviewRequests.status': 'rejected',
+    })
+      .select('paperTitle reviewRequests')
+      .populate([
+        {
+          path: 'reviewRequests.reviewerId',
+          model: 'User', // Ensure the model name matches exactly
+          select: 'fullname email', // Fetch specific fields
+        },
+        {
+          path: 'reviewRequests.requestedBy',
+          model: 'User', // Ensure the model name matches exactly
+          select: 'fullname email', // Fetch specific fields
+        },
+      ]);
+    console.log(papers);
 
     // If no papers found with pending review requests
     if (!papers || papers.length === 0) {
       return NextResponse.json(
         {
           success: true,
-          message: "No pending review requests found.",
+          message: 'No pending review requests found.',
           requests: [],
         },
-        { status: 200 }
+        { status: 200 },
       );
     }
 
     // Transform data into user-friendly structure
-    const formattedRequests = papers.map((paper) => ({
+    const formattedRequests = papers.map(paper => ({
       paperId: paper._id,
       paperTitle: paper.paperTitle,
-      reviewRequests: paper.reviewRequests.filter((req) => (
-            req.reviewerId && req.reviewerId._id.toString() === user._id && req.status === "rejected"
-      ))
+      reviewRequests: paper.reviewRequests.filter(
+        req =>
+          req.reviewerId &&
+          req.reviewerId._id.toString() === user._id &&
+          req.status === 'rejected',
+      ),
     }));
 
-       // Check for papers with non empty review requests
-       const actualRequests = formattedRequests.filter(
-        (req) => req.reviewRequests.length != 0
-      );
+    // Check for papers with non empty review requests
+    const actualRequests = formattedRequests.filter(
+      req => req.reviewRequests.length != 0,
+    );
 
     return NextResponse.json(
       {
         success: true,
-        message: "Pending review requests retrieved successfully.",
+        message: 'Pending review requests retrieved successfully.',
         //yaha pe hamesha ek hi aayega kyuki searching hori hai
         requests: actualRequests,
       },
-      { status: 200 }
+      { status: 200 },
     );
   } catch (error: any) {
-    console.error("Error fetching review requests:", error);
+    console.error('Error fetching review requests:', error);
     return NextResponse.json(
       {
         success: false,
-        message: error.message || "An unexpected error occurred.",
+        message: error.message || 'An unexpected error occurred.',
       },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

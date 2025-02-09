@@ -8,11 +8,11 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
-import { Button } from "@/components/ui/button";
-import { SubmittedPaper } from "@/types/SubmittedPaperType";
-import { useDeleteConferencePaperMutation } from "@/store/features/PaperApiSlice";
-import { toast } from "@/components/ui/use-toast";
+} from '@/components/ui/alert-dialog';
+import { Button } from '@/components/ui/button';
+import { SubmittedPaper } from '@/types/SubmittedPaperType';
+import { useDeleteConferencePaperMutation } from '@/store/features/PaperApiSlice';
+import { toast } from '@/components/ui/use-toast';
 
 interface PaperSubmittedType {
   selectedRows: SubmittedPaper[];
@@ -23,27 +23,26 @@ export function DeletePapers({ selectedRows }: PaperSubmittedType) {
     useDeleteConferencePaperMutation();
 
   const hasSelectedPapers = selectedRows.length > 0;
-  const paperIdList = selectedRows.map((row) => row.paperID);
+  const paperIdList = selectedRows.map(row => row.paperID);
 
   const handleDelete = async () => {
     if (!hasSelectedPapers) return;
 
     try {
       // Pass the array of paper IDs in one API call
-      const response=await deletePaper({
-        paperIdList
+      const response = await deletePaper({
+        paperIdList,
       }).unwrap();
       toast({
         title: 'Success',
         description: response.message,
       });
-      console.log(response)
-
-    } catch (error:any) {
-      console.error("Failed to delete papers:", error);
+      console.log(response);
+    } catch (error: any) {
+      console.error('Failed to delete papers:', error);
       toast({
         title: 'Failed to delete papers:',
-        description:error.data.message,
+        description: error.data.message,
         variant: 'destructive',
       });
     }
@@ -53,22 +52,22 @@ export function DeletePapers({ selectedRows }: PaperSubmittedType) {
     <AlertDialog>
       <AlertDialogTrigger asChild>
         <Button variant="outline" disabled={!hasSelectedPapers}>
-          {hasSelectedPapers ? "Delete Selected Papers" : "No Papers Selected"}
+          {hasSelectedPapers ? 'Delete Selected Papers' : 'No Papers Selected'}
         </Button>
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>
             {hasSelectedPapers
-              ? "Confirm Paper Deletion"
-              : "No Papers Selected"}
+              ? 'Confirm Paper Deletion'
+              : 'No Papers Selected'}
           </AlertDialogTitle>
           <AlertDialogDescription>
             {hasSelectedPapers ? (
               <>
                 You are about to permanently delete the following papers:
                 <ul className="mt-2">
-                  {selectedRows.map((row) => (
+                  {selectedRows.map(row => (
                     <li key={row.paperID}>Paper ID: {row.paperID}</li>
                   ))}
                 </ul>
@@ -86,7 +85,7 @@ export function DeletePapers({ selectedRows }: PaperSubmittedType) {
           <AlertDialogFooter>
             <AlertDialogCancel>Cancel</AlertDialogCancel>
             <AlertDialogAction onClick={handleDelete}>
-              {isLoading ? "Deleting..." : "Delete"}
+              {isLoading ? 'Deleting...' : 'Delete'}
             </AlertDialogAction>
           </AlertDialogFooter>
         )}

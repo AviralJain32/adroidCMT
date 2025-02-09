@@ -5,16 +5,16 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { z } from 'zod';
 
 interface ApiResponse<T> {
-    success: boolean;
-    message: string;
-    data: T;
+  success: boolean;
+  message: string;
+  data: T;
 }
 
 interface OrganizedConference {
-    _id: string;
-    conferenceAcronym: string;
-    conferenceOrganizerRole: string;
-    conferenceCreatedAt: Date;
+  _id: string;
+  conferenceAcronym: string;
+  conferenceOrganizerRole: string;
+  conferenceCreatedAt: Date;
 }
 
 interface updateType {
@@ -22,18 +22,30 @@ interface updateType {
   conferenceDetails: z.infer<typeof conferenceSchema>;
 }
 // Creating a mapped type that modifies conferenceOrganizer to be a string
-type IModifiedConference = Omit<IConference, 'conferenceOrganizer'| 'conferenceStatus' > & {
-  conferenceOrganizer: {_id:string,fullname:string};
-  conferenceStatus:"outline" | "accepted" | "submitted" | "rejected" | "review" | null | undefined
+type IModifiedConference = Omit<
+  IConference,
+  'conferenceOrganizer' | 'conferenceStatus'
+> & {
+  conferenceOrganizer: { _id: string; fullname: string };
+  conferenceStatus:
+    | 'outline'
+    | 'accepted'
+    | 'submitted'
+    | 'rejected'
+    | 'review'
+    | null
+    | undefined;
 };
 export const ConferenceApiSlice = createApi({
   reducerPath: 'conferenceapi',
   baseQuery: fetchBaseQuery({ baseUrl: '/api' }),
   tagTypes: ['conference'],
-  endpoints: (builder) => ({
+  endpoints: builder => ({
     getOrganizedConferences: builder.query<OrganizedConference[], void>({
       query: () => `/get-conferences`,
-      transformResponse: (response: ApiResponse<{ organizedConferences: OrganizedConference[] }>) => {
+      transformResponse: (
+        response: ApiResponse<{ organizedConferences: OrganizedConference[] }>,
+      ) => {
         if (response.success) {
           return response.data.organizedConferences;
         } else {
@@ -42,8 +54,11 @@ export const ConferenceApiSlice = createApi({
       },
       providesTags: ['conference'],
     }),
-    createNewConference: builder.mutation<ApiResponse<null>, z.infer<typeof conferenceSchema>>({
-      query: (newConference) => ({
+    createNewConference: builder.mutation<
+      ApiResponse<null>,
+      z.infer<typeof conferenceSchema>
+    >({
+      query: newConference => ({
         url: '/create-conference',
         method: 'POST',
         body: newConference,
@@ -58,7 +73,7 @@ export const ConferenceApiSlice = createApi({
       }),
       invalidatesTags: ['conference'],
     }),
-    getAllAcceptedConferences:builder.query<IConference[], void>({
+    getAllAcceptedConferences: builder.query<IConference[], void>({
       query: () => `/get-all-accepted-conferences`,
       transformResponse: (response: ApiResponse<IConference[]>) => {
         if (response.success) {
@@ -69,7 +84,8 @@ export const ConferenceApiSlice = createApi({
       },
     }),
     getConferenceByConferenceID: builder.query<IModifiedConference, string>({
-      query: (confName) => `/get-conference-by-conference-id?confName=${confName}`,
+      query: confName =>
+        `/get-conference-by-conference-id?confName=${confName}`,
       transformResponse: (response: ApiResponse<IModifiedConference>) => {
         if (response.success) {
           return response.data;
@@ -82,10 +98,10 @@ export const ConferenceApiSlice = createApi({
 });
 
 // Export hooks for usage in functional components
-export const { 
-  useGetOrganizedConferencesQuery, 
-  useCreateNewConferenceMutation, 
+export const {
+  useGetOrganizedConferencesQuery,
+  useCreateNewConferenceMutation,
   useUpdateConferenceMutation,
   useGetAllAcceptedConferencesQuery,
-  useGetConferenceByConferenceIDQuery
+  useGetConferenceByConferenceIDQuery,
 } = ConferenceApiSlice;

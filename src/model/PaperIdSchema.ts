@@ -1,25 +1,30 @@
-import mongoose,{Schema,Document} from "mongoose";
+import mongoose, { Schema, Document } from 'mongoose';
 
-export interface PaperId extends Document{
-    paperIdNumber:number,
-    conferenceAcronym:string
+export interface PaperId extends Document {
+  paperIdNumber: number;
+  conferenceAcronym: string;
 }
 
-const PaperIdSchema:Schema<PaperId> = new Schema({
-    paperIdNumber:{
-        required:true,
-        type:Number,
-        default:0
+const PaperIdSchema: Schema<PaperId> = new Schema(
+  {
+    paperIdNumber: {
+      required: true,
+      type: Number,
+      default: 0,
     },
-    conferenceAcronym:{
-        required:true,
-        type:String
-    }
-},{timestamps:true})
+    conferenceAcronym: {
+      required: true,
+      type: String,
+    },
+  },
+  { timestamps: true },
+);
 
-const PaperIdModel= (mongoose.models.PaperId as mongoose.Model<PaperId>) || (mongoose.model<PaperId>("PaperId",PaperIdSchema))
+const PaperIdModel =
+  (mongoose.models.PaperId as mongoose.Model<PaperId>) ||
+  mongoose.model<PaperId>('PaperId', PaperIdSchema);
 
-export default PaperIdModel
+export default PaperIdModel;
 
 // conferenceIdNumber:{
 //     type:Number,

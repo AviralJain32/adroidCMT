@@ -2,33 +2,36 @@ import path from 'path';
 import fs from 'fs/promises';
 import UserModel from '@/model/User';
 import os from 'os'; // Import os for temp directory
-import { uploadOnCloudinary, deleteFromCloudinary } from '@/helpers/cloudinaryUploadFile';
+import {
+  uploadOnCloudinary,
+  deleteFromCloudinary,
+} from '@/helpers/cloudinaryUploadFile';
 
 interface paperAuthorType {
-    FirstName: string;
-    LastName: string;
-    email: string;
-    Country: string;
-    Affiliation: string;
-    WebPage: string;
-    isCorrespondingAuthor: boolean;
+  FirstName: string;
+  LastName: string;
+  email: string;
+  Country: string;
+  Affiliation: string;
+  WebPage: string;
+  isCorrespondingAuthor: boolean;
 }
 
 export async function handleFileUpload(paperFile: File) {
-  const tempDir = os.tmpdir();  // Use system temp directory
+  const tempDir = os.tmpdir(); // Use system temp directory
   const tempFilePath = path.join(tempDir, `${paperFile.name}`);
-  
+
   const arrayBuffer = await paperFile.arrayBuffer();
-  await fs.writeFile(tempFilePath, Buffer.from(arrayBuffer));  // Write to temp dir
+  await fs.writeFile(tempFilePath, Buffer.from(arrayBuffer)); // Write to temp dir
 
   const uploadedFile = await uploadOnCloudinary(tempFilePath);
-  
-  await fs.unlink(tempFilePath);  // Clean up temp file
-  
+
+  await fs.unlink(tempFilePath); // Clean up temp file
+
   if (!uploadedFile) {
-      throw new Error('File is unable to upload on Cloudinary');
+    throw new Error('File is unable to upload on Cloudinary');
   }
-  
+
   return uploadedFile.secure_url;
 }
 
@@ -37,20 +40,24 @@ export async function validateAuthors(paperAuthorsArray: paperAuthorType[]) {
   let CorrespondingAuthors: any[] = [];
   let ErrorOfNotGettingUser: { success: boolean; message: string }[] = [];
 
-  const authorChecks = paperAuthorsArray.map(async (paperAuthor: paperAuthorType) => {
-    const User = await UserModel.findOne({ $and: [{ email: paperAuthor.email }, { isVerified: true }] });
-    if (!User) {
-      ErrorOfNotGettingUser.push({
-        success: false,
-        message: `The author ${paperAuthor.FirstName} ${paperAuthor.LastName} with the email id ${paperAuthor.email} is not registered in our system. Please ensure the author creates an account on our platform before adding them as a paper author.`,
+  const authorChecks = paperAuthorsArray.map(
+    async (paperAuthor: paperAuthorType) => {
+      const User = await UserModel.findOne({
+        $and: [{ email: paperAuthor.email }, { isVerified: true }],
       });
-    }
-    if (paperAuthor.isCorrespondingAuthor) {
-      CorrespondingAuthors.push(User?._id);
-    } else {
-      Authors.push(User?._id);
-    }
-  });
+      if (!User) {
+        ErrorOfNotGettingUser.push({
+          success: false,
+          message: `The author ${paperAuthor.FirstName} ${paperAuthor.LastName} with the email id ${paperAuthor.email} is not registered in our system. Please ensure the author creates an account on our platform before adding them as a paper author.`,
+        });
+      }
+      if (paperAuthor.isCorrespondingAuthor) {
+        CorrespondingAuthors.push(User?._id);
+      } else {
+        Authors.push(User?._id);
+      }
+    },
+  );
 
   await Promise.all(authorChecks);
 

@@ -1,6 +1,13 @@
 'use client';
 import { Button } from '@/components/ui/button';
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/components/ui/use-toast';
 import { verifySchema } from '@/schemas/verifySchema';
@@ -15,7 +22,7 @@ const VerifyPage = () => {
   const router = useRouter();
   const params = useParams<{ email: string }>();
 
-  console.log()
+  console.log();
   const { toast } = useToast();
 
   const form = useForm<z.infer<typeof verifySchema>>({
@@ -49,9 +56,14 @@ const VerifyPage = () => {
     <div className="flex justify-center items-center min-h-screen bg-gradient-to-r from-blue-100 to-blue-400">
       <div className="w-full max-w-md p-8 space-y-8 bg-white rounded-lg shadow-lg">
         <div className="text-center">
-          <h1 className="text-3xl font-bold text-gray-800 mb-2">Verify Your Account</h1>
+          <h1 className="text-3xl font-bold text-gray-800 mb-2">
+            Verify Your Account
+          </h1>
           <p className="text-sm text-gray-500 mb-6">
-            Enter the verification code sent to <span className="font-medium text-gray-900">{decodeURIComponent(params.email)}</span>
+            Enter the verification code sent to{' '}
+            <span className="font-medium text-gray-900">
+              {decodeURIComponent(params.email)}
+            </span>
           </p>
         </div>
 
@@ -62,7 +74,9 @@ const VerifyPage = () => {
               control={form.control}
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-sm text-gray-600">Verification Code</FormLabel>
+                  <FormLabel className="text-sm text-gray-600">
+                    Verification Code
+                  </FormLabel>
                   <FormControl>
                     <Input
                       placeholder="Enter your code"
@@ -74,7 +88,10 @@ const VerifyPage = () => {
                 </FormItem>
               )}
             />
-            <Button type="submit" className="w-full bg-indigo-600 hover:bg-indigo-700 text-white">
+            <Button
+              type="submit"
+              className="w-full bg-indigo-600 hover:bg-indigo-700 text-white"
+            >
               Verify and Continue
             </Button>
           </form>

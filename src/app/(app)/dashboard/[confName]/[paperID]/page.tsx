@@ -1,4 +1,3 @@
-
 // "use client";
 
 // import {
@@ -70,8 +69,6 @@
 //   //   fetchAllReviewerAndReviewRequestByPaperId()
 //   // },[])
 
-
-
 //   if(error){
 //     return <div className="text-center py-10 text-red-400 text-lg">Sorry, An Unexpected Error has been occured</div>
 //   }
@@ -92,7 +89,6 @@
 //     paperAuthor,
 //     correspondingAuthor,
 //   } = paperDetails;
-
 
 //   return (
 //     <div className="container mx-auto p-6 bg-white rounded-lg">
@@ -182,7 +178,7 @@
 //                 <TableRow key={index + paperAuthor.length}>
 //                   <TableCell className="font-medium">
 //                     {corresponding.fullname}{" "}
-                    
+
 //                   </TableCell>
 //                   <TableCell>{corresponding.email}</TableCell>
 //                   <TableCell>{corresponding.country}</TableCell>
@@ -212,8 +208,7 @@
 
 // export default Page;
 
-
-"use client";
+'use client';
 
 import {
   Table,
@@ -222,17 +217,17 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
-import moment from "moment";
-import { useParams } from "next/navigation";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { useEffect, useState } from "react";
-import axios from "axios";
-import { CommentDialog } from "./CommentDialog";
-import { Review1Dialog } from "./Review1";
-import { useGetPaperDetailsByPaperIDQuery } from "@/store/features/ConferenceDashboardPaperSlice";
-import { toast } from "@/components/ui/use-toast";
+} from '@/components/ui/table';
+import moment from 'moment';
+import { useParams } from 'next/navigation';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { useEffect, useState } from 'react';
+import axios from 'axios';
+import { CommentDialog } from './CommentDialog';
+import { Review1Dialog } from './Review1';
+import { useGetPaperDetailsByPaperIDQuery } from '@/store/features/ConferenceDashboardPaperSlice';
+import { toast } from '@/components/ui/use-toast';
 
 interface PaperDetails {
   correspondingAuthor: AuthorDetails[];
@@ -241,7 +236,14 @@ interface PaperDetails {
   paperAuthor: AuthorDetails[];
   paperAbstract: string;
   paperSubmissionDate: Date;
-  paperStatus: "submitted" | "accepted" | "rejected" | "review" | "outline" | null | undefined;
+  paperStatus:
+    | 'submitted'
+    | 'accepted'
+    | 'rejected'
+    | 'review'
+    | 'outline'
+    | null
+    | undefined;
   paperID: string;
   paperFile: string;
   paperReview1: string;
@@ -259,16 +261,16 @@ interface AuthorDetails {
 }
 
 interface ReviewerDetails {
-  Id: {fullname:string,email:string};
-  status: "accepted" | "review" | "rejected";
+  Id: { fullname: string; email: string };
+  status: 'accepted' | 'review' | 'rejected';
   assignedAt: Date;
   reviewedAt?: Date;
   comments?: string;
 }
 
 interface ReviewRequestDetails {
-  reviewerId: {fullname:string,email:string};
-  status: "pending" | "accepted" | "rejected";
+  reviewerId: { fullname: string; email: string };
+  status: 'pending' | 'accepted' | 'rejected';
   requestedAt: Date;
   resolvedAt?: Date;
 }
@@ -280,7 +282,11 @@ type params = {
 const Page = () => {
   const params = useParams() as params;
 
-  const { data: paperDetails, isLoading, error } = useGetPaperDetailsByPaperIDQuery(params.paperID);
+  const {
+    data: paperDetails,
+    isLoading,
+    error,
+  } = useGetPaperDetailsByPaperIDQuery(params.paperID);
 
   if (error) {
     return (
@@ -348,7 +354,7 @@ const Page = () => {
             <TableRow>
               <TableHead>Submitted</TableHead>
               <TableCell className="font-medium">
-                {moment(paperSubmissionDate).format("MMMM Do YYYY, h:mm:ss a")}
+                {moment(paperSubmissionDate).format('MMMM Do YYYY, h:mm:ss a')}
               </TableCell>
             </TableRow>
             <TableRow>
@@ -365,22 +371,22 @@ const Page = () => {
       </div>
 
       <div className="shadow my-4 p-4">
-         <div className="flex justify-between items-center mb-6">
-           <h1 className="text-2xl font-semibold">Author Details</h1>
-         </div>
-         <Table className="min-w-full">
-           <TableHeader>
-             <TableRow>
-               <TableHead className="w-[200px]">Name</TableHead>
-               <TableHead>Email</TableHead>
-               <TableHead>Country</TableHead>
-               <TableHead>Affiliation</TableHead>
-               <TableHead>Webpage</TableHead>
-               <TableHead>Corresponding Author</TableHead>
-             </TableRow>
-           </TableHeader>
-           <TableBody>
-             {paperAuthor.map((author: AuthorDetails, index: number) => (
+        <div className="flex justify-between items-center mb-6">
+          <h1 className="text-2xl font-semibold">Author Details</h1>
+        </div>
+        <Table className="min-w-full">
+          <TableHeader>
+            <TableRow>
+              <TableHead className="w-[200px]">Name</TableHead>
+              <TableHead>Email</TableHead>
+              <TableHead>Country</TableHead>
+              <TableHead>Affiliation</TableHead>
+              <TableHead>Webpage</TableHead>
+              <TableHead>Corresponding Author</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {paperAuthor.map((author: AuthorDetails, index: number) => (
               <TableRow key={index}>
                 <TableCell className="font-medium">{author.fullname}</TableCell>
                 <TableCell>{author.email}</TableCell>
@@ -402,8 +408,7 @@ const Page = () => {
               (corresponding: AuthorDetails, index: number) => (
                 <TableRow key={index + paperAuthor.length}>
                   <TableCell className="font-medium">
-                    {corresponding.fullname}{" "}
-                    
+                    {corresponding.fullname}{' '}
                   </TableCell>
                   <TableCell>{corresponding.email}</TableCell>
                   <TableCell>{corresponding.country}</TableCell>
@@ -419,10 +424,10 @@ const Page = () => {
                     </a>
                   </TableCell>
                   <Badge className="mt-4 ml-4" variant="outline">
-                      Corresponding Author
+                    Corresponding Author
                   </Badge>
                 </TableRow>
-              )
+              ),
             )}
           </TableBody>
         </Table>
@@ -453,16 +458,18 @@ const Page = () => {
                   </Badge>
                 </TableCell>
                 <TableCell>
-                  {moment(reviewer.assignedAt).format("MMMM Do YYYY, h:mm:ss a")}
+                  {moment(reviewer.assignedAt).format(
+                    'MMMM Do YYYY, h:mm:ss a',
+                  )}
                 </TableCell>
                 <TableCell>
                   {reviewer.reviewedAt
                     ? moment(reviewer.reviewedAt).format(
-                        "MMMM Do YYYY, h:mm:ss a"
+                        'MMMM Do YYYY, h:mm:ss a',
                       )
-                    : "Not Reviewed"}
+                    : 'Not Reviewed'}
                 </TableCell>
-                <TableCell>{reviewer.comments || "No Comments"}</TableCell>
+                <TableCell>{reviewer.comments || 'No Comments'}</TableCell>
               </TableRow>
             ))}
           </TableBody>
@@ -487,22 +494,28 @@ const Page = () => {
                 <TableCell>{request.reviewerId.fullname}</TableCell>
                 <TableCell>{request.reviewerId.email}</TableCell>
                 <TableCell>
-                  <Badge variant={request.status==="pending" ? "submitted":request.status}>
+                  <Badge
+                    variant={
+                      request.status === 'pending'
+                        ? 'submitted'
+                        : request.status
+                    }
+                  >
                     {request.status.charAt(0).toUpperCase() +
                       request.status.slice(1)}
                   </Badge>
                 </TableCell>
                 <TableCell>
                   {moment(request.requestedAt).format(
-                    "MMMM Do YYYY, h:mm:ss a"
+                    'MMMM Do YYYY, h:mm:ss a',
                   )}
                 </TableCell>
                 <TableCell>
                   {request.resolvedAt
                     ? moment(request.resolvedAt).format(
-                        "MMMM Do YYYY, h:mm:ss a"
+                        'MMMM Do YYYY, h:mm:ss a',
                       )
-                    : "Not Resolved"}
+                    : 'Not Resolved'}
                 </TableCell>
               </TableRow>
             ))}

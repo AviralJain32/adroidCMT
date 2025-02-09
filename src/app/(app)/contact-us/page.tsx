@@ -144,59 +144,74 @@
 
 // export default ContactUsPage;
 
+'use client';
 
-
-"use client";
-
-import { useForm } from "react-hook-form";
-import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Button } from "@/components/ui/button";
-import { toast } from "@/components/ui/use-toast";
-import { Mail } from "lucide-react"; // Icons for contact options
-import Link from "next/link";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
-import { cn } from "@/lib/utils"; // Assuming cn utility is in your utils file
-import { sendContactUsMail } from "./sendContactMail";
+import { useForm } from 'react-hook-form';
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardContent,
+  CardFooter,
+} from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
+import { Button } from '@/components/ui/button';
+import { toast } from '@/components/ui/use-toast';
+import { Mail } from 'lucide-react'; // Icons for contact options
+import Link from 'next/link';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
+import { cn } from '@/lib/utils'; // Assuming cn utility is in your utils file
+import { sendContactUsMail } from './sendContactMail';
 
 // Zod validation schema
 const contactFormSchema = z.object({
-  name: z.string().min(1, { message: "Name is required" }),
-  email: z.string().email({ message: "Enter a valid email" }),
-  message: z.string().min(1, { message: "Message is required" }),
+  name: z.string().min(1, { message: 'Name is required' }),
+  email: z.string().email({ message: 'Enter a valid email' }),
+  message: z.string().min(1, { message: 'Message is required' }),
 });
 
 type ContactFormValues = z.infer<typeof contactFormSchema>;
 
 const ContactUsPage = () => {
-  const { register, handleSubmit, reset, formState: { errors } } = useForm<ContactFormValues>({
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm<ContactFormValues>({
     resolver: zodResolver(contactFormSchema),
   });
 
   const onSubmit = async (data: ContactFormValues) => {
     try {
-      const response = await sendContactUsMail(data.email,data.name,data.message)
+      const response = await sendContactUsMail(
+        data.email,
+        data.name,
+        data.message,
+      );
 
       if (response.success) {
         toast({
-          title: "Message Sent!",
-          description: "We have received your message. We'll get back to you shortly.",
+          title: 'Message Sent!',
+          description:
+            "We have received your message. We'll get back to you shortly.",
         });
         reset(); // Reset the form after successful submission
       } else {
         toast({
-          title: "Error",
-          description: "There was a problem sending your message. Please try again later.",
-          variant: "destructive",
+          title: 'Error',
+          description:
+            'There was a problem sending your message. Please try again later.',
+          variant: 'destructive',
         });
       }
     } catch (error) {
       toast({
-        title: "Error",
-        description: "Something went wrong. Please try again later.",
-        variant: "destructive",
+        title: 'Error',
+        description: 'Something went wrong. Please try again later.',
+        variant: 'destructive',
       });
     }
   };
@@ -212,46 +227,71 @@ const ContactUsPage = () => {
           <CardContent>
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
               <div>
-                <label htmlFor="name" className="block font-medium">Your Name</label>
+                <label htmlFor="name" className="block font-medium">
+                  Your Name
+                </label>
                 <Input
                   id="name"
                   placeholder="Enter your name"
-                  {...register("name")}
+                  {...register('name')}
                   className="mt-1"
                 />
-                {errors.name && <p className="text-red-500 text-sm mt-1">{errors.name.message}</p>}
+                {errors.name && (
+                  <p className="text-red-500 text-sm mt-1">
+                    {errors.name.message}
+                  </p>
+                )}
               </div>
 
               <div>
-                <label htmlFor="email" className="block font-medium">Your Email</label>
+                <label htmlFor="email" className="block font-medium">
+                  Your Email
+                </label>
                 <Input
                   id="email"
                   type="email"
                   placeholder="Enter your email"
-                  {...register("email")}
+                  {...register('email')}
                   className="mt-1"
                 />
-                {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>}
+                {errors.email && (
+                  <p className="text-red-500 text-sm mt-1">
+                    {errors.email.message}
+                  </p>
+                )}
               </div>
 
               <div>
-                <label htmlFor="message" className="block font-medium">Your Message</label>
+                <label htmlFor="message" className="block font-medium">
+                  Your Message
+                </label>
                 <Textarea
                   id="message"
                   placeholder="Write your message..."
-                  {...register("message")}
+                  {...register('message')}
                   className="mt-1"
                 />
-                {errors.message && <p className="text-red-500 text-sm mt-1">{errors.message.message}</p>}
+                {errors.message && (
+                  <p className="text-red-500 text-sm mt-1">
+                    {errors.message.message}
+                  </p>
+                )}
               </div>
 
-              <Button type="submit" className={cn("w-full bg-blue-500 hover:bg-blue-600 text-white")}>
+              <Button
+                type="submit"
+                className={cn(
+                  'w-full bg-blue-500 hover:bg-blue-600 text-white',
+                )}
+              >
                 Send Message
               </Button>
             </form>
           </CardContent>
           <CardFooter>
-            <p className="text-sm text-gray-500">We will get back to you within 24 hours.</p>
+            <p className="text-sm text-gray-500">
+              We will get back to you within 24 hours.
+            </p>
           </CardFooter>
         </Card>
 
@@ -263,7 +303,10 @@ const ContactUsPage = () => {
               <h3 className="text-lg font-semibold">Email Support</h3>
             </div>
             <p className="mt-2 text-gray-600">Reach out to us via email at:</p>
-            <Link href="mailto:support@adroidcms.com" className="mt-1 font-bold text-blue-500">
+            <Link
+              href="mailto:support@adroidcms.com"
+              className="mt-1 font-bold text-blue-500"
+            >
               support@adroidcms.com
             </Link>
           </div>

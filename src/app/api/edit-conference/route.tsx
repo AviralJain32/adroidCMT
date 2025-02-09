@@ -1,4 +1,3 @@
-
 // import { NextRequest, NextResponse } from 'next/server';
 // import dbConnect from '@/lib/dbConnect';
 // import PaperModel from '@/model/PaperSchema';
@@ -7,12 +6,11 @@
 // import { deleteFromCloudinary } from '@/helpers/cloudinaryUploadFile';
 // import { handleFileUpload, validateAuthors } from '@/helpers/VerficationAuthorsAndCloudinaryCommonFunctions';
 
-
 // export async function PUT(request: NextRequest) {
 //     await dbConnect();
 //     const session = await getServerSession(authOptions);
 //     const user: User = session?.user as User;
-  
+
 //     if (!session || !session.user) {
 //       return NextResponse.json(
 //         {
@@ -22,7 +20,7 @@
 //         { status: 401 }
 //       );
 //     }
-  
+
 //     const formData = await request.formData();
 //     // const paperId = formData.get('paperId') as string;
 //     const paperTitle = formData.get('paperTitle') as string;
@@ -32,7 +30,7 @@
 //     const paperFile = formData.get('paperFile') as File;
 //     const paperAuthors = formData.get('paperAuthors') as string;
 //     const paperAuthorsArray = JSON.parse(paperAuthors);
-  
+
 //     if (paperAuthorsArray.length === 0) {
 //       return NextResponse.json(
 //         {
@@ -42,7 +40,7 @@
 //         { status: 400 }
 //       );
 //     }
-  
+
 //     try {
 
 //         const { searchParams } = new URL(request.url);
@@ -59,9 +57,9 @@
 //           { status: 404 }
 //         );
 //       }
-  
+
 //       const { Authors, CorrespondingAuthors } = await validateAuthors(paperAuthorsArray);
-  
+
 //       let updatedPaper: any = {
 //         paperTitle,
 //         paperKeywords,
@@ -69,20 +67,19 @@
 //         paperAuthor: Authors,
 //         correspondingAuthor: CorrespondingAuthors,
 //       };
-  
+
 //       if (paperFile) {
 //         // Delete the old file from Cloudinary
 //         const oldFileUrl = paperDocument.paperFile;
 //         await deleteFromCloudinary(oldFileUrl);
-  
+
 //         // Upload the new file
 //         const uploadedFileUrl = await handleFileUpload(paperFile);
 //         updatedPaper.paperFile = uploadedFileUrl;
 //       }
 
-  
 //       const updatedPaperDocument = await PaperModel.findByIdAndUpdate(paperDocument._id, updatedPaper, { new: true });
-  
+
 //       return NextResponse.json({
 //         success: true,
 //         message: 'Paper updated successfully',
@@ -98,7 +95,6 @@
 //       );
 //     }
 //   }
-  
 
 import { NextRequest, NextResponse } from 'next/server';
 import dbConnect from '@/lib/dbConnect';
@@ -117,7 +113,7 @@ export async function PUT(request: NextRequest) {
         success: false,
         message: 'Not Authenticated',
       },
-      { status: 401 }
+      { status: 401 },
     );
   }
 
@@ -130,10 +126,12 @@ export async function PUT(request: NextRequest) {
     conferenceVenue: formData.conferenceVenue,
     conferenceCity: formData.conferenceCity,
     conferenceCountry: formData.conferenceCountry,
-    conferenceEstimatedNumberOfSubmissions: formData.conferenceEstimatedNumberOfSubmissions,
+    conferenceEstimatedNumberOfSubmissions:
+      formData.conferenceEstimatedNumberOfSubmissions,
     conferenceFirstDay: formData.conferenceFirstDay,
     conferenceLastDay: formData.conferenceLastDay,
-    conferenceSubmissionsDeadlineDate:formData.conferenceSubmissionsDeadlineDate,
+    conferenceSubmissionsDeadlineDate:
+      formData.conferenceSubmissionsDeadlineDate,
     conferencePrimaryArea: formData.conferencePrimaryArea,
     conferenceSecondaryArea: formData.conferenceSecondaryArea,
     conferenceOrganizerWebPage: formData.conferenceOrganizerWebPage,
@@ -147,7 +145,7 @@ export async function PUT(request: NextRequest) {
     const conferenceDocument = await ConferenceModel.findOneAndUpdate(
       { conferenceAcronym },
       updatedData,
-      { new: true }
+      { new: true },
     );
 
     if (!conferenceDocument) {
@@ -156,7 +154,7 @@ export async function PUT(request: NextRequest) {
           success: false,
           message: 'Conference not found',
         },
-        { status: 404 }
+        { status: 404 },
       );
     }
 
@@ -170,7 +168,7 @@ export async function PUT(request: NextRequest) {
         success: false,
         message: error.message,
       },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

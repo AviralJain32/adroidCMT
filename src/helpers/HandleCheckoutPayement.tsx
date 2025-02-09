@@ -1,10 +1,9 @@
-
 // import { loadStripe } from '@stripe/stripe-js';
 // export const HandleCheckoutPayement = async (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
 
 //     const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY || "");
 //     const stripe = await stripePromise;
-  
+
 //     try {
 //       const response = await fetch('/api/checkout_sessions', {
 //         method: 'POST',
@@ -13,13 +12,12 @@
 //         },
 //       });
 //       const session = await response.json();
-      
-    
+
 //       if (stripe) {
 //         const { error } = await stripe.redirectToCheckout({
 //           sessionId: session.id,
 //         });
-    
+
 //         if (error) {
 //           console.error('Stripe checkout error:', error);
 //         }
@@ -31,10 +29,11 @@
 //     }
 //   };
 
-
 import { loadStripe } from '@stripe/stripe-js';
 
-export const handleCheckoutPayment = async (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+export const handleCheckoutPayment = async (
+  event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+) => {
   // Ensure the Stripe public key is available
   const stripePublicKey = process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY;
   if (!stripePublicKey) {
@@ -47,7 +46,9 @@ export const handleCheckoutPayment = async (event: React.MouseEvent<HTMLButtonEl
 
   if (!stripe) {
     console.error('Stripe initialization failed.');
-    return { error: 'Unable to initialize payment gateway. Please try again later.' };
+    return {
+      error: 'Unable to initialize payment gateway. Please try again later.',
+    };
   }
 
   try {
@@ -56,10 +57,13 @@ export const handleCheckoutPayment = async (event: React.MouseEvent<HTMLButtonEl
       headers: { 'Content-Type': 'application/json' },
     });
 
-if (!response.ok) {
-  console.error('Failed to create checkout session:', response.statusText);
-  return { error: 'Failed to initiate payment. Please log in or sign up and try again.' };
-}
+    if (!response.ok) {
+      console.error('Failed to create checkout session:', response.statusText);
+      return {
+        error:
+          'Failed to initiate payment. Please log in or sign up and try again.',
+      };
+    }
 
     const session = await response.json();
 
@@ -68,7 +72,9 @@ if (!response.ok) {
       return { error: 'Invalid session data. Please try again later.' };
     }
 
-    const { error } = await stripe.redirectToCheckout({ sessionId: session.id });
+    const { error } = await stripe.redirectToCheckout({
+      sessionId: session.id,
+    });
 
     if (error) {
       console.error('Stripe checkout error:', error.message);

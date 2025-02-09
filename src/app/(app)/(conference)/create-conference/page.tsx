@@ -2,7 +2,6 @@
 
 //venue ko optional krna rah gy aur conference type bhi
 
-
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
@@ -19,22 +18,37 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useRouter } from 'next/navigation';
 import { useToast } from '@/components/ui/use-toast';
-import { conferenceCategoryValues, conferenceSchema } from '@/schemas/conferenceCreation';
+import {
+  conferenceCategoryValues,
+  conferenceSchema,
+} from '@/schemas/conferenceCreation';
 import axios, { AxiosError } from 'axios';
 import { ApiResponse } from '@/types/ApiResponse';
 import { Separator } from '@/components/ui/separator';
 import { AlertInfoDialog } from '@/components/AlertInformation';
-import { AcronymDescription, emailDescription, titleDescription, webPageDescription } from './desciptionForFormFields';
-import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Country }  from 'country-state-city';
+import {
+  AcronymDescription,
+  emailDescription,
+  titleDescription,
+  webPageDescription,
+} from './desciptionForFormFields';
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+import { Country } from 'country-state-city';
 import { useState } from 'react';
 import { CalendarIcon, Loader2 } from 'lucide-react';
 import { useCreateNewConferenceMutation } from '@/store/features/ConferenceApiSlice';
 
 export default function CreateConferenceForm() {
   const router = useRouter();
-  const [isSubmitting, setIsSubmitting] = useState(false)
-  const [createConference]=useCreateNewConferenceMutation()
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [createConference] = useCreateNewConferenceMutation();
 
   const form = useForm<z.infer<typeof conferenceSchema>>({
     resolver: zodResolver(conferenceSchema),
@@ -42,7 +56,7 @@ export default function CreateConferenceForm() {
 
   const { toast } = useToast();
   const onSubmit = async (data: z.infer<typeof conferenceSchema>) => {
-    setIsSubmitting(true)
+    setIsSubmitting(true);
     try {
       const response = await createConference(data).unwrap(); // Use .unwrap() to directly get the fulfilled response or throw an error if it failed
       toast({
@@ -50,19 +64,16 @@ export default function CreateConferenceForm() {
         description: response.message,
       });
       router.push('/dashboard');
-
-    }
-    catch (error:any) {
-      console.log(error)
+    } catch (error: any) {
+      console.log(error);
 
       toast({
         title: 'Error while creating a conference',
-        description:error.data.message,
+        description: error.data.message,
         variant: 'destructive',
       });
-    }
-    finally{
-      setIsSubmitting(false)
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -73,11 +84,13 @@ export default function CreateConferenceForm() {
           <h1 className="text-4xl font-extrabold tracking-tight lg:text-5xl mb-6 font">
             Create a New Conference
           </h1>
-          <p className="mb-4">Fill in the details below to create a new conference</p>
+          <p className="mb-4">
+            Fill in the details below to create a new conference
+          </p>
         </div>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-          {/* <div className='font-bold text-xl'>Conference Email ID</div>
+            {/* <div className='font-bold text-xl'>Conference Email ID</div>
             <FormField
               name="conferenceEmail"
               control={form.control}
@@ -94,46 +107,58 @@ export default function CreateConferenceForm() {
                 </FormItem>
               )}
             /> */}
-          <div className='font-bold text-xl'>Type Of Conference</div>
+            <div className="font-bold text-xl">Type Of Conference</div>
             <FormField
               name="conferenceCategory"
               control={form.control}
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Installation type
-                  </FormLabel>
+                  <FormLabel>Installation type</FormLabel>
                   <FormDescription>
-                  Specify the type of your installation
+                    Specify the type of your installation
                   </FormDescription>
                   <Select onValueChange={field.onChange} value={field.value}>
-                      <SelectTrigger >
-                        <SelectValue placeholder="Select Installation type" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectGroup>
-                          {conferenceCategoryValues.map((value)=>(<SelectItem key={value} value={value}>{value}</SelectItem>))}
-                        </SelectGroup>
-                      </SelectContent>
-                    </Select>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select Installation type" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectGroup>
+                        {conferenceCategoryValues.map(value => (
+                          <SelectItem key={value} value={value}>
+                            {value}
+                          </SelectItem>
+                        ))}
+                      </SelectGroup>
+                    </SelectContent>
+                  </Select>
                   <FormMessage />
                 </FormItem>
               )}
             />
-            <Separator className='my-4'></Separator>
+            <Separator className="my-4"></Separator>
 
-            <div className='font-bold text-xl'>Title and Acronym</div>
+            <div className="font-bold text-xl">Title and Acronym</div>
             <FormField
               name="conferenceTitle"
               control={form.control}
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Conference Title
-                  <AlertInfoDialog title={"Conference title"} description={titleDescription}/>
+                  <FormLabel>
+                    Conference Title
+                    <AlertInfoDialog
+                      title={'Conference title'}
+                      description={titleDescription}
+                    />
                   </FormLabel>
                   <FormDescription>
-                  Title, acronym, and city should use English or any other language with the Latin alphabet, even if your conference uses Chinese, Russian, Arabic etc. as the main language.
+                    Title, acronym, and city should use English or any other
+                    language with the Latin alphabet, even if your conference
+                    uses Chinese, Russian, Arabic etc. as the main language.
                   </FormDescription>
-                  <Input {...field} placeholder="Enter the conference's title"/>
+                  <Input
+                    {...field}
+                    placeholder="Enter the conference's title"
+                  />
                   <FormMessage />
                 </FormItem>
               )}
@@ -143,35 +168,51 @@ export default function CreateConferenceForm() {
               control={form.control}
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Conference Acronym<AlertInfoDialog title={"Acronym"} description={AcronymDescription}></AlertInfoDialog></FormLabel>
-                  <Input {...field} placeholder='Enter the conference acronym'/>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <Separator className='my-4'></Separator>
-
-
-            <div className='font-bold text-xl'>Conference information</div>
-            <FormField
-              name="conferenceWebpage"
-              control={form.control}
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Webpage
-                  <AlertInfoDialog title={"Web Page"} description={webPageDescription}/>
+                  <FormLabel>
+                    Conference Acronym
+                    <AlertInfoDialog
+                      title={'Acronym'}
+                      description={AcronymDescription}
+                    ></AlertInfoDialog>
                   </FormLabel>
-                  <FormDescription>
-                  If the conference has no Web page yet write &apos;none&apos; in the corresponding field and add an explanation in &apos;Any other information&apos; below.
-                  </FormDescription>
-                  <Input {...field} 
-                  placeholder='Enter the conference Web page'
+                  <Input
+                    {...field}
+                    placeholder="Enter the conference acronym"
                   />
                   <FormMessage />
                 </FormItem>
               )}
             />
-            <div className='text-md font-semibold'>Enter the conference location.
+            <Separator className="my-4"></Separator>
+
+            <div className="font-bold text-xl">Conference information</div>
+            <FormField
+              name="conferenceWebpage"
+              control={form.control}
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>
+                    Webpage
+                    <AlertInfoDialog
+                      title={'Web Page'}
+                      description={webPageDescription}
+                    />
+                  </FormLabel>
+                  <FormDescription>
+                    If the conference has no Web page yet write &apos;none&apos;
+                    in the corresponding field and add an explanation in
+                    &apos;Any other information&apos; below.
+                  </FormDescription>
+                  <Input
+                    {...field}
+                    placeholder="Enter the conference Web page"
+                  />
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <div className="text-md font-semibold">
+              Enter the conference location.
             </div>
             <FormField
               name="conferenceVenue"
@@ -179,7 +220,10 @@ export default function CreateConferenceForm() {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Venue</FormLabel>
-                  <Input {...field} placeholder='Enter the venue of the conference'/>
+                  <Input
+                    {...field}
+                    placeholder="Enter the venue of the conference"
+                  />
                   <FormMessage />
                 </FormItem>
               )}
@@ -190,7 +234,7 @@ export default function CreateConferenceForm() {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>City</FormLabel>
-                  <Input {...field} placeholder='Enter the city'/>
+                  <Input {...field} placeholder="Enter the city" />
                   <FormMessage />
                 </FormItem>
               )}
@@ -203,20 +247,24 @@ export default function CreateConferenceForm() {
                   <FormLabel>Country</FormLabel>
                   <FormControl>
                     <Select onValueChange={field.onChange} value={field.value}>
-                      <SelectTrigger >
+                      <SelectTrigger>
                         <SelectValue placeholder="Select your Country" />
                       </SelectTrigger>
                       <SelectContent>
                         <SelectGroup>
-                          {Country.getAllCountries().map((country)=>(<SelectItem key={country.name} value={country.name}>{country.name}</SelectItem>))}
+                          {Country.getAllCountries().map(country => (
+                            <SelectItem key={country.name} value={country.name}>
+                              {country.name}
+                            </SelectItem>
+                          ))}
                         </SelectGroup>
                       </SelectContent>
                     </Select>
                   </FormControl>
                   <FormMessage />
                 </FormItem>
-            )}
-          />
+              )}
+            />
 
             <FormField
               name="conferenceEstimatedNumberOfSubmissions"
@@ -224,24 +272,24 @@ export default function CreateConferenceForm() {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Estimated Number of Submissions</FormLabel>
-                  <FormDescription>If this is not the first time your conference is organized, you can base your estimation
-                  on the number of submissions in previous years. Otherwise, enter your best guess.</FormDescription>
+                  <FormDescription>
+                    If this is not the first time your conference is organized,
+                    you can base your estimation on the number of submissions in
+                    previous years. Otherwise, enter your best guess.
+                  </FormDescription>
                   <Input type="number" {...field} />
                   <FormMessage />
                 </FormItem>
               )}
-            />   
+            />
 
-            
             <FormField
               name="conferenceFirstDay"
               control={form.control}
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>First Day</FormLabel>
-                  <Input type="date" 
-                  {...field}
-                  />
+                  <Input type="date" {...field} />
                   <FormMessage />
                 </FormItem>
               )}
@@ -252,19 +300,19 @@ export default function CreateConferenceForm() {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Last Day</FormLabel>
-                  <Input type="date" {...field} /> 
+                  <Input type="date" {...field} />
                   <FormMessage />
                 </FormItem>
               )}
             />
 
-      <FormField
+            <FormField
               name="conferenceSubmissionsDeadlineDate"
               control={form.control}
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Paper Submission Deadline</FormLabel>
-                  <Input type="date" {...field} /> 
+                  <Input type="date" {...field} />
                   <FormMessage />
                 </FormItem>
               )}
@@ -347,7 +395,7 @@ export default function CreateConferenceForm() {
                 </FormItem>
               )}
             />
-            
+
             <FormField
               name="conferenceAreaNotes"
               control={form.control}
@@ -359,11 +407,15 @@ export default function CreateConferenceForm() {
                 </FormItem>
               )}
             />
-            <Button className="w-full" type="submit">{isSubmitting ? (
+            <Button className="w-full" type="submit">
+              {isSubmitting ? (
                 <>
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Please Wait
                 </>
-              ) : ('Create Conference')}</Button>
+              ) : (
+                'Create Conference'
+              )}
+            </Button>
           </form>
         </Form>
       </div>

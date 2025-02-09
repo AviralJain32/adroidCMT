@@ -10,36 +10,57 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
-import { Button } from "@/components/ui/button";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+} from '@/components/ui/dialog';
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+import { Label } from '@/components/ui/label';
+import { Textarea } from '@/components/ui/textarea';
+import { Button } from '@/components/ui/button';
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui/form';
 import { useParams } from 'next/navigation';
 import { toast, useToast } from '@/components/ui/use-toast';
 import { useState } from 'react';
 import { Loader2 } from 'lucide-react';
-import { InputParamsTypeForSendComment, useSendCommentForPaperMutation } from '@/store/features/ConferenceDashboardPaperSlice';
+import {
+  InputParamsTypeForSendComment,
+  useSendCommentForPaperMutation,
+} from '@/store/features/ConferenceDashboardPaperSlice';
 
 // Define the validation schema
 const paperSubmissionSchema = z.object({
-  comment: z.string().min(1, "Comment is required"),
-  status: z.enum(["accepted", "review", "rejected"], { message: "Status is required" }),
+  comment: z.string().min(1, 'Comment is required'),
+  status: z.enum(['accepted', 'review', 'rejected'], {
+    message: 'Status is required',
+  }),
 });
 
 type FormValues = z.infer<typeof paperSubmissionSchema>;
 
 type Author = {
   email: string;
-  fullname:string
+  fullname: string;
 };
 
-export function CommentDialog({ comment, paperID, Authors }: { comment: string; paperID: string; Authors: Author[] }) {
-
-  const [submitting, setSubmitting] = useState(false)
-  const params=useParams()
-  const authorEmailArray = Authors.map((author) => {return {email:author.email,fullname:author.fullname}});
+export function CommentDialog({
+  comment,
+  paperID,
+  Authors,
+}: {
+  comment: string;
+  paperID: string;
+  Authors: Author[];
+}) {
+  const [submitting, setSubmitting] = useState(false);
+  const params = useParams();
+  const authorEmailArray = Authors.map(author => {
+    return { email: author.email, fullname: author.fullname };
+  });
 
   const form = useForm<z.infer<typeof paperSubmissionSchema>>({
     resolver: zodResolver(paperSubmissionSchema),
@@ -49,37 +70,38 @@ export function CommentDialog({ comment, paperID, Authors }: { comment: string; 
     },
   });
 
-  const [SendCommentFunction]=useSendCommentForPaperMutation()
+  const [SendCommentFunction] = useSendCommentForPaperMutation();
 
-  
   const { toast } = useToast();
   const onSubmit = async (data: FormValues) => {
-    setSubmitting(true)
+    setSubmitting(true);
     try {
-      const newParams={paperID,
-              authorEmails: authorEmailArray,
-              conferenceAcronmym:params.confName}
-      const InputParams:InputParamsTypeForSendComment={...data,...newParams}
+      const newParams = {
+        paperID,
+        authorEmails: authorEmailArray,
+        conferenceAcronmym: params.confName,
+      };
+      const InputParams: InputParamsTypeForSendComment = {
+        ...data,
+        ...newParams,
+      };
 
       const response = await SendCommentFunction(InputParams).unwrap(); // Use .unwrap() to directly get the fulfilled response or throw an error if it failed
-      
+
       toast({
         title: 'Success',
         description: response.message,
       });
-
-    }
-    catch (error:any) {
-      console.log(error)
+    } catch (error: any) {
+      console.log(error);
 
       toast({
         title: 'Error while creating a conference',
-        description:error.data.message,
+        description: error.data.message,
         variant: 'destructive',
       });
-    }
-    finally{
-      setSubmitting(false)
+    } finally {
+      setSubmitting(false);
     }
   };
 
@@ -94,7 +116,8 @@ export function CommentDialog({ comment, paperID, Authors }: { comment: string; 
             <DialogHeader>
               <DialogTitle>Add a Comment for Paper</DialogTitle>
               <DialogDescription className="text-sm text-gray-500">
-                Note: By clicking on submit, the paper author will receive this comment along with comments from other reviewers via email.
+                Note: By clicking on submit, the paper author will receive this
+                comment along with comments from other reviewers via email.
               </DialogDescription>
             </DialogHeader>
 
@@ -153,11 +176,15 @@ export function CommentDialog({ comment, paperID, Authors }: { comment: string; 
               )}
             />
 
-              <Button type="submit" className="w-full ">{submitting ? 
+            <Button type="submit" className="w-full ">
+              {submitting ? (
                 <>
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Please Wait
-                </> 
-                : "Submit"}</Button>
+                </>
+              ) : (
+                'Submit'
+              )}
+            </Button>
           </form>
         </Form>
       </DialogContent>

@@ -7,34 +7,34 @@ import ConferenceModel from '@/model/Conference';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
 
-
 export async function POST(req: NextRequest) {
   await dbConnect();
 
-    const session = await getServerSession(authOptions);
-    const user: User = session?.user as User;
-    console.log(user)
+  const session = await getServerSession(authOptions);
+  const user: User = session?.user as User;
+  console.log(user);
 
-    if (!session || !session.user) {
-      return NextResponse.json(
-        {
-          success: false,
-          message: 'Not Authenticated',
-        },
-        { status: 401 }
-      );
-    }
+  if (!session || !session.user) {
+    return NextResponse.json(
+      {
+        success: false,
+        message: 'Not Authenticated',
+      },
+      { status: 401 },
+    );
+  }
 
   try {
     const { origin } = req.nextUrl; // Get the origin from the request
-    const UserConferences=await ConferenceModel.find({
-      conferenceOrganizer:user._id,conferenceSecurityDeposit2000Paid:false
-    })
+    const UserConferences = await ConferenceModel.find({
+      conferenceOrganizer: user._id,
+      conferenceSecurityDeposit2000Paid: false,
+    });
     // const body = await req.json(); // Parse the JSON body
 
-//     const customer=await stripe.customers.create({
-//         name: body.customerName, // Pass the customer name
-// })
+    //     const customer=await stripe.customers.create({
+    //         name: body.customerName, // Pass the customer name
+    // })
     // Creating the Stripe Checkout session with customer details
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ['card'],
@@ -64,16 +64,17 @@ export async function POST(req: NextRequest) {
           },
           type: 'dropdown',
           dropdown: {
-            options: UserConferences.map((conference)=>{
+            options: UserConferences.map(conference => {
               return {
-                label:`${conference.conferenceAcronym}`,
-                value:`${conference._id}`
-              }
-            })
-    }
-  }],
-      billing_address_collection:'required',
-    //   phone_number_collection:true,
+                label: `${conference.conferenceAcronym}`,
+                value: `${conference._id}`,
+              };
+            }),
+          },
+        },
+      ],
+      billing_address_collection: 'required',
+      //   phone_number_collection:true,
       mode: 'payment',
       // customer:customer.id,
       success_url: `${origin}/payment-success`,
@@ -81,10 +82,9 @@ export async function POST(req: NextRequest) {
       // payment-cancel?canceled=true
     });
 
-    
     return NextResponse.json({ id: session.id });
   } catch (err: any) {
-    console.log(err)
+    console.log(err);
     return NextResponse.json(err.message, { status: err.statusCode || 500 });
   }
 }

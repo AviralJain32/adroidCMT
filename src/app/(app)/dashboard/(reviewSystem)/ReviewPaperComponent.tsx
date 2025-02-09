@@ -1,20 +1,15 @@
-"use client";
+'use client';
 
-import { PulseLoader } from "react-spinners";
-import {
-  Tabs,
-  TabsContent,
-  TabsList,
-  TabsTrigger,
-} from "@/components/ui/tabs";
-import { Switch } from "@/components/ui/switch";
-import { Label } from "@/components/ui/label";
-import { useState, useEffect } from "react";
-import axios from "axios";
-import { toast } from "@/components/ui/use-toast";
-import ReviewRequestTable from "./RequestsReviewPaper";
-import AcceptedPapersTable from "./AcceptedReviewPaper";
-import RejectedReviewRequestTable from "./RejectedReviewPaper";
+import { PulseLoader } from 'react-spinners';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Switch } from '@/components/ui/switch';
+import { Label } from '@/components/ui/label';
+import { useState, useEffect } from 'react';
+import axios from 'axios';
+import { toast } from '@/components/ui/use-toast';
+import ReviewRequestTable from './RequestsReviewPaper';
+import AcceptedPapersTable from './AcceptedReviewPaper';
+import RejectedReviewRequestTable from './RejectedReviewPaper';
 
 const ReviewedPapersComponent = () => {
   const [isReviewer, setIsReviewer] = useState(false);
@@ -24,14 +19,14 @@ const ReviewedPapersComponent = () => {
   useEffect(() => {
     const fetchReviewerStatus = async () => {
       try {
-        const response = await axios.get("/api/get-reviewer-status");
+        const response = await axios.get('/api/get-reviewer-status');
         setIsReviewer(response.data.isReviewer);
       } catch (error) {
-        console.error("Error fetching reviewer status:", error);
+        console.error('Error fetching reviewer status:', error);
         toast({
-          title: "Error",
-          description: "Failed to fetch reviewer status.",
-          variant: "destructive",
+          title: 'Error',
+          description: 'Failed to fetch reviewer status.',
+          variant: 'destructive',
         });
       }
     };
@@ -43,20 +38,20 @@ const ReviewedPapersComponent = () => {
     setIsReviewer(value);
 
     try {
-      await axios.post("/api/update-reviewer-status", {
+      await axios.post('/api/update-reviewer-status', {
         isReviewer: value,
       });
       toast({
-        title: "Success",
-        description: `Reviewer status updated to ${value ? "Enabled" : "Disabled"}.`,
-        variant: "default",
+        title: 'Success',
+        description: `Reviewer status updated to ${value ? 'Enabled' : 'Disabled'}.`,
+        variant: 'default',
       });
     } catch (error) {
-      console.error("Error updating reviewer status:", error);
+      console.error('Error updating reviewer status:', error);
       toast({
-        title: "Error",
-        description: "Failed to update reviewer status.",
-        variant: "destructive",
+        title: 'Error',
+        description: 'Failed to update reviewer status.',
+        variant: 'destructive',
       });
     }
   };
@@ -70,14 +65,14 @@ const ReviewedPapersComponent = () => {
   const fetchReviewRequests = async () => {
     setLoading(true);
     try {
-      const response = await axios.get("/api/get-review-requests");
+      const response = await axios.get('/api/get-review-requests');
       setRequests(response.data.requests);
     } catch (error) {
-      console.error("Error fetching review requests:", error);
+      console.error('Error fetching review requests:', error);
       toast({
-        title: "Error",
-        description: "Failed to fetch review requests.",
-        variant: "destructive",
+        title: 'Error',
+        description: 'Failed to fetch review requests.',
+        variant: 'destructive',
       });
     } finally {
       setLoading(false);
@@ -86,20 +81,22 @@ const ReviewedPapersComponent = () => {
 
   const handleAction = async (
     reviewerId: string,
-    action: "accept" | "reject",
-    paperId: string
+    action: 'accept' | 'reject',
+    paperId: string,
   ): Promise<void> => {
     try {
       const response = await axios.post(
-        `/api/review-requests-action?action=${action}&paperId=${paperId}&reviewerId=${reviewerId}`
+        `/api/review-requests-action?action=${action}&paperId=${paperId}&reviewerId=${reviewerId}`,
       );
 
       const { success, message } = response.data;
 
       toast({
-        title: success ? "Success" : "Notice",
-        description: message || `Request has been ${action === "accept" ? "accepted" : "rejected"}.`,
-        variant: success ? "default" : "destructive",
+        title: success ? 'Success' : 'Notice',
+        description:
+          message ||
+          `Request has been ${action === 'accept' ? 'accepted' : 'rejected'}.`,
+        variant: success ? 'default' : 'destructive',
       });
 
       if (success) {
@@ -107,12 +104,13 @@ const ReviewedPapersComponent = () => {
       }
     } catch (error: any) {
       const errorMessage =
-        error.response?.data?.message || "Failed to process the request due to an unexpected error.";
+        error.response?.data?.message ||
+        'Failed to process the request due to an unexpected error.';
 
       toast({
-        title: "Error",
+        title: 'Error',
         description: errorMessage,
-        variant: "destructive",
+        variant: 'destructive',
       });
     }
   };
@@ -133,8 +131,8 @@ const ReviewedPapersComponent = () => {
         </div>
         <p className="text-gray-600 mt-1">
           {isReviewer
-            ? "You are currently a reviewer. Toggle off to disable."
-            : "You are not a reviewer. Toggle on to enable."}
+            ? 'You are currently a reviewer. Toggle off to disable.'
+            : 'You are not a reviewer. Toggle on to enable.'}
         </p>
       </div>
       <Tabs defaultValue="requests" className="w-full">
@@ -149,21 +147,35 @@ const ReviewedPapersComponent = () => {
             Rejected
           </TabsTrigger>
         </TabsList>
-        <TabsContent value="requests" className="rounded-lg p-4 bg-white shadow-md">
+        <TabsContent
+          value="requests"
+          className="rounded-lg p-4 bg-white shadow-md"
+        >
           {loading ? (
             <div className="flex justify-center items-center py-4">
               <PulseLoader size={10} color="#4A90E2" />
             </div>
           ) : requests && requests.length === 0 ? (
-            <p className="text-center text-gray-500">No pending review requests.</p>
+            <p className="text-center text-gray-500">
+              No pending review requests.
+            </p>
           ) : (
-            <ReviewRequestTable requests={requests} handleAction={handleAction} />
+            <ReviewRequestTable
+              requests={requests}
+              handleAction={handleAction}
+            />
           )}
         </TabsContent>
-        <TabsContent value="accepted" className="rounded-lg p-4 bg-white shadow-md">
+        <TabsContent
+          value="accepted"
+          className="rounded-lg p-4 bg-white shadow-md"
+        >
           <AcceptedPapersTable />
         </TabsContent>
-        <TabsContent value="rejected" className="rounded-lg p-4 bg-white shadow-md">
+        <TabsContent
+          value="rejected"
+          className="rounded-lg p-4 bg-white shadow-md"
+        >
           <RejectedReviewRequestTable />
         </TabsContent>
       </Tabs>

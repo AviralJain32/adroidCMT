@@ -10,7 +10,8 @@ const PaymentSuccess = () => {
           Payment Successful! 🎉
         </h1>
         <p className="text-lg text-gray-700 mb-4">
-          Thank you for your payment. A receipt has been sent to your registered email address.
+          Thank you for your payment. A receipt has been sent to your registered
+          email address.
         </p>
         <p className="text-sm text-gray-500 mb-6">
           Please check your inbox for the details of your transaction.

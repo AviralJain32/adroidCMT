@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import React, { useState } from "react";
+import React, { useState } from 'react';
 import {
   Table,
   TableBody,
@@ -8,7 +8,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
+} from '@/components/ui/table';
 import {
   useReactTable,
   getCoreRowModel,
@@ -18,23 +18,23 @@ import {
   getFilteredRowModel,
   ColumnDef,
   SortingState,
-} from "@tanstack/react-table";
-import { Button } from "@/components/ui/button";
-import { ArrowUpDown } from "lucide-react";
-import { Input } from "@/components/ui/input";
-import { IConference } from "@/model/Conference";
-import { useRouter } from "next/navigation";
-import moment from "moment";
+} from '@tanstack/react-table';
+import { Button } from '@/components/ui/button';
+import { ArrowUpDown } from 'lucide-react';
+import { Input } from '@/components/ui/input';
+import { IConference } from '@/model/Conference';
+import { useRouter } from 'next/navigation';
+import moment from 'moment';
 
 interface conferencesType {
-  conferences: IConference[] ;
+  conferences: IConference[];
 }
 
 const TableSmartSub: React.FC<conferencesType> = ({ conferences }) => {
   const router = useRouter();
 
   const [sorting, setSorting] = useState<SortingState>([]);
-  const [filtering, setFiltering] = useState("");
+  const [filtering, setFiltering] = useState('');
   const [pagination, setPagination] = useState({
     pageIndex: 0,
     pageSize: 10,
@@ -46,45 +46,42 @@ const TableSmartSub: React.FC<conferencesType> = ({ conferences }) => {
       header: ({ column }) => (
         <Button
           variant="ghost"
-          onClick={() =>
-            column.toggleSorting(column.getIsSorted() === "asc")
-          }
+          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
         >
           Acronym
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       ),
-      accessorKey: "conferenceAcronym",
-      footer: "Acronym",
+      accessorKey: 'conferenceAcronym',
+      footer: 'Acronym',
     },
     {
       // Conference Name Column
-      header: "Name",
-      accessorKey: "conferenceTitle",
-      footer: "Name",
+      header: 'Name',
+      accessorKey: 'conferenceTitle',
+      footer: 'Name',
     },
-     
+
     {
       // Submission Deadline Column
-      header: "Submission Deadline",
-      accessorKey: "conferenceSubmissionsDeadlineDate",
-      footer: "Submission Deadline",
-      cell: (info) =>
-        moment(info.getValue<string>()).format("MMMM Do YYYY"),
+      header: 'Submission Deadline',
+      accessorKey: 'conferenceSubmissionsDeadlineDate',
+      footer: 'Submission Deadline',
+      cell: info => moment(info.getValue<string>()).format('MMMM Do YYYY'),
     },
     {
       // Conference Start Date Column
-      header: "Start Date",
-      accessorKey: "conferenceFirstDay",
-      footer: "Start Date",
-      cell: (info) => moment(info.getValue<string>()).format("MMMM Do YYYY"),
+      header: 'Start Date',
+      accessorKey: 'conferenceFirstDay',
+      footer: 'Start Date',
+      cell: info => moment(info.getValue<string>()).format('MMMM Do YYYY'),
     },
     {
       // Details Button Column
-      header: "Details",
-      accessorKey: "conferenceAcronym",
-      footer: "Details",
-      cell: (info) => (
+      header: 'Details',
+      accessorKey: 'conferenceAcronym',
+      footer: 'Details',
+      cell: info => (
         <Button
           variant="outline"
           onClick={() => router.push(`/smart-sub/${info.getValue()}`)}
@@ -109,7 +106,7 @@ const TableSmartSub: React.FC<conferencesType> = ({ conferences }) => {
     },
     onSortingChange: setSorting,
     onGlobalFilterChange: setFiltering,
-    globalFilterFn: "includesString",
+    globalFilterFn: 'includesString',
   });
 
   return (
@@ -119,27 +116,25 @@ const TableSmartSub: React.FC<conferencesType> = ({ conferences }) => {
         <Input
           placeholder="Search..."
           value={filtering}
-          onChange={(e) => table.setGlobalFilter(String(e.target.value))}
+          onChange={e => table.setGlobalFilter(String(e.target.value))}
           className="max-w-60"
         />
-        <div>
-          Showing {table.getFilteredRowModel().rows.length} entries
-        </div>
+        <div>Showing {table.getFilteredRowModel().rows.length} entries</div>
       </div>
 
       {/* Conference Table */}
       <div className="rounded-md border">
         <Table>
           <TableHeader>
-            {table.getHeaderGroups().map((headerGroup) => (
+            {table.getHeaderGroups().map(headerGroup => (
               <TableRow key={headerGroup.id}>
-                {headerGroup.headers.map((header) => (
+                {headerGroup.headers.map(header => (
                   <TableHead key={header.id}>
                     {header.isPlaceholder
                       ? null
                       : flexRender(
                           header.column.columnDef.header,
-                          header.getContext()
+                          header.getContext(),
                         )}
                   </TableHead>
                 ))}
@@ -148,13 +143,13 @@ const TableSmartSub: React.FC<conferencesType> = ({ conferences }) => {
           </TableHeader>
           <TableBody>
             {table.getRowModel().rows?.length ? (
-              table.getRowModel().rows.map((row) => (
+              table.getRowModel().rows.map(row => (
                 <TableRow key={row.id}>
-                  {row.getVisibleCells().map((cell) => (
+                  {row.getVisibleCells().map(cell => (
                     <TableCell key={cell.id}>
                       {flexRender(
                         cell.column.columnDef.cell,
-                        cell.getContext()
+                        cell.getContext(),
                       )}
                     </TableCell>
                   ))}
@@ -162,7 +157,10 @@ const TableSmartSub: React.FC<conferencesType> = ({ conferences }) => {
               ))
             ) : (
               <TableRow>
-                <TableCell colSpan={columns.length} className="h-24 text-center">
+                <TableCell
+                  colSpan={columns.length}
+                  className="h-24 text-center"
+                >
                   No results.
                 </TableCell>
               </TableRow>

@@ -10,10 +10,12 @@ const PaymentCancel = () => {
           Oops! <span className="text-4xl">😞</span>
         </h1>
         <p className="text-lg text-gray-700 mb-4">
-          It looks like your payment was canceled. No worries, you can always try again.
+          It looks like your payment was canceled. No worries, you can always
+          try again.
         </p>
         <p className="text-sm text-gray-500 mb-6">
-          If you need any assistance or have questions, feel free to contact our support team.
+          If you need any assistance or have questions, feel free to contact our
+          support team.
         </p>
 
         <Link href="/pricing">

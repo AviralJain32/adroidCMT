@@ -3,9 +3,9 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 // import { SubmittedPaper as paperType } from '@/types/SubmittedPaperType';
 
 interface ApiResponse<T> {
-    success: boolean;
-    message: string;
-    data: T;
+  success: boolean;
+  message: string;
+  data: T;
 }
 
 interface SubmittedPaper {
@@ -25,10 +25,12 @@ export const PaperApiSlice = createApi({
   reducerPath: 'paperapi',
   baseQuery: fetchBaseQuery({ baseUrl: '/api' }),
   tagTypes: ['paper'],
-  endpoints: (builder) => ({
+  endpoints: builder => ({
     getSubmittedPapers: builder.query<SubmittedPaper[], void>({
       query: () => `/get-submitted-papers`,
-      transformResponse: (response: ApiResponse<{ submittedPapers: SubmittedPaper[] }>) => {
+      transformResponse: (
+        response: ApiResponse<{ submittedPapers: SubmittedPaper[] }>,
+      ) => {
         if (response.success) {
           return response.data.submittedPapers;
         } else {
@@ -36,15 +38,20 @@ export const PaperApiSlice = createApi({
         }
       },
     }),
-    getConferencePapers: builder.query<{
-      paperSubmittedInConference: SubmittedPaper[],
-      getConferenceDetails: IConference
-    }, string>({
-      query: (confName) => `/get-conference-papers?confName=${confName}`,
-      transformResponse: (response: ApiResponse<{
-        paperSubmittedInConference: SubmittedPaper[],
-        getConferenceDetails: IConference
-      }>) => {
+    getConferencePapers: builder.query<
+      {
+        paperSubmittedInConference: SubmittedPaper[];
+        getConferenceDetails: IConference;
+      },
+      string
+    >({
+      query: confName => `/get-conference-papers?confName=${confName}`,
+      transformResponse: (
+        response: ApiResponse<{
+          paperSubmittedInConference: SubmittedPaper[];
+          getConferenceDetails: IConference;
+        }>,
+      ) => {
         if (response.success) {
           return response.data;
         } else {
@@ -53,11 +60,14 @@ export const PaperApiSlice = createApi({
       },
       providesTags: ['paper'],
     }),
-    deleteConferencePaper: builder.mutation<ApiResponse<null>, {paperIdList: string[]} >({
-      query: ({paperIdList}) => ({
+    deleteConferencePaper: builder.mutation<
+      ApiResponse<null>,
+      { paperIdList: string[] }
+    >({
+      query: ({ paperIdList }) => ({
         url: `/delete-papers`,
         method: 'DELETE',
-        body: { paperIdList }
+        body: { paperIdList },
       }),
       invalidatesTags: ['paper'],
       transformResponse: (response: ApiResponse<null>) => {
@@ -65,13 +75,13 @@ export const PaperApiSlice = createApi({
           throw new Error(response.message);
         }
         return response;
-      }
-    })
+      },
+    }),
   }),
 });
 
-export const { 
+export const {
   useGetSubmittedPapersQuery,
   useGetConferencePapersQuery,
-  useDeleteConferencePaperMutation
+  useDeleteConferencePaperMutation,
 } = PaperApiSlice;

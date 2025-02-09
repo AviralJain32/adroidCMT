@@ -1,8 +1,8 @@
-import { NextRequest, NextResponse } from "next/server";
-import dbConnect from "@/lib/dbConnect";
-import { getServerSession } from "next-auth";
-import { authOptions } from "../auth/[...nextauth]/options";
-import UserModel from "@/model/User";
+import { NextRequest, NextResponse } from 'next/server';
+import dbConnect from '@/lib/dbConnect';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '../auth/[...nextauth]/options';
+import UserModel from '@/model/User';
 
 export async function GET(request: NextRequest) {
   await dbConnect();
@@ -12,9 +12,9 @@ export async function GET(request: NextRequest) {
     return NextResponse.json(
       {
         success: false,
-        message: "Not Authenticated",
+        message: 'Not Authenticated',
       },
-      { status: 401 }
+      { status: 401 },
     );
   }
 
@@ -27,9 +27,9 @@ export async function GET(request: NextRequest) {
       return NextResponse.json(
         {
           success: false,
-          message: "User not found",
+          message: 'User not found',
         },
-        { status: 404 }
+        { status: 404 },
       );
     }
 
@@ -37,13 +37,13 @@ export async function GET(request: NextRequest) {
       success: true,
       isReviewer: user.isReviewer,
     });
-  } catch (error:any) {
+  } catch (error: any) {
     return NextResponse.json(
       {
         success: false,
         message: error.message,
       },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

@@ -1,6 +1,24 @@
-
-
 'use client';
+
+import {
+  Menubar,
+  MenubarContent,
+  MenubarItem,
+  MenubarMenu,
+  MenubarSub,
+  MenubarSubContent,
+  MenubarSubTrigger,
+  MenubarTrigger,
+} from "@/components/ui/menubar";
+
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
 
 import React, { useState } from 'react';
 import Link from 'next/link';
@@ -9,8 +27,8 @@ import { Button } from './ui/button';
 import { User } from 'next-auth';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
-import { TiThMenu } from "react-icons/ti";
-import { AiOutlineClose } from "react-icons/ai"; // Import the close icon
+import { TiThMenu } from 'react-icons/ti';
+import { AiOutlineClose } from 'react-icons/ai'; // Import the close icon
 import { Account } from './AccountNavbar';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -24,22 +42,22 @@ function Navbar() {
   const menuVariants = {
     hidden: {
       opacity: 0,
-      y: "-100%", // Slide up when hidden
+      y: '-100%', // Slide up when hidden
     },
     visible: {
       opacity: 1,
       y: 0, // Slide down into view when visible
       transition: {
         duration: 0.4,
-        ease: "easeInOut",
+        ease: 'easeInOut',
       },
     },
     exit: {
       opacity: 0,
-      y: "-100%", // Slide back up when exiting
+      y: '-100%', // Slide back up when exiting
       transition: {
         duration: 0.4,
-        ease: "easeInOut",
+        ease: 'easeInOut',
       },
     },
   };
@@ -52,7 +70,7 @@ function Navbar() {
 
   return (
     // backdrop-blur-3xl shadow-background
-    <nav className="p-2 bg-white sticky top-0 z-50 "> 
+    <nav className="p-2 bg-white sticky top-0 z-50 ">
       {/* Mobile Navigation */}
       <div className="lg:hidden flex justify-between items-center ">
         <div className="flex gap-2">
@@ -61,23 +79,26 @@ function Navbar() {
             className="cursor-pointer"
             onClick={() => setOpen(!open)}
             initial={false}
-            animate={open ? "open" : "closed"}
+            animate={open ? 'open' : 'closed'}
             variants={iconVariants}
           >
-            {open ? (
-              <AiOutlineClose size={25} />
-            ) : (
-              <TiThMenu size={25} />
-            )}
+            {open ? <AiOutlineClose size={25} /> : <TiThMenu size={25} />}
           </motion.div>
 
           <Link href="/" className="text-xl font-bold">
-            <Image src={"/AdroidCMTLogo.png"} alt={"Adroid CMS"} width={150} height={100} />
+            <Image
+              src={'/AdroidCMTLogo.png'}
+              alt={'Adroid CMS'}
+              width={150}
+              height={100}
+            />
           </Link>
         </div>
 
         <div>
-          {session ? <Account {...user} /> : (
+          {session ? (
+            <Account {...user} />
+          ) : (
             <div className="flex gap-4 items-center">
               <Link href="/sign-in">
                 <Button className="p-2 h-8 rounded-sm" variant={'ghost'}>
@@ -110,25 +131,53 @@ function Navbar() {
               animate="visible"
               exit="exit"
             >
-              <Link href="/" className="hover:font-bold" onClick={() => setOpen(false)}>
+              <Link
+                href="/"
+                className="hover:font-bold"
+                onClick={() => setOpen(false)}
+              >
                 Home
               </Link>
-              <Link href="/dashboard" className="hover:font-bold" onClick={() => setOpen(false)}>
+              <Link
+                href="/dashboard"
+                className="hover:font-bold"
+                onClick={() => setOpen(false)}
+              >
                 Dashboard
               </Link>
-              <Link href="/create-conference" className="hover:font-bold" onClick={() => setOpen(false)}>
+              <Link
+                href="/create-conference"
+                className="hover:font-bold"
+                onClick={() => setOpen(false)}
+              >
                 Create Conference
               </Link>
-              <Link href="/smart-sub" className="hover:font-bold" onClick={() => setOpen(false)}>
+              <Link
+                href="/smart-sub"
+                className="hover:font-bold"
+                onClick={() => setOpen(false)}
+              >
                 SmartSub
               </Link>
-              <Link href="/pricing" className="hover:font-bold" onClick={() => setOpen(false)}>
+              <Link
+                href="/pricing"
+                className="hover:font-bold"
+                onClick={() => setOpen(false)}
+              >
                 FAQ
               </Link>
-              <Link href="/about-us" className="hover:font-bold" onClick={() => setOpen(false)}>
+              <Link
+                href="/about-us"
+                className="hover:font-bold"
+                onClick={() => setOpen(false)}
+              >
                 About Us
               </Link>
-              <Link href="/contact-us" className="hover:font-bold" onClick={() => setOpen(false)}>
+              <Link
+                href="/contact-us"
+                className="hover:font-bold"
+                onClick={() => setOpen(false)}
+              >
                 Contact Us
               </Link>
             </motion.div>
@@ -139,7 +188,12 @@ function Navbar() {
       {/* Desktop Navigation */}
       <div className="hidden container mx-auto lg:flex flex-col md:flex-row justify-between items-center">
         <Link href="/" className="text-xl font-bold">
-          <Image src={"/AdroidCMTLogo.png"} alt={"Adroid CMS"} width={150} height={100} />
+          <Image
+            src={'/AdroidCMTLogo.png'}
+            alt={'Adroid CMS'}
+            width={150}
+            height={100}
+          />
         </Link>
         <div className="flex flex-col lg:flex-row gap-6 text-center">
           <Link href="/" className="hover:font-bold">
@@ -151,12 +205,18 @@ function Navbar() {
           <Link href="/pricing" className="hover:font-bold">
             FAQ
           </Link>
-          <Link href="/about-us" className="hover:font-bold">
-            About Us
-          </Link>
+        <DropdownMenu>
+          <DropdownMenuTrigger className="hover:font-bold border-none text-md">About Us</DropdownMenuTrigger>
+          <DropdownMenuContent>
+          <Link href="/about-us"><DropdownMenuItem >About Us</DropdownMenuItem></Link>
+          <Link href="/about-us#advisory-board"><DropdownMenuItem >Advisory Board</DropdownMenuItem></Link>
+          </DropdownMenuContent>
+        </DropdownMenu>
           <Link href="/contact-us" className="hover:font-bold">
             Contact Us
           </Link>
+          
+
         </div>
         <div className="flex flex-col lg:flex-row gap-6">
           {session ? (
@@ -166,7 +226,10 @@ function Navbar() {
                   <Button variant={'default'}>Create Conference</Button>
                 </Link>
                 <Link href="/dashboard">
-                  <Button className="w-full md:w-auto bg-slate-100 text-black" variant="outline">
+                  <Button
+                    className="w-full md:w-auto bg-slate-100 text-black"
+                    variant="outline"
+                  >
                     Dashboard
                   </Button>
                 </Link>

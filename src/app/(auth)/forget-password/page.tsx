@@ -1,10 +1,10 @@
-"use client"
+'use client';
 
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
-import { z } from "zod"
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
 
-import { Button } from "@/components/ui/button"
+import { Button } from '@/components/ui/button';
 import {
   Form,
   FormControl,
@@ -13,65 +13,72 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form"
-import { Input } from "@/components/ui/input"
-import { resetPassword } from "./serverAction" // Replace with your actual reset password function
-import { useToast } from "@/components/ui/use-toast"
-import { Loader2 } from "lucide-react"
-import { useState } from "react"
+} from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import { resetPassword } from './serverAction'; // Replace with your actual reset password function
+import { useToast } from '@/components/ui/use-toast';
+import { Loader2 } from 'lucide-react';
+import { useState } from 'react';
 
 const formSchema = z.object({
-  email: z.string().email({ message: "Please enter a valid email address." }),
-})
+  email: z.string().email({ message: 'Please enter a valid email address.' }),
+});
 
 export default function ForgetPasswordForm() {
-  const {toast}=useToast()
-    const [isSubmitting, setIsSubmitting] = useState(false)
+  const { toast } = useToast();
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    
+
     defaultValues: {
-      email: "",
+      email: '',
     },
-  })
+  });
 
   const onSubmit = (values: z.infer<typeof formSchema>) => {
-    console.log(values)
-    const func=async()=>{
-      setIsSubmitting(true)
+    console.log(values);
+    const func = async () => {
+      setIsSubmitting(true);
       try {
-        const response=await resetPassword(values.email)
+        const response = await resetPassword(values.email);
         console.log(response);
         if (response.success) {
-        
-          toast({title: 'Success',
-            description: `${response.message}` || "You have reset your password correctly.Please Sign In !!",
+          toast({
+            title: 'Success',
+            description:
+              `${response.message}` ||
+              'You have reset your password correctly.Please Sign In !!',
             variant: 'default',
           });
         } else {
-          toast({title: 'Error',
-            description: `${response.message}` || "Failed to reset password.",
+          toast({
+            title: 'Error',
+            description: `${response.message}` || 'Failed to reset password.',
             variant: 'destructive',
           });
         }
       } catch (error) {
-        toast({title: 'Error',
-          description: `${error}` || "Failed to reset password.",
+        toast({
+          title: 'Error',
+          description: `${error}` || 'Failed to reset password.',
           variant: 'destructive',
         });
       }
-      setIsSubmitting(false)
-    }
-    func()
-  }
+      setIsSubmitting(false);
+    };
+    func();
+  };
 
   return (
     <div className="flex justify-center items-center min-h-screen bg-gradient-to-r from-blue-100 to-blue-400">
       <div className="w-full max-w-md p-8 space-y-8 bg-white rounded-xl shadow-lg">
         <div className="text-center">
-          <h1 className="text-3xl font-bold text-gray-800 mb-2">Forgot Your Password?</h1>
+          <h1 className="text-3xl font-bold text-gray-800 mb-2">
+            Forgot Your Password?
+          </h1>
           <p className="text-sm text-gray-500">
-            No worries! Enter your registered email address below, and we&apos;ll send you instructions to reset your password.
+            No worries! Enter your registered email address below, and
+            we&apos;ll send you instructions to reset your password.
           </p>
         </div>
         <Form {...form}>
@@ -83,7 +90,10 @@ export default function ForgetPasswordForm() {
                 <FormItem>
                   <FormLabel>Email Address</FormLabel>
                   <FormControl>
-                    <Input placeholder="Enter your registered email" {...field} />
+                    <Input
+                      placeholder="Enter your registered email"
+                      {...field}
+                    />
                   </FormControl>
                   <FormDescription>
                     We&apos;ll send a password reset link to this email.
@@ -97,19 +107,19 @@ export default function ForgetPasswordForm() {
               className="w-full bg-blue-600 text-white hover:bg-blue-700 focus:ring-4 focus:ring-blue-300"
               disabled={isSubmitting}
             >
-            {isSubmitting ? (
+              {isSubmitting ? (
                 <>
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Sending...
                 </>
               ) : (
                 'Send Reset Link'
               )}
-              </Button>
+            </Button>
           </form>
         </Form>
         <div className="text-center mt-6">
           <p className="text-gray-600">
-            Remembered your password?{" "}
+            Remembered your password?{' '}
             <a
               href="/sign-in"
               className="text-blue-600 hover:text-blue-800 font-semibold"
@@ -120,5 +130,5 @@ export default function ForgetPasswordForm() {
         </div>
       </div>
     </div>
-  )
+  );
 }

@@ -11,62 +11,55 @@ interface PricingPlan {
   description: string;
   features: string[];
   buttonText: string;
-  tagline:string
+  tagline: string;
 }
 
 const PricingPage: React.FC = () => {
   const pricingData: PricingPlan[] = [
-            {
-              title: "Small Size Conference",
-              price: "$0/paper",
-              description: "1 - 100 Papers",
-              tagline:"No money, no problem",
-              features: [
-                "Ideal for small conferences",
-                "Cost-effective for new events",
-                "Basic features",
-              ],
-              buttonText: "Choose Free",
-            },
-            {
-              title: "Medium Size Conference",
-              price: "$1.5/paper",
-              description: "101 - 300 Papers",
-              tagline:"per conference",
-              features: [
-                "Advanced management features",
-                "Scalable for more attendees",
-              ],
-              buttonText: "Choose Medium",
-            },
-            {
-              title: "Large Size Conference",
-              price: "$1.25/paper",
-              description: "301 - 500 Papers",
-              tagline:"per conference",
-              features: [
-                "Priority support",
-                "Lower cost per paper",
-              ],
-              buttonText: "Choose Large",
-            },
-            {
-              title: "Extra Large Conference",
-              price: "$1/paper",
-              description: "501+ Papers",
-              tagline:"per confererence",
-              features: [
-                "Best value for high-volume conferences",
-                "Customizable features",
-                "Dedicated account manager",
-              ],
-              buttonText: "Contact Us",
-            },
-          ];
+    {
+      title: 'Small Size Conference',
+      price: '$0/paper',
+      description: '1 - 100 Papers',
+      tagline: 'No money, no problem',
+      features: [
+        'Ideal for small conferences',
+        'Cost-effective for new events',
+        'Basic features',
+      ],
+      buttonText: 'Choose Free',
+    },
+    {
+      title: 'Medium Size Conference',
+      price: '$1.5/paper',
+      description: '101 - 300 Papers',
+      tagline: 'per conference',
+      features: ['Advanced management features', 'Scalable for more attendees'],
+      buttonText: 'Choose Medium',
+    },
+    {
+      title: 'Large Size Conference',
+      price: '$1.25/paper',
+      description: '301 - 500 Papers',
+      tagline: 'per conference',
+      features: ['Priority support', 'Lower cost per paper'],
+      buttonText: 'Choose Large',
+    },
+    {
+      title: 'Extra Large Conference',
+      price: '$1/paper',
+      description: '501+ Papers',
+      tagline: 'per confererence',
+      features: [
+        'Best value for high-volume conferences',
+        'Customizable features',
+        'Dedicated account manager',
+      ],
+      buttonText: 'Contact Us',
+    },
+  ];
 
   return (
     <div className="max-w-7xl mx-auto p-6">
-      
       {/* Information Section */}
       {/* <div className="p-12 bg-gray-50 rounded-lg shadow-lg">
       <h2 className="text-5xl font-bold text-center mb-10 text-blue-600">How It Works</h2>
@@ -87,7 +80,6 @@ const PricingPage: React.FC = () => {
     </div>  
 </div> */}
 
-      
       {/* Pricing Section */}
       {/* <h1 className="text-5xl font-medium text-center my-12">Conference Pricing Plans</h1>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
@@ -103,8 +95,10 @@ const PricingPage: React.FC = () => {
           />
         ))}
       </div> */}
-      <h2 className="text-4xl font-semibold text-center mb-6">Frequently Asked Questions About Pricing</h2>
-      <Faqs/>
+      <h2 className="text-4xl font-semibold text-center mb-6">
+        Frequently Asked Questions About Pricing
+      </h2>
+      <Faqs />
     </div>
   );
 };

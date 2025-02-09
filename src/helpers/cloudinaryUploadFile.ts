@@ -1,12 +1,12 @@
-import { v2 as cloudinary } from "cloudinary";
-import { PathLike } from "fs";
+import { v2 as cloudinary } from 'cloudinary';
+import { PathLike } from 'fs';
 // import fs from "fs";
 import fs from 'fs/promises';
 
-cloudinary.config({ 
-  cloud_name: process.env.CLOUDINARY_CLOUD_NAME as string, 
-  api_key: process.env.CLOUDINARY_API_KEY as string, 
-  api_secret: process.env.CLOUDINARY_API_SECRET as string
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME as string,
+  api_key: process.env.CLOUDINARY_API_KEY as string,
+  api_secret: process.env.CLOUDINARY_API_SECRET as string,
 });
 
 type UploadResponse = {
@@ -29,29 +29,35 @@ type UploadResponse = {
   original_filename: string;
 };
 
-const uploadOnCloudinary = async (localFilePath: String): Promise<UploadResponse | null> => {
-    try {
-        if (!localFilePath) return null;
-        // Upload the file to Cloudinary
-        const response = await cloudinary.uploader.upload(localFilePath.toString(), {
-            resource_type: "auto",
-            use_filename:true,
-        });
+const uploadOnCloudinary = async (
+  localFilePath: String,
+): Promise<UploadResponse | null> => {
+  try {
+    if (!localFilePath) return null;
+    // Upload the file to Cloudinary
+    const response = await cloudinary.uploader.upload(
+      localFilePath.toString(),
+      {
+        resource_type: 'auto',
+        use_filename: true,
+      },
+    );
 
-        // File has been uploaded successfully
-        // fs.unlinkSync(localFilePath); // Remove the locally saved temporary file
-        // await fs.unlink(localFilePath as PathLike);
-        return response;
-    } catch (error) {
-        // Remove the locally saved temporary file if the upload operation fails
-        // fs.unlink(localFilePath);
-        await fs.unlink(localFilePath as PathLike);
-        console.log("File is unable to upload to Cloudinary", error);
-        return null;
-    }
-
+    // File has been uploaded successfully
+    // fs.unlinkSync(localFilePath); // Remove the locally saved temporary file
+    // await fs.unlink(localFilePath as PathLike);
+    return response;
+  } catch (error) {
+    // Remove the locally saved temporary file if the upload operation fails
+    // fs.unlink(localFilePath);
+    await fs.unlink(localFilePath as PathLike);
+    console.log('File is unable to upload to Cloudinary', error);
+    return null;
+  }
 };
-const deleteFromCloudinary = async (fileURL: string): Promise<{ result: string } | null> => {
+const deleteFromCloudinary = async (
+  fileURL: string,
+): Promise<{ result: string } | null> => {
   try {
     if (!fileURL) return null;
 
@@ -74,6 +80,4 @@ const deleteFromCloudinary = async (fileURL: string): Promise<{ result: string }
   }
 };
 
-
-export { uploadOnCloudinary ,deleteFromCloudinary};
-
+export { uploadOnCloudinary, deleteFromCloudinary };

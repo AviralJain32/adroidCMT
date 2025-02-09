@@ -50,9 +50,10 @@ function SignInForm() {
     if (result?.error) {
       toast({
         title: 'Error',
-        description: result.error === 'CredentialsSignin'
-          ? 'The credentials you entered are incorrect. Please try again.'
-          : result.error,
+        description:
+          result.error === 'CredentialsSignin'
+            ? 'The credentials you entered are incorrect. Please try again.'
+            : result.error,
         variant: 'destructive',
       });
     }
@@ -68,7 +69,9 @@ function SignInForm() {
     <div className="flex justify-center items-center min-h-screen bg-gradient-to-r from-blue-100 to-blue-300">
       <div className="w-full max-w-md p-6 space-y-8 bg-white rounded-lg shadow-2xl">
         <div className="text-center">
-          <h1 className="text-3xl font-extrabold text-gray-800">Welcome Back!</h1>
+          <h1 className="text-3xl font-extrabold text-gray-800">
+            Welcome Back!
+          </h1>
           <p className="text-sm text-gray-500">
             Sign in to access your account and manage your conferences.
           </p>
@@ -81,7 +84,9 @@ function SignInForm() {
               control={form.control}
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-sm font-medium text-gray-700">Email</FormLabel>
+                  <FormLabel className="text-sm font-medium text-gray-700">
+                    Email
+                  </FormLabel>
                   <Input
                     placeholder="Enter your email"
                     {...field}
@@ -97,7 +102,9 @@ function SignInForm() {
               control={form.control}
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-sm font-medium text-gray-700">Password</FormLabel>
+                  <FormLabel className="text-sm font-medium text-gray-700">
+                    Password
+                  </FormLabel>
                   <Input
                     type="password"
                     placeholder="Enter your password"
@@ -110,7 +117,10 @@ function SignInForm() {
             />
 
             <div className="text-right">
-              <Link href="/forget-password" className="text-sm text-blue-600 hover:underline">
+              <Link
+                href="/forget-password"
+                className="text-sm text-blue-600 hover:underline"
+              >
                 Forgot Password?
               </Link>
             </div>
@@ -122,7 +132,8 @@ function SignInForm() {
             >
               {isSubmitting ? (
                 <>
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Signing In...
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Signing
+                  In...
                 </>
               ) : (
                 'Sign In'
@@ -135,40 +146,51 @@ function SignInForm() {
           <span className="text-gray-500">or</span>
         </div>
 
-       <div className="flex gap-3 items-center justify-center">
-        <form
-          action={async () => await signIn('google')}
-          className="flex justify-center"
-        >
-          <button
-            type="submit"
-            className="flex items-center gap-3 px-4 py-2 bg-white text-gray-800 border border-gray-300 rounded-lg shadow-sm hover:shadow-md hover:bg-gray-100 focus:ring-2 focus:ring-blue-300"
+        <div className="flex gap-3 items-center justify-center">
+          <form
+            action={async () => await signIn('google')}
+            className="flex justify-center"
           >
-            <Image src="/Google-button-icon.png" alt="Google" width={24} height={24} />
-            Google
-          </button>
-        </form>
+            <button
+              type="submit"
+              className="flex items-center gap-3 px-4 py-2 bg-white text-gray-800 border border-gray-300 rounded-lg shadow-sm hover:shadow-md hover:bg-gray-100 focus:ring-2 focus:ring-blue-300"
+            >
+              <Image
+                src="/Google-button-icon.png"
+                alt="Google"
+                width={24}
+                height={24}
+              />
+              Google
+            </button>
+          </form>
 
-
-        <form
-          action={async () => await signIn('orcid')}
-          className="flex justify-center"
-        >
-          <button
-            type="submit"
-            className="flex items-center gap-3 px-4 py-2 bg-white text-gray-800 border border-gray-300 rounded-lg shadow-sm hover:shadow-md hover:bg-gray-100 focus:ring-2 focus:ring-blue-300"
+          <form
+            action={async () => await signIn('orcid')}
+            className="flex justify-center"
           >
-            <Image src="/ORCID-button-icon.svg.png" alt="Google" width={24} height={24} />
-            ORCID
-          </button>
-        </form>
-
+            <button
+              type="submit"
+              className="flex items-center gap-3 px-4 py-2 bg-white text-gray-800 border border-gray-300 rounded-lg shadow-sm hover:shadow-md hover:bg-gray-100 focus:ring-2 focus:ring-blue-300"
+            >
+              <Image
+                src="/ORCID-button-icon.svg.png"
+                alt="Google"
+                width={24}
+                height={24}
+              />
+              ORCID
+            </button>
+          </form>
         </div>
 
         <div className="text-center">
           <p className="text-sm text-gray-600">
             Don&apos;t have an account?{' '}
-            <Link href="/sign-up" className="text-blue-600 font-medium hover:underline">
+            <Link
+              href="/sign-up"
+              className="text-blue-600 font-medium hover:underline"
+            >
               Sign up now
             </Link>
           </p>
