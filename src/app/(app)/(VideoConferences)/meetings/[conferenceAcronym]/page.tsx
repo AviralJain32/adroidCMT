@@ -13,6 +13,7 @@ interface Meeting {
   description?: string;
   start_time: string;
   end_time: string;
+  room_id:string
   join_link: string;
   status: "Scheduled" | "Ongoing" | "Completed" | "Cancelled";
 }
