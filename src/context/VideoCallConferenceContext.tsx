@@ -41,8 +41,8 @@ export const ConferenceSocketProvider: React.FC<{ children: React.ReactNode }> =
     // Initialize only when the conference starts
     socket.current = io(WS_Server);
     console.log(socket)
-    const user=await session
-    const userObjectId =user && user._id;
+    // const user=await session
+    // const userObjectId =user && user._id;
     const userId=UUIDv4()
 
     const newPeer = new Peer(userId, {
