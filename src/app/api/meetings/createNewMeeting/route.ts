@@ -81,8 +81,8 @@ export async function POST(request: NextRequest) {
     
     // Extract unique emails
     console.log(authorsData)
-    const authorEmails = [...new Set(authorsData.flatMap((data) => data.authorsEmails))];
-
+    const authorEmails = Array.from(new Set(authorsData.flatMap((data) => data.authorsEmails)));
+    
     if (authorEmails.length === 0) {
       return NextResponse.json(
         { success: false, message: "No accepted paper authors found" },
