@@ -16,10 +16,6 @@ const initialState: SocketState = {
   peers: {},
 };
 
-// Async thunk to fetch user media
-export const fetchUserFeed = createAsyncThunk("socket/fetchUserFeed", async () => {
-  return await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
-});
 
 export const socketSlice = createSlice({
   name: "socket",
@@ -31,11 +27,6 @@ export const socketSlice = createSlice({
     addPeer: (state, action: PayloadAction<{ peerId: string; stream: MediaStream }>) => {
       state.peers[action.payload.peerId] = { stream: action.payload.stream };
     },
-  },
-  extraReducers: (builder) => {
-    builder.addCase(fetchUserFeed.fulfilled, (state, action) => {
-      state.stream = action.payload;
-    });
   },
 });
 

@@ -209,7 +209,7 @@ function Navbar() {
           <DropdownMenuTrigger className="hover:font-bold border-none text-md">About Us</DropdownMenuTrigger>
           <DropdownMenuContent>
           <Link href="/about-us"><DropdownMenuItem >About Us</DropdownMenuItem></Link>
-          <Link href="/about-us#advisory-board"><DropdownMenuItem >Advisory Board</DropdownMenuItem></Link>
+          <Link href="/advisory-board"><DropdownMenuItem >Advisory Board</DropdownMenuItem></Link>
           </DropdownMenuContent>
         </DropdownMenu>
           <Link href="/contact-us" className="hover:font-bold">

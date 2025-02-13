@@ -1,3 +1,4 @@
+import Navbar from "@/components/Navbar";
 import { ConferenceSocketProvider } from "@/context/VideoCallConferenceContext";
 
 const ConferencePage = ({
@@ -9,9 +10,9 @@ const ConferencePage = ({
   return (
     <>
       {/* <body> */}
-    <ConferenceSocketProvider>
+      <ConferenceSocketProvider>
       {children}
-    </ConferenceSocketProvider>
+      </ConferenceSocketProvider>
     {/* </body> */}
     </>
   );
