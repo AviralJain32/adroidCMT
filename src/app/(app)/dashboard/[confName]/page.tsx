@@ -8,9 +8,9 @@ import { useParams } from 'next/navigation';
 import React, { useEffect, useMemo, useState } from 'react';
 import { useGetConferencePapersQuery } from '@/store/features/PaperApiSlice';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
-import { useRouter } from 'next/router';
+// import { useRouter } from 'next/router';
 import Link from 'next/link';
-import { ConferenceMeetingSchedule } from '../../(VideoConferences)/meetings/ConferenceMeetingSchedule';
+// import { ConferenceMeetingSchedule } from '@/app/(videoMeetingRoom)/meetings/ConferenceMeetingSchedule';
 
 // UnderSubmission.tsx
 const UnderSubmission = () => (
