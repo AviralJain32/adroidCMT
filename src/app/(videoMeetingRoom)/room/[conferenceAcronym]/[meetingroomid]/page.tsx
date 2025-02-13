@@ -16,7 +16,7 @@ const Page = () => {
 
   const peerRef = useRef<Peer | null>(null);
   const [user, setUser] = useState<Peer | null>(null);
-    const [stream, setStream] = useState<MediaStream | null>(null);
+    const [stream, setStream] = useState<MediaStream | undefined>(undefined);
     const [peers, setPeers] = useState<{ [peerId: string]: MediaStream }>({});
   
     useEffect(()=>{
@@ -46,7 +46,7 @@ const Page = () => {
         peerRef.current = null;
       }
       setUser(null);
-      setStream(null);
+      setStream(undefined);
       setPeers({});
     };
     },[])
