@@ -1,8 +1,11 @@
 import dbConnect from '@/lib/dbConnect';
 import ConferenceModel from '@/model/Conference';
 
+export const dynamic = "force-dynamic"
+
 export async function GET() {
   await dbConnect();
+
 
   try {
     const getConferenceDetails = await ConferenceModel.find({
