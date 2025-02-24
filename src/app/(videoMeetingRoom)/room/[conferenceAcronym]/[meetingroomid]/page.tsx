@@ -7,12 +7,13 @@ import { useParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import Peer from "peerjs";
 import { v4 as UUIDv4 } from "uuid";
+import { useToast } from "@/components/ui/use-toast";
  
 
 const Page = () => {
 
   const { socket} = useConferenceSocket();
-  // i am thing this thing will work
+  const { toast } = useToast()
 
   const peerRef = useRef<Peer | null>(null);
   const [user, setUser] = useState<Peer | null>(null);
@@ -56,6 +57,9 @@ const Page = () => {
   
       socket?.on("user-joined", ({ peerId }) => {
           console.log(`🔵 User joined: ${peerId}`);
+          toast({
+            title: "New User has joined !!",
+          })
   
           const call = peerRef.current!.call(peerId, stream);
           
@@ -126,8 +130,6 @@ const Page = () => {
       socket?.off("get-users", fetchParticipantsList);
     };
   }, [id, user, session, status, socket]); // Include status in dependencies
-
-  console.log("ye peers hai",peers)
 
   return (
     <div>

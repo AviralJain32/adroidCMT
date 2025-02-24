@@ -28,7 +28,7 @@ const MeetingPage = () => {
   const initRoom=(roomId:string)=>{
     console.log(socket)
     console.log("Room is created in the backend")
-    socket.emit("create-room",{roomId:roomId})
+    socket?.emit("create-room",{roomId:roomId})
 }
 
   const fetchMeetings = async () => {

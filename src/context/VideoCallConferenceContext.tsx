@@ -135,13 +135,9 @@
 //     </ConferenceSocketContext.Provider>
 //   );
 // };
-
-
-
 "use client";
-import { createContext, useContext, useEffect, useRef, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import { io, Socket } from "socket.io-client";
-
 
 const WS_Server = "http://localhost:5000";
 
@@ -150,7 +146,7 @@ let globalSocket: Socket | null = null;
 
 // Context Type
 interface SocketContextType {
-  socket: Socket;
+  socket: Socket | null;
 }
 
 // Create Context
@@ -163,27 +159,24 @@ export const useConferenceSocket = () => {
   return context;
 };
 
-// Provider Component (Only Active Inside Conference)
+// Provider Component
 export const ConferenceSocketProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const socket = useRef<Socket | null>(null);
+  const [socket, setSocket] = useState<Socket | null>(null);
 
   useEffect(() => {
-      // Ensure only one socket connection exists
-      if (!globalSocket) {
+    if (!globalSocket) {
       globalSocket = io(WS_Server);
-      console.log("🔵 New Socket Connection Established",globalSocket);
+      console.log("🔵 New Socket Connection Established", globalSocket);
     } else {
-      console.log("🟢 Using Existing Socket Connection",globalSocket);
+      console.log("🟢 Using Existing Socket Connection", globalSocket);
     }
-    socket.current = globalSocket;
-  
-  }, []);
 
-  console.log("socket inside the context api",socket)
+    setSocket(globalSocket);
+  }, []);
 
 
   return (
-    <ConferenceSocketContext.Provider value={{ socket: globalSocket!}}>
+    <ConferenceSocketContext.Provider value={{ socket }}>
       {children}
     </ConferenceSocketContext.Provider>
   );
