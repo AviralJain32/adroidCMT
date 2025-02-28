@@ -10,7 +10,7 @@ export default async function RootLayout({ children }: RootLayoutProps) {
     <div className="">
       <Navbar />
       {children}
-      {/* <Footer /> */}
+      <Footer />
     </div>
   );
 }
