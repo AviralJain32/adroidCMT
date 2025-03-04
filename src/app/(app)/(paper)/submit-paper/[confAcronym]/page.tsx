@@ -33,7 +33,8 @@ export default function PaperSubmissionForm() {
   const { data: session } = useSession();
   const user: User = session?.user;
   const params = useParams<{ confAcronym: string }>();
-  const conferenceAcronym = encodeURIComponent(params.confAcronym);
+  const conferenceAcronym = decodeURIComponent(params.confAcronym);
+  console.log(conferenceAcronym)
   const router = useRouter();
 
   const form = useForm<z.infer<typeof paperSubmissionSchema>>({
