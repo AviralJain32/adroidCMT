@@ -307,6 +307,19 @@ export default function CreateConferenceForm() {
                 </FormItem>
               )}
             />
+            
+            <FormField
+              name="conferenceSubmissionsDeadlineDate"
+              control={form.control}
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>{isBook?"Full Chapter Submission Date":"Paper Submission Deadline"}</FormLabel>
+                  <Input type="date" {...field} />
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
             <FormField
               name="conferenceLastDay"
               control={form.control}
@@ -319,17 +332,7 @@ export default function CreateConferenceForm() {
               )}
             />
 
-            <FormField
-              name="conferenceSubmissionsDeadlineDate"
-              control={form.control}
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>{isBook?"Full Chapter Submission Date":"Paper Submission Deadline"}</FormLabel>
-                  <Input type="date" {...field} />
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+            
             <FormField
               name="conferencePrimaryArea"
               control={form.control}

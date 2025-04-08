@@ -113,31 +113,30 @@ export async function POST(request: Request) {
 
     await newConference.save();
 
-    // await UserModel.findByIdAndUpdate(user._id, {
-    //     $push: { Organizedconferences: newConference._id },
-    //   });
-    // const organizer = await UserModel.findById(user._id);
+    if(!(conferenceCategory==='Book')){
 
-    //email bhejna hai conference ka
-    console.log(user);
-    const emailResponse = await sendConferenceCreationMail(
-      user.email as string,
-      user.fullname as string,
-      conferenceTitle,
-      conferenceFirstDay,
-    );
-
-    if (!emailResponse.success) {
-      return Response.json(
-        {
-          success: false,
-          message: emailResponse.message,
-        },
-        {
-          status: 500,
-        },
+      const emailResponse = await sendConferenceCreationMail(
+        user.email as string,
+        user.fullname as string,
+        conferenceTitle,
+        conferenceFirstDay,
       );
+  
+      if (!emailResponse.success) {
+        return Response.json(
+          {
+            success: false,
+            message: emailResponse.message,
+          },
+          {
+            status: 500,
+          },
+        );
+      }
+
     }
+
+    
 
     return new Response(
       JSON.stringify({
