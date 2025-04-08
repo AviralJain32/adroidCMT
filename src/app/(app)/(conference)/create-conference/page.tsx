@@ -48,7 +48,10 @@ import { useCreateNewConferenceMutation } from '@/store/features/ConferenceApiSl
 export default function CreateConferenceForm() {
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isBook,setIsBook]=useState(false);
   const [createConference] = useCreateNewConferenceMutation();
+
+  // const decideSchema=isBook?BookSubmissionSchema:conferenceSchema
 
   const form = useForm<z.infer<typeof conferenceSchema>>({
     resolver: zodResolver(conferenceSchema),
@@ -77,15 +80,17 @@ export default function CreateConferenceForm() {
     }
   };
 
+  console.log(isBook); 
+
   return (
     <div className="flex justify-center items-center min-h-screen p-3">
       <div className="w-full max-w-6xl p-8 space-y-8 bg-white rounded-lg shadow-md">
         <div className="text-center">
           <h1 className="text-4xl font-extrabold tracking-tight lg:text-5xl mb-6 font">
-            Create a New Conference
+            {isBook?"Book Chapter Submission Portal":"Create a New Conference"}
           </h1>
           <p className="mb-4">
-            Fill in the details below to create a new conference
+            Fill in the details below to create a new {isBook ? "book":"conference"}
           </p>
         </div>
         <Form {...form}>
@@ -117,7 +122,10 @@ export default function CreateConferenceForm() {
                   <FormDescription>
                     Specify the type of your installation
                   </FormDescription>
-                  <Select onValueChange={field.onChange} value={field.value}>
+                  <Select onValueChange={(value)=>{
+                      field.onChange(value)
+                      setIsBook(value==="Book")
+                    }} value={field.value}>
                     <SelectTrigger>
                       <SelectValue placeholder="Select Installation type" />
                     </SelectTrigger>
@@ -144,7 +152,7 @@ export default function CreateConferenceForm() {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>
-                    Conference Title
+                    {isBook?"Book Title":"Conference Title"}
                     <AlertInfoDialog
                       title={'Conference title'}
                       description={titleDescription}
@@ -157,7 +165,7 @@ export default function CreateConferenceForm() {
                   </FormDescription>
                   <Input
                     {...field}
-                    placeholder="Enter the conference's title"
+                    placeholder={`Enter the ${isBook?'book':'conference'}'s title`}
                   />
                   <FormMessage />
                 </FormItem>
@@ -169,7 +177,7 @@ export default function CreateConferenceForm() {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>
-                    Conference Acronym
+                    {isBook?"Book Acronym":"Conference Acronym"}
                     <AlertInfoDialog
                       title={'Acronym'}
                       description={AcronymDescription}
@@ -177,7 +185,7 @@ export default function CreateConferenceForm() {
                   </FormLabel>
                   <Input
                     {...field}
-                    placeholder="Enter the conference acronym"
+                    placeholder={`Enter the ${isBook?'book':'conference'}'s acronym`}
                   />
                   <FormMessage />
                 </FormItem>
@@ -185,7 +193,11 @@ export default function CreateConferenceForm() {
             />
             <Separator className="my-4"></Separator>
 
-            <div className="font-bold text-xl">Conference information</div>
+            {/* Book */}
+
+            { isBook?"":
+              <>
+              <div className="font-bold text-xl">{isBook?'Book':'Conference'} information</div>
             <FormField
               name="conferenceWebpage"
               control={form.control}
@@ -265,7 +277,8 @@ export default function CreateConferenceForm() {
                 </FormItem>
               )}
             />
-
+            </>
+}
             <FormField
               name="conferenceEstimatedNumberOfSubmissions"
               control={form.control}
@@ -273,7 +286,7 @@ export default function CreateConferenceForm() {
                 <FormItem>
                   <FormLabel>Estimated Number of Submissions</FormLabel>
                   <FormDescription>
-                    If this is not the first time your conference is organized,
+                    If this is not the first time your {isBook?"book submission":"conference is organized"},
                     you can base your estimation on the number of submissions in
                     previous years. Otherwise, enter your best guess.
                   </FormDescription>
@@ -288,7 +301,7 @@ export default function CreateConferenceForm() {
               control={form.control}
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>First Day</FormLabel>
+                  <FormLabel>{isBook?"Abstract Submission Date":"First Day"}</FormLabel>
                   <Input type="date" {...field} />
                   <FormMessage />
                 </FormItem>
@@ -299,7 +312,7 @@ export default function CreateConferenceForm() {
               control={form.control}
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Last Day</FormLabel>
+                  <FormLabel>{isBook?"Final Notification Date":"Last Day"}</FormLabel>
                   <Input type="date" {...field} />
                   <FormMessage />
                 </FormItem>
@@ -311,7 +324,7 @@ export default function CreateConferenceForm() {
               control={form.control}
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Paper Submission Deadline</FormLabel>
+                  <FormLabel>{isBook?"Full Chapter Submission Date":"Paper Submission Deadline"}</FormLabel>
                   <Input type="date" {...field} />
                   <FormMessage />
                 </FormItem>
@@ -351,7 +364,7 @@ export default function CreateConferenceForm() {
               )}
             /> */}
 
-            <FormField
+          {isBook?"": <FormField
               name="conferenceOrganizerWebPage"
               control={form.control}
               render={({ field }) => (
@@ -361,13 +374,14 @@ export default function CreateConferenceForm() {
                   <FormMessage />
                 </FormItem>
               )}
-            />
+            />}
+
             <FormField
               name="conferenceOrganizerPhoneNumber"
               control={form.control}
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Organizer Phone Number</FormLabel>
+                  <FormLabel>{isBook?"Corresponding Editor ":"Organizer"} Phone Number</FormLabel>
                   <Input {...field} />
                   <FormMessage />
                 </FormItem>
@@ -378,7 +392,7 @@ export default function CreateConferenceForm() {
               control={form.control}
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Organizer Role</FormLabel>
+                  <FormLabel>{isBook?"Corresponding Editor Affilation":"Organizer Role"}</FormLabel>
                   <Input {...field} />
                   <FormMessage />
                 </FormItem>
@@ -412,7 +426,7 @@ export default function CreateConferenceForm() {
                 <>
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Please Wait
                 </>
-              ) : (
+              ) : (isBook?"Create Book Submission":
                 'Create Conference'
               )}
             </Button>

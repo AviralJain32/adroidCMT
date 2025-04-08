@@ -48,10 +48,10 @@ export async function POST(request: Request) {
     !conferenceSubmissionsDeadlineDate ||
     !conferenceTitle ||
     !conferenceAcronym ||
-    !conferenceWebpage ||
-    !conferenceVenue ||
-    !conferenceCity ||
-    !conferenceCountry ||
+    // !conferenceWebpage ||
+    // !conferenceVenue ||
+    // !conferenceCity ||
+    // !conferenceCountry ||
     !conferenceFirstDay ||
     !conferenceLastDay ||
     !conferencePrimaryArea ||
@@ -85,6 +85,7 @@ export async function POST(request: Request) {
   }
 
   try {
+    console.log("getting the data")
     const newConference = new ConferenceModel({
       conferenceCategory,
       conferenceOrganizer: user._id,
@@ -149,7 +150,7 @@ export async function POST(request: Request) {
     return new Response(
       JSON.stringify({
         success: false,
-        message: 'Error creating conference',
+        message: 'Error creating conference'+ error,
       }),
       { status: 500 },
     );

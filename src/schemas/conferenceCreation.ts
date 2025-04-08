@@ -16,7 +16,7 @@ const conferenceSchema = z
     // conferenceEmail: z.string().email({ message: "Please provide a professional email" }),
     conferenceOrganizerWebPage: z
       .string()
-      .url({ message: 'Invalid URL for organizer web page' }),
+      .url({ message: 'Invalid URL for organizer web page' }).optional(),
     conferenceOrganizerPhoneNumber: z
       .string()
       .min(10, { message: 'Phone number must be at least 10 digits' }),
@@ -34,16 +34,16 @@ const conferenceSchema = z
       .min(2, { message: 'Acronym must be at least 2 characters' }),
     conferenceWebpage: z
       .string()
-      .url({ message: 'Invalid URL for conference webpage' }),
+      .url({ message: 'Invalid URL for conference webpage' }).optional(),
     conferenceVenue: z
       .string()
-      .min(2, { message: 'Venue must be at least 2 characters' }),
+      .min(2, { message: 'Venue must be at least 2 characters' }).optional(),
     conferenceCity: z
       .string()
-      .min(2, { message: 'City must be at least 2 characters' }),
+      .min(2, { message: 'City must be at least 2 characters' }).optional(),
     conferenceCountry: z
       .string()
-      .min(2, { message: 'Country must be at least 2 characters' }),
+      .min(2, { message: 'Country must be at least 2 characters' }).optional(),
     conferenceEstimatedNumberOfSubmissions: z
       .string()
       .transform(value => parseFloat(value))
@@ -111,10 +111,10 @@ const conferenceSchema = z
 const requiredFields = [
   'conferenceTitle',
   'conferenceAcronym',
-  'conferenceWebpage',
-  'conferenceVenue',
-  'conferenceCity',
-  'conferenceCountry',
+  // 'conferenceWebpage',
+  // 'conferenceVenue',
+  // 'conferenceCity',
+  // 'conferenceCountry',
   'conferenceFirstDay',
   'conferenceLastDay',
   'conferencePrimaryArea',
