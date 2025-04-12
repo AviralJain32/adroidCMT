@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import dbConnect from '@/lib/dbConnect';
 import PaperModel from '@/model/PaperSchema';
 import { getServerSession, User } from 'next-auth';
-import { authOptions } from '../auth/[...nextauth]/options';
+import { authOptions } from '../../auth/[...nextauth]/options';
 import ConferenceModel from '@/model/Conference';
 import { generatePaperID } from '@/helpers/PaperId';
 import {
@@ -12,18 +12,6 @@ import {
 
 export async function POST(request: NextRequest) {
   await dbConnect();
-  const session = await getServerSession(authOptions);
-  const user: User = session?.user as User;
-
-  if (!session || !session.user) {
-    return NextResponse.json(
-      {
-        success: false,
-        message: 'Not Authenticated',
-      },
-      { status: 401 },
-    );
-  }
 
   const formData = await request.formData();
   const paperTitle = formData.get('paperTitle') as string;
@@ -57,14 +45,18 @@ export async function POST(request: NextRequest) {
 
   try {
     const { Authors, CorrespondingAuthors } =
-      await validateAuthors(paperAuthorsArray);
-    const uploadedFileUrl = await handleFileUpload(paperFile);
+      await validateAuthors(paperAuthorsArray,paperTitle);
+      console.log(Authors)
+      console.log(CorrespondingAuthors)
 
-    const conferenceDocument = await ConferenceModel.findOne({
+    const uploadedFileUrl = await handleFileUpload(paperFile);
+    console.log(uploadedFileUrl)
+
+    const conferenceExists = await ConferenceModel.exists({
       conferenceAcronym: conference,
     });
-
-    if (!conferenceDocument) {
+    
+    if (!conferenceExists) {
       return NextResponse.json(
         {
           success: false,
@@ -85,7 +77,7 @@ export async function POST(request: NextRequest) {
       paperKeywords,
       paperAbstract,
       paperSubmissionDate: new Date(),
-      conference: conferenceDocument._id,
+      conference: conferenceExists._id,
       paperStatus: 'submitted',
       paperID: paperID,
     });
@@ -98,6 +90,7 @@ export async function POST(request: NextRequest) {
       paper: newPaper,
     });
   } catch (error: any) {
+    console.log(error)
     return NextResponse.json(
       {
         success: false,

@@ -22,11 +22,14 @@ import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { toast } from '@/components/ui/use-toast';
 
 interface AuthorDetails {
-  fullname: string;
-  email: string;
-  country: string;
-  affilation: string;
-  webpage: string;
+  name:string,
+  email:string
+  userId:{
+    fullname:string,
+    email:string,
+    affilation:string,
+    country:string
+  }
 }
 
 type params = {
@@ -131,6 +134,7 @@ const Page = () => {
     paperFile,
   } = paperDetails;
 
+
   return (
     <div className="container mx-auto p-6 bg-white rounded-lg">
       <div className="grid md:grid-cols-2 gap-5">
@@ -233,17 +237,20 @@ const Page = () => {
               <TableHead>Email</TableHead>
               <TableHead>Country</TableHead>
               <TableHead>Affiliation</TableHead>
-              <TableHead>Webpage</TableHead>
+              <TableHead>Corresponding Author</TableHead>
+              {/* <TableHead>Webpage</TableHead> */}
             </TableRow>
           </TableHeader>
           <TableBody>
-            {paperAuthor.map((author: AuthorDetails, index: number) => (
+          {paperAuthor.map((author:any, index: number) => (
               <TableRow key={index}>
-                <TableCell className="font-medium">{author.fullname}</TableCell>
+                <TableCell className="font-medium">{author.userId?.fullname || author.name}</TableCell>
                 <TableCell>{author.email}</TableCell>
-                <TableCell>{author.country}</TableCell>
-                <TableCell>{author.affilation}</TableCell>
-                <TableCell>
+                <TableCell>{author.userId?.country || "-"}</TableCell>
+                <TableCell>{author.userId?.affilation || "-"}</TableCell>
+                <TableCell>No</TableCell>
+
+                {/* <TableCell>
                   <a
                     href={author.webpage}
                     target="_blank"
@@ -252,9 +259,32 @@ const Page = () => {
                   >
                     {author.webpage}
                   </a>
-                </TableCell>
+                </TableCell> */}
               </TableRow>
             ))}
+            {correspondingAuthor.map(
+              (corresponding: any, index: number) => (
+                <TableRow key={index + paperAuthor.length}>
+                  <TableCell className="font-medium">
+                    {corresponding.userId.fullname}{' '}
+                  </TableCell>
+                  <TableCell>{corresponding.email}</TableCell>
+                  <TableCell>{corresponding.userId.country}</TableCell>
+                  <TableCell>{corresponding.userId.affilation}</TableCell>
+                  {/* <TableCell>
+                    <a
+                      href={corresponding.webpage}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-blue-500 underline"
+                    >
+                      {corresponding.webpage}
+                    </a>
+                  </TableCell> */}
+                    Yes
+                </TableRow>
+              ),
+            )}
           </TableBody>
         </Table>
       </div>

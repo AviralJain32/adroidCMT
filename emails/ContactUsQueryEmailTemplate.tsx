@@ -55,7 +55,7 @@ export const ContactUsEmailTemplate = ({
         </Text>
       </Container>
 
-      <Text style={footerBottom}>Powered securely by Android CMS</Text>
+      <Text style={footerBottom}>Powered securely by Adroid CMS</Text>
     </Body>
   </Html>
 );

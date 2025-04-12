@@ -2,6 +2,47 @@ import { sendVerificationEmail } from '@/helpers/sendVerificationEmail';
 import dbConnect from '@/lib/dbConnect';
 import UserModel from '@/model/User';
 import bcryptjs from 'bcryptjs';
+import PaperModel from '@/model/PaperSchema';
+import mongoose from 'mongoose';
+
+const linkUserToPapers = async (email: string, userId: mongoose.Types.ObjectId) => {
+  try {
+    // 1. Update paperAuthor userId wherever email matches and userId is not set
+    await PaperModel.updateMany(
+      {
+        paperAuthor: {
+          $elemMatch: { email: email, userId: { $exists: false } },
+        },
+      },
+      {
+        $set: { 'paperAuthor.$[elem].userId': userId },
+      },
+      {
+        arrayFilters: [{ 'elem.email': email, 'elem.userId': { $exists: false } }],
+      }
+    );
+
+    // 2. Update correspondingAuthor userId wherever email matches and userId is not set
+    await PaperModel.updateMany(
+      {
+        correspondingAuthor: {
+          $elemMatch: { email: email, userId: { $exists: false } },
+        },
+      },
+      {
+        $set: { 'correspondingAuthor.$[elem].userId': userId },
+      },
+      {
+        arrayFilters: [{ 'elem.email': email, 'elem.userId': { $exists: false } }],
+      }
+    );
+
+    console.log('User linked to related papers successfully');
+  } catch (err) {
+    console.error('Error linking user to papers:', err);
+  }
+};
+
 
 export async function POST(request: Request) {
   await dbConnect();
@@ -56,10 +97,11 @@ export async function POST(request: Request) {
         verifyCode,
         verifyCodeExpiry: expiryDate,
         isVerified: false,
-        // Organizedconferences:[],
-        // submittedPapers:[]
       });
       await newUser.save();
+
+      await linkUserToPapers(email, newUser._id as mongoose.Types.ObjectId);
+
     }
     //send verification email
     const emailResponse = await sendVerificationEmail(
@@ -78,6 +120,9 @@ export async function POST(request: Request) {
         },
       );
     }
+
+  
+
     return Response.json(
       {
         success: true,

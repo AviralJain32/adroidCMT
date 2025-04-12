@@ -1,7 +1,7 @@
 import dbConnect from '@/lib/dbConnect';
 import { getServerSession, User } from 'next-auth';
-import { authOptions } from '../auth/[...nextauth]/options';
 import PaperModel from '@/model/PaperSchema';
+import { authOptions } from '../../auth/[...nextauth]/options';
 
 export async function GET(request: Request) {
   await dbConnect();
@@ -21,11 +21,11 @@ export async function GET(request: Request) {
 
   try {
     const submittedPapers = await PaperModel.find({
-      $or: [{ paperAuthor: user._id }, { correspondingAuthor: user._id }],
+      $or: [{ "paperAuthor.userId": user._id }, { "correspondingAuthor.userId": user._id }],
     })
       .populate('conference', 'conferenceAcronym')
-      .populate('paperAuthor')
-      .populate('correspondingAuthor');
+      // .populate('paperAuthor')
+      // .populate('correspondingAuthor');
 
     return new Response(
       JSON.stringify({

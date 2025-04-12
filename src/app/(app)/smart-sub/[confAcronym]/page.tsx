@@ -76,6 +76,7 @@ const ConferencePage = () => {
   }
 
   const {
+    conferenceCategory,
     conferenceTitle,
     conferenceOrganizer,
     conferenceOrganizerWebPage,
@@ -126,22 +127,29 @@ const ConferencePage = () => {
               <TableHead>Email</TableHead>
               <TableCell className="font-medium">{conferenceEmail}</TableCell>
             </TableRow> */}
-            <TableRow>
+            {conferenceOrganizerWebPage && <TableRow>
               <TableHead>Conference website</TableHead>
               <Link href={conferenceOrganizerWebPage}>
                 <TableCell className="font-medium">
                   {conferenceOrganizerWebPage}
                 </TableCell>
               </Link>
-            </TableRow>
+            </TableRow>}
             <TableRow>
               <TableHead>Submission link</TableHead>
               <Link href={profileUrl}>
                 <TableCell className="font-medium">{profileUrl}</TableCell>
               </Link>
             </TableRow>
+            
             <TableRow>
-              <TableHead>Submission Deadline</TableHead>
+              <TableHead>{conferenceCategory==="Book"?"Abstract Submission Date":"Conference Start Date"}</TableHead>
+              <TableCell className="font-medium">
+                {moment(conferenceFirstDay).format('MMMM Do YYYY')}
+              </TableCell>
+            </TableRow>
+            <TableRow>
+              <TableHead>{conferenceCategory==="Book"?"Full Chapter Submission Date":"Submission Deadline"}</TableHead>
               <TableCell className="font-medium">
                 {moment(conferenceSubmissionsDeadlineDate).format(
                   'MMMM Do YYYY',
@@ -149,23 +157,17 @@ const ConferencePage = () => {
               </TableCell>
             </TableRow>
             <TableRow>
-              <TableHead>Conference Start Date</TableHead>
-              <TableCell className="font-medium">
-                {moment(conferenceFirstDay).format('MMMM Do YYYY')}
-              </TableCell>
-            </TableRow>
-            <TableRow>
-              <TableHead>Conference End Date</TableHead>
+              <TableHead>{conferenceCategory==="Book"?"Final Notification Date":"Conference End Date"}</TableHead>
               <TableCell className="font-medium">
                 {moment(conferenceLastDay).format('MMMM Do YYYY')}
               </TableCell>
             </TableRow>
-            <TableRow>
+            {conferenceVenue && <TableRow>
               <TableHead>Venue</TableHead>
               <TableCell className="font-medium">
                 {conferenceVenue}, {conferenceCity}, {conferenceCountry}
               </TableCell>
-            </TableRow>
+            </TableRow>}
             <TableRow>
               <TableHead>Primary Area</TableHead>
               <TableCell className="font-medium">

@@ -79,12 +79,13 @@ const TableSmartSub: React.FC<conferencesType> = ({ conferences }) => {
     {
       // Details Button Column
       header: 'Details',
-      accessorKey: 'conferenceAcronym',
+      // accessorKey: 'conferenceAcronym',
+      id: 'details', // ✅ use id instead of accessorKey
       footer: 'Details',
       cell: info => (
         <Button
           variant="outline"
-          onClick={() => router.push(`/smart-sub/${info.getValue()}`)}
+          onClick={() => router.push(`/smart-sub/${info.row.original.conferenceAcronym}`)}
         >
           See Details
         </Button>
@@ -106,6 +107,7 @@ const TableSmartSub: React.FC<conferencesType> = ({ conferences }) => {
     },
     onSortingChange: setSorting,
     onGlobalFilterChange: setFiltering,
+    onPaginationChange: setPagination,
     globalFilterFn: 'includesString',
   });
 
@@ -128,16 +130,19 @@ const TableSmartSub: React.FC<conferencesType> = ({ conferences }) => {
           <TableHeader>
             {table.getHeaderGroups().map(headerGroup => (
               <TableRow key={headerGroup.id}>
-                {headerGroup.headers.map(header => (
+                {headerGroup.headers.map((header) => {
+                  console.log(headerGroup)
+                return (
                   <TableHead key={header.id}>
                     {header.isPlaceholder
                       ? null
                       : flexRender(
                           header.column.columnDef.header,
-                          header.getContext(),
+                          header.getContext()
                         )}
                   </TableHead>
-                ))}
+                )
+              })}
               </TableRow>
             ))}
           </TableHeader>

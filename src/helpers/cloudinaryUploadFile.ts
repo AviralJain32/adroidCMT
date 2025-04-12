@@ -31,6 +31,7 @@ type UploadResponse = {
 
 const uploadOnCloudinary = async (
   localFilePath: String,
+  fileName:string
 ): Promise<UploadResponse | null> => {
   try {
     if (!localFilePath) return null;
@@ -38,33 +39,36 @@ const uploadOnCloudinary = async (
     const response = await cloudinary.uploader.upload(
       localFilePath.toString(),
       {
+        folder: `${process.env.NEXT_FOLDER}`,
         resource_type: 'auto',
         use_filename: true,
       },
     );
 
-    // File has been uploaded successfully
-    // fs.unlinkSync(localFilePath); // Remove the locally saved temporary file
-    // await fs.unlink(localFilePath as PathLike);
     return response;
   } catch (error) {
-    // Remove the locally saved temporary file if the upload operation fails
-    // fs.unlink(localFilePath);
+
     await fs.unlink(localFilePath as PathLike);
     console.log('File is unable to upload to Cloudinary', error);
     return null;
   }
-};
-const deleteFromCloudinary = async (
+};const deleteFromCloudinary = async (
   fileURL: string,
 ): Promise<{ result: string } | null> => {
   try {
     if (!fileURL) return null;
 
-    // Extract the public ID from the URL
-    const fileArray = fileURL.split('/');
-    let fileNameWithExtension = fileArray[fileArray.length - 1];
-    const [publicId] = fileNameWithExtension.split('.');
+    // Extract the full public ID from the Cloudinary URL
+    const url = new URL(fileURL);
+    const pathname = url.pathname; // e.g. /conferencePapers/myfile.pdf
+
+    // Remove the file extension (e.g. .pdf)
+    const withoutExtension = pathname.replace(/\.[^/.]+$/, '');
+
+    // Remove leading slash if present
+    const publicId = withoutExtension.startsWith('/')
+      ? withoutExtension.slice(1)
+      : withoutExtension;
 
     console.log('Deleting file with public ID:', publicId);
 
@@ -79,5 +83,6 @@ const deleteFromCloudinary = async (
     return null;
   }
 };
+
 
 export { uploadOnCloudinary, deleteFromCloudinary };

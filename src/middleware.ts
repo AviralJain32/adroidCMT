@@ -65,7 +65,7 @@ export const config = {
     '/dashboard/:path*',
     '/verify/:path*',
     '/create-conference',
-    '/submit-paper/:path*',
+    // '/submit-paper/:path*',
     '/room/:path*'
   ],
 };

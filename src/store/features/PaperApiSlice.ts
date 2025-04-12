@@ -27,7 +27,7 @@ export const PaperApiSlice = createApi({
   tagTypes: ['paper'],
   endpoints: builder => ({
     getSubmittedPapers: builder.query<SubmittedPaper[], void>({
-      query: () => `/get-submitted-papers`,
+      query: () => `/papers/get-submitted-papers`,
       transformResponse: (
         response: ApiResponse<{ submittedPapers: SubmittedPaper[] }>,
       ) => {
@@ -45,7 +45,7 @@ export const PaperApiSlice = createApi({
       },
       string
     >({
-      query: confName => `/get-conference-papers?confName=${confName}`,
+      query: confName => `/papers/get-conference-papers?confName=${confName}`,
       transformResponse: (
         response: ApiResponse<{
           paperSubmittedInConference: SubmittedPaper[];

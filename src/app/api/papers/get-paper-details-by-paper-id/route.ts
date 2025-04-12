@@ -1,7 +1,7 @@
 import dbConnect from '@/lib/dbConnect';
 import { getServerSession } from 'next-auth';
-import { authOptions } from '../auth/[...nextauth]/options';
 import PaperModel from '@/model/PaperSchema';
+import { authOptions } from '../../auth/[...nextauth]/options';
 
 export async function GET(request: Request) {
   await dbConnect();
@@ -26,8 +26,8 @@ export async function GET(request: Request) {
     const getPaperDetails = await PaperModel.findOne({
       paperID: queryParams.paperID,
     })
-      .populate('paperAuthor') // Populating paper authors
-      .populate('correspondingAuthor') // Populating corresponding authors
+      .populate({path:'paperAuthor.userId',select:'fullname email country affilation'}) // Populating paper authors
+      .populate({path:'correspondingAuthor.userId',select:'fullname email country affilation'}) // Populating corresponding authors
       .populate({
         path: 'reviewers.Id', // Path to populate reviewers
         select: 'fullname email', // Only select name and email fields

@@ -8,9 +8,6 @@ import { useParams } from 'next/navigation';
 import React, { useEffect, useMemo, useState } from 'react';
 import { useGetConferencePapersQuery } from '@/store/features/PaperApiSlice';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
-// import { useRouter } from 'next/router';
-import Link from 'next/link';
-// import { ConferenceMeetingSchedule } from '@/app/(videoMeetingRoom)/meetings/ConferenceMeetingSchedule';
 
 // UnderSubmission.tsx
 const UnderSubmission = () => (
@@ -104,7 +101,7 @@ const Page = () => {
   }, [data]);
 
   const baseUrl = `${window.location.protocol}//${window.location.host}`;
-  const profileUrl = `${baseUrl}/submit-paper/${confName}`;
+  const profileUrl =data?.getConferenceDetails.conferenceCategory==="Conference" ? `${baseUrl}/submit-paper/${confName}`:`${baseUrl}/submit-paper/book/${confName}` ;
 
   const copyToClipboard = () => {
     navigator.clipboard.writeText(profileUrl);
@@ -137,9 +134,9 @@ const Page = () => {
   ) : conferenceDetails.conferenceStatus === 'accepted' ? (
     <div className="container min-h-[80vh]">
       <div className="mt-6 flex justify-end">
-        <Link href={`/meetings/${confName}`}>
+        {/* <Link href={`/meetings/${confName}`}>
           <Button>Your Scheduled Conference Meetings</Button>
-        </Link>
+        </Link> */}
       </div>
       <div className="mb-4 p-9">
         <h2 className="text-lg font-semibold mb-2">

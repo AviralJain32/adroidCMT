@@ -1,8 +1,8 @@
 import dbConnect from '@/lib/dbConnect';
 import { getServerSession } from 'next-auth';
-import { authOptions } from '../auth/[...nextauth]/options';
 import PaperModel from '@/model/PaperSchema';
 import ConferenceModel from '@/model/Conference';
+import { authOptions } from '../../auth/[...nextauth]/options';
 
 export async function GET(request: Request) {
   await dbConnect();
@@ -40,8 +40,9 @@ export async function GET(request: Request) {
     const paperSubmittedInConference = await PaperModel.find({
       conference: getConferenceDetails._id,
     })
-      .populate('paperAuthor', 'fullname')
-      .populate('correspondingAuthor', 'fullname');
+      .populate('paperAuthor.userId', 'fullname')
+      .populate('correspondingAuthor.userId', 'fullname');
+      console.log(paperSubmittedInConference)
 
     if (
       !paperSubmittedInConference ||

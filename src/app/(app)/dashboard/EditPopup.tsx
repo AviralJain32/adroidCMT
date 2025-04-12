@@ -228,6 +228,17 @@ const EditPopup = ({
                           )}
                         /> */}
                         <FormField
+                          name={`paperAuthors.${index}.name`}
+                          control={form.control}
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>Name</FormLabel>
+                              <Input {...field} />
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                        <FormField
                           name={`paperAuthors.${index}.email`}
                           control={form.control}
                           render={({ field }) => (
@@ -302,12 +313,8 @@ const EditPopup = ({
                       variant="ghost"
                       onClick={() =>
                         append({
-                          // FirstName: "",
-                          // LastName: "",
+                          name:"",
                           email: '',
-                          // Country: "",
-                          // Affiliation: "",
-                          // WebPage: "",
                           isCorrespondingAuthor: false,
                         })
                       }

@@ -2,8 +2,14 @@ import mongoose, { Schema, Document } from 'mongoose';
 
 // Interface for Paper document
 export interface IPaper extends Document {
-  paperAuthor: mongoose.Types.ObjectId[];
-  correspondingAuthor: mongoose.Types.ObjectId[];
+  paperAuthor:  {
+    email: string;
+    userId?: mongoose.Types.ObjectId;
+  }[];
+  correspondingAuthor: {
+    email: string;
+    userId?: mongoose.Types.ObjectId;
+  }[];
   paperTitle: string;
   paperFile: string;
   paperKeywords: string[];
@@ -36,18 +42,34 @@ const PaperSchema: Schema<IPaper> = new Schema(
   {
     paperAuthor: [
       {
-        type: Schema.Types.ObjectId,
-        ref: 'User',
-        required: true,
+        name:{
+          type:String,
+        },
+        email: {
+          type: String,
+          required: true,
+        },
+        userId: {
+          type: Schema.Types.ObjectId,
+          ref: 'User',
+        }
       },
     ],
     correspondingAuthor: [
       {
-        type: Schema.Types.ObjectId,
-        ref: 'User',
-        required: true,
+        name:{
+          type:String,
+        },
+        email: {
+          type: String,
+          required: true,
+        },
+        userId: {
+          type: Schema.Types.ObjectId,
+          ref: 'User',
+        }
       },
-    ],
+    ],    
     paperTitle: {
       type: String,
       required: true,

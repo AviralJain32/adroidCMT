@@ -15,6 +15,7 @@ interface OrganizedConference {
   conferenceAcronym: string;
   conferenceOrganizerRole: string;
   conferenceCreatedAt: Date;
+  conferenceCategory:string
 }
 
 interface updateType {

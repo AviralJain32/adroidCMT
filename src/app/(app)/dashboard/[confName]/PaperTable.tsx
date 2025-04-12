@@ -82,9 +82,10 @@ const PaperTable: React.FC<PaperTableProps> = ({
 
   const getAuthorNames = (row: SubmittedPaper) => {
     const authors = [
-      ...row.paperAuthor.map((author: any) => author.fullname),
-      ...row.correspondingAuthor.map((author: any) => author.fullname),
+      ...row.paperAuthor.map((author: any) => author.userId?.fullname || author.name),
+      ...row.correspondingAuthor.map((author: any) => author.userId?.fullname || author.name),
     ];
+    console.log(authors)
     const uniqueAuthors = Array.from(new Set(authors));
     return uniqueAuthors.join(', ');
   };
@@ -135,7 +136,7 @@ const PaperTable: React.FC<PaperTableProps> = ({
         );
       },
       accessorKey: 'paperID',
-      cell: id => id.getValue<string>().split('-')[2],
+      cell: id => id.getValue<string>().split('-').at(-1),
       footer: 'ID',
     },
     {

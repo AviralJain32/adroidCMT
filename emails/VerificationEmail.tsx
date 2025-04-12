@@ -27,10 +27,10 @@ export const PlaidVerifyIdentityEmail = ({
 
         <Text style={tertiary}>Identity Verification</Text>
 
-        <Heading style={secondary}>Welcome to Android CMS</Heading>
+        <Heading style={secondary}>Welcome to Adroid CMS</Heading>
 
         <Text style={description}>
-          Thank you {username} for registering with Android CMS. Please use the
+          Thank you {username} for registering with Adroid CMS. Please use the
           following one-time code to verify your identity:
         </Text>
 
@@ -44,7 +44,7 @@ export const PlaidVerifyIdentityEmail = ({
         </Text>
       </Container>
 
-      <Text style={footer}>Powered securely by Android CMS</Text>
+      <Text style={footer}>Powered securely by Adroid CMS</Text>
     </Body>
   </Html>
 );

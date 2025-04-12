@@ -183,7 +183,7 @@ useEffect(() => {
                 )}
               />
               {/* Conference Acronym */}
-              <FormLabel>Conference Acronym</FormLabel>
+              <FormLabel>Book Acronym</FormLabel>
               <Input
                 readOnly
                 value={conferenceAcronym}
@@ -207,10 +207,10 @@ useEffect(() => {
                   </FormItem>
                 )}
               />
-              {/* Authors Section */}
+              {/* Editors Section */}
               <div>
                 <div>
-                  <FormLabel className="mb-2">Authors</FormLabel>
+                  <FormLabel className="mb-2">Editors</FormLabel>
                   {/* <Input
                     readOnly
                     value={user?.email}
@@ -223,14 +223,14 @@ useEffect(() => {
                     key={field.id}
                     className="space-y-4 p-4 border rounded-md mb-4 bg-gray-100"
                   >
-                    {/* Author Name */}
+                    {/* editor Name */}
                     <FormField
                       name={`paperAuthors.${index}.name`}
                       control={form.control}
                       render={({ field }) => (
                         <FormItem>
                           <FormLabel>Name</FormLabel>
-                          <Input {...field} placeholder="Enter author name" />
+                          <Input {...field} placeholder="Enter editor name" />
                           <FormMessage />
                         </FormItem>
                       )}
@@ -242,12 +242,12 @@ useEffect(() => {
                       render={({ field }) => (
                         <FormItem>
                           <FormLabel>Email</FormLabel>
-                          <Input {...field} placeholder="Enter author email" />
+                          <Input {...field} placeholder="Enter editor email" />
                           <FormMessage />
                         </FormItem>
                       )}
                     />
-                    {/* Corresponding Author Checkbox */}
+                    {/* Corresponding editor Checkbox */}
                     <FormField
                       name={`paperAuthors.${index}.isCorrespondingAuthor`}
                       control={form.control}
@@ -259,7 +259,7 @@ useEffect(() => {
                               onCheckedChange={field.onChange}
                             />
                           </FormControl>
-                          <FormLabel>Corresponding Author</FormLabel>
+                          <FormLabel>Corresponding Editor</FormLabel>
                         </FormItem>
                       )}
                     />
@@ -268,12 +268,12 @@ useEffect(() => {
                       variant="destructive"
                       onClick={() => remove(index)}
                     >
-                      Remove Author
+                      Remove Editor
                     </Button>
                   </div>
                 ))}
 
-                {/* Add New Author */}
+                {/* Add New Editor */}
                 <Button
                   type="button"
                   onClick={() =>
@@ -284,7 +284,7 @@ useEffect(() => {
                     })
                   }
                 >
-                  Add Author
+                  Add Editor
                 </Button>
               </div>
               {/* Submit Button */}

@@ -56,7 +56,7 @@ const EditConferencePopup = ({
     defaultValues: {
       ...conferenceDetails,
       conferenceOrganizerPhoneNumber: String(
-        conferenceDetails.conferenceOrganizerPhoneNumber,
+        conferenceDetails?.conferenceOrganizerPhoneNumber || "",
       ),
       conferenceEstimatedNumberOfSubmissions: undefined,
     },
@@ -94,7 +94,7 @@ const EditConferencePopup = ({
     <div>
       <Sheet>
         <SheetTrigger asChild>
-          <Button variant="outline">Edit Conference</Button>
+          <Button variant="outline">Edit</Button>
         </SheetTrigger>
         <SheetContent side={'left'} className="overflow-scroll w-full">
           <SheetHeader>

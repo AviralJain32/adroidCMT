@@ -64,7 +64,7 @@ export const ConferenceDashboardPaperSlice = createApi({
   endpoints: builder => ({
     getPaperDetailsByPaperID: builder.query<PaperDetails, string>({
       // pahla parameter kya response aayega vo batata hai, second parameter kya input dere ho in query vo batata hai
-      query: paperID => `/get-paper-details-by-paper-id?paperID=${paperID}`,
+      query: paperID => `/papers/get-paper-details-by-paper-id?paperID=${paperID}`,
       transformResponse: (response: ApiResponse<PaperDetails>) => {
         if (response.success) {
           return response.data;
