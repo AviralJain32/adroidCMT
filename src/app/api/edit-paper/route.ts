@@ -62,7 +62,7 @@ export async function PUT(request: NextRequest) {
     }
 
     const { Authors, CorrespondingAuthors } =
-      await validateAuthors(paperAuthorsArray);
+      await validateAuthors(paperAuthorsArray,paperTitle);
 
     let updatedPaper: any = {
       paperTitle,
