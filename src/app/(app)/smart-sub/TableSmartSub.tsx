@@ -25,6 +25,7 @@ import { Input } from '@/components/ui/input';
 import { IConference } from '@/model/Conference';
 import { useRouter } from 'next/navigation';
 import moment from 'moment';
+import { Badge } from '@/components/ui/badge';
 
 interface conferencesType {
   conferences: IConference[];
@@ -41,6 +42,12 @@ const TableSmartSub: React.FC<conferencesType> = ({ conferences }) => {
   });
 
   const columns: ColumnDef<IConference>[] = [
+    {
+      header:'Type',
+      accessorKey:'conferenceCategory',
+      cell:info=>(<Badge variant={'accepted'}>{info.getValue<string>() || ""}</Badge>)
+
+    },
     {
       // Acronym Column
       header: ({ column }) => (
