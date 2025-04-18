@@ -34,7 +34,9 @@ interface conferencesType {
 const TableSmartSub: React.FC<conferencesType> = ({ conferences }) => {
   const router = useRouter();
 
-  const [sorting, setSorting] = useState<SortingState>([]);
+  const [sorting, setSorting] = useState<SortingState>([
+    { id: 'conferenceCreatedAt', desc: true },
+  ]);
   const [filtering, setFiltering] = useState('');
   const [pagination, setPagination] = useState({
     pageIndex: 0,
@@ -42,10 +44,11 @@ const TableSmartSub: React.FC<conferencesType> = ({ conferences }) => {
   });
 
   const columns: ColumnDef<IConference>[] = [
+    
     {
       header:'Type',
       accessorKey:'conferenceCategory',
-      cell:info=>(<Badge variant={'accepted'}>{info.getValue<string>() || ""}</Badge>)
+      cell:info=>(<Badge variant={'accepted'}>{info.getValue<string>() || "Conference"}</Badge>)
 
     },
     {
@@ -97,6 +100,12 @@ const TableSmartSub: React.FC<conferencesType> = ({ conferences }) => {
           See Details
         </Button>
       ),
+    },
+    {
+      accessorKey: 'conferenceCreatedAt',
+      enableSorting: true,
+      header: () => null,
+      cell: () => null,
     },
   ];
 
