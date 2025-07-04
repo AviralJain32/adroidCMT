@@ -158,7 +158,7 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
 import { toast } from '@/components/ui/use-toast';
-import { Mail } from 'lucide-react'; // Icons for contact options
+import { Mail, MapPin } from 'lucide-react'; // Icons for contact options
 import Link from 'next/link';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -297,20 +297,46 @@ const ContactUsPage = () => {
 
         {/* Contact Details Section */}
         <div className="space-y-6">
-          <div className="bg-white shadow-lg rounded-lg p-6">
-            <div className="flex items-center space-x-3">
-              <Mail className="text-yellow-500 w-6 h-6" />
-              <h3 className="text-lg font-semibold">Email Support</h3>
-            </div>
-            <p className="mt-2 text-gray-600">Reach out to us via email at:</p>
-            <Link
-              href="mailto:support@adroidcms.com"
-              className="mt-1 font-bold text-blue-500"
-            >
-              support@adroidcms.com
-            </Link>
-          </div>
-        </div>
+  {/* Email Support */}
+  <div className="bg-white shadow-lg rounded-lg p-6">
+    <div className="flex items-center space-x-3">
+      <Mail className="text-yellow-500 w-6 h-6" />
+      <h3 className="text-lg font-semibold">Email Support</h3>
+    </div>
+    <p className="mt-2 text-gray-600">Reach out to us via email at:</p>
+    <Link
+      href="mailto:support@adroidcms.com"
+      className="mt-1 font-bold text-blue-500"
+    >
+      support@adroidcms.com
+    </Link>
+  </div>
+
+  {/* India Office */}
+  <div className="bg-white shadow-lg rounded-lg p-6">
+    <div className="flex items-center space-x-3">
+      <MapPin className="text-green-500 w-6 h-6" />
+      <h3 className="text-lg font-semibold">India Office</h3>
+      </div>
+      <p className="mt-2 text-gray-600">
+        1st Floor, A-16, Block-A, Sec-19, Rohini,<br />
+        New Delhi, India - 110089
+      </p>
+    </div>
+
+    {/* UK Office */}
+    <div className="bg-white shadow-lg rounded-lg p-6">
+      <div className="flex items-center space-x-3">
+        <MapPin className="text-red-500 w-6 h-6" />
+        <h3 className="text-lg font-semibold">UK Office (Adroid Connectz UK Ltd)</h3>
+      </div>
+      <p className="mt-2 text-gray-600">
+        71-75 Shelton Street, Covent Garden,<br />
+        London, United Kingdom, WC2H 9JQ
+      </p>
+    </div>
+  </div>
+
       </div>
     </div>
   );
