@@ -51,6 +51,7 @@ const EditPopup = ({
   paperAbstract,
   paperAuthor,
   correspondingAuthor,
+  conference
 }: DefaultValues) => {
   const CorrespondingAuthors = correspondingAuthor.map((author: Object) => ({
     ...author,
@@ -88,6 +89,7 @@ const EditPopup = ({
     formData.append('paperAbstract', data.paperAbstract);
     formData.append('paperFile', data.paperFile[0]);
     formData.append('paperAuthors', JSON.stringify(data.paperAuthors));
+    formData.append('conference', conference.conferenceAcronym);
 
     try {
       const response = await axios.put(

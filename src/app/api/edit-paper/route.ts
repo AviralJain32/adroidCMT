@@ -30,7 +30,7 @@ export async function PUT(request: NextRequest) {
   const paperKeywords =
     formData.get('paperKeywords')?.toString().split(',') || [];
   const paperAbstract = formData.get('paperAbstract') as string;
-  // const conference = formData.get('conference') as string;
+  const conference = formData.get('conference') as string;
   const paperFile = formData.get('paperFile') as File;
   const paperAuthors = formData.get('paperAuthors') as string;
   const paperAuthorsArray = JSON.parse(paperAuthors);
@@ -47,7 +47,7 @@ export async function PUT(request: NextRequest) {
 
   try {
     const { searchParams } = new URL(request.url);
-    const paperID = searchParams.get('paperID');
+    const paperID = searchParams.get('paperID') || "";
 
     const paperDocument = await PaperModel.findOne({ paperID: paperID });
     console.log(paperDocument);
@@ -78,7 +78,7 @@ export async function PUT(request: NextRequest) {
       await deleteFromCloudinary(oldFileUrl);
 
       // Upload the new file
-      const uploadedFileUrl = await handleFileUpload(paperFile);
+      const uploadedFileUrl = await handleFileUpload(paperFile,paperID,conference);
       updatedPaper.paperFile = uploadedFileUrl;
     }
 

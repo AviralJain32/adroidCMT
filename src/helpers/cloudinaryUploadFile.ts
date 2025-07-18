@@ -53,28 +53,30 @@ const uploadOnCloudinary = async (
     console.log('File is unable to upload to Cloudinary', error);
     return null;
   }
-};const deleteFromCloudinary = async (
+};
+const deleteFromCloudinary = async (
   fileURL: string,
 ): Promise<{ result: string } | null> => {
   try {
     if (!fileURL) return null;
 
-    // Extract the full public ID from the Cloudinary URL
     const url = new URL(fileURL);
-    const pathname = url.pathname; // e.g. /conferencePapers/myfile.pdf
+    const pathname = url.pathname;
 
-    // Remove the file extension (e.g. .pdf)
+    // Remove file extension
     const withoutExtension = pathname.replace(/\.[^/.]+$/, '');
 
-    // Remove leading slash if present
+    // Remove leading slash
     const publicId = withoutExtension.startsWith('/')
       ? withoutExtension.slice(1)
       : withoutExtension;
 
     console.log('Deleting file with public ID:', publicId);
 
-    // Delete the file from Cloudinary
-    const response = await cloudinary.uploader.destroy(publicId);
+    // VERY IMPORTANT: Use resource_type 'raw' for PDFs and other non-image files
+    const response = await cloudinary.uploader.destroy(publicId, {
+      resource_type: 'raw',
+    });
 
     console.log('Delete response:', response);
 
