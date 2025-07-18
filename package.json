@@ -45,6 +45,7 @@
     "countries-and-timezones": "^3.7.2",
     "country-state-city": "^3.2.1",
     "date-fns": "^3.6.0",
+    "file-saver": "^2.0.5",
     "formidable": "^3.5.1",
     "framer-motion": "^11.4.0",
     "jsonwebtoken": "^9.0.2",
@@ -75,10 +76,12 @@
     "usehooks-ts": "^3.1.0",
     "uuid": "^11.0.5",
     "vaul": "^0.9.1",
+    "xlsx": "^0.18.5",
     "zod": "^3.23.8"
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.6",
+    "@types/file-saver": "^2.0.7",
     "@types/formidable": "^3.4.5",
     "@types/jsonwebtoken": "^9.0.8",
     "@types/luxon": "^3.4.2",

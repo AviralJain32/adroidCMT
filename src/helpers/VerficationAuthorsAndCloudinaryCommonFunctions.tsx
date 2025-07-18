@@ -17,14 +17,19 @@ interface paperAuthorType {
   isCorrespondingAuthor: boolean;
 }
 
-export async function handleFileUpload(paperFile: File) {
+export async function handleFileUpload(paperFile: File,paperID:string,conference:string) {
   const tempDir = os.tmpdir(); // Use system temp directory
-  const tempFilePath = path.join(tempDir, paperFile.name);
+  const parts = paperID.split("-");
+  const paperNumber = parts[parts.length - 1];
+  const originalName = paperFile.name;
+  const renamedFile = `_${paperNumber}_${originalName}`;
+  
+  const tempFilePath = path.join(tempDir,renamedFile);
 
   const arrayBuffer = await paperFile.arrayBuffer();
   await fs.writeFile(tempFilePath, Buffer.from(arrayBuffer)); // Write to temp dir
 
-  const uploadedFile = await uploadOnCloudinary(tempFilePath,paperFile.name);
+  const uploadedFile = await uploadOnCloudinary(tempFilePath,renamedFile,conference);
 
   await fs.unlink(tempFilePath); // Clean up temp file
 

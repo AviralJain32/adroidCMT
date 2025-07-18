@@ -43,6 +43,7 @@ import { SubmittedPaper } from '@/types/SubmittedPaperType';
 import { DeletePapers } from './DeletePapers';
 import { DownloadPapers } from './DownloadBulkPapers';
 import { useForm } from 'react-hook-form';
+import DownloadExcelButton from '@/app/(app)/dashboard/[confName]/ExcelDowloadButton';
 
 interface PaperTableProps {
   data: SubmittedPaper[];
@@ -80,7 +81,8 @@ const PaperTable: React.FC<PaperTableProps> = ({
     }
   };
 
-  const getAuthorNames = (row: SubmittedPaper) => {
+   const getAuthorNames = (row: SubmittedPaper) => {
+
     const authors = [
       ...row.paperAuthor.map((author: any) => author.userId?.fullname || author.name),
       ...row.correspondingAuthor.map((author: any) => author.userId?.fullname || author.name),
@@ -289,12 +291,16 @@ const PaperTable: React.FC<PaperTableProps> = ({
                 .rows.map(row => row.original),
             ]}
           />
+
           <DownloadPapers
             papers={[
               ...table.getFilteredRowModel().rows.map(row => row.original),
             ]}
             downloadPaperFunction={DownloadFile}
           />
+          <DownloadExcelButton papers={[
+              ...table.getFilteredRowModel().rows.map(row => row.original),
+            ]} />
         </div>
       </div>
 

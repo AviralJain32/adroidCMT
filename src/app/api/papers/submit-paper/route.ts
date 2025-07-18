@@ -49,8 +49,6 @@ export async function POST(request: NextRequest) {
       console.log(Authors)
       console.log(CorrespondingAuthors)
 
-    const uploadedFileUrl = await handleFileUpload(paperFile);
-    console.log(uploadedFileUrl)
 
     const conferenceExists = await ConferenceModel.exists({
       conferenceAcronym: conference,
@@ -68,6 +66,7 @@ export async function POST(request: NextRequest) {
     }
 
     const paperID = await generatePaperID(conference);
+    const uploadedFileUrl = await handleFileUpload(paperFile,paperID,conference);
 
     const newPaper = await PaperModel.create({
       paperAuthor: Authors,

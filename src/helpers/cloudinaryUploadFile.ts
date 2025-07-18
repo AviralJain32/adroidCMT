@@ -31,7 +31,8 @@ type UploadResponse = {
 
 const uploadOnCloudinary = async (
   localFilePath: String,
-  fileName:string
+  fileName:string,
+  conference:string
 ): Promise<UploadResponse | null> => {
   try {
     if (!localFilePath) return null;
@@ -39,7 +40,7 @@ const uploadOnCloudinary = async (
     const response = await cloudinary.uploader.upload(
       localFilePath.toString(),
       {
-        folder: `${process.env.NEXT_FOLDER}`,
+        folder: `${process.env.NEXT_FOLDER}/${conference}`,
         resource_type: 'auto',
         use_filename: true,
       },
