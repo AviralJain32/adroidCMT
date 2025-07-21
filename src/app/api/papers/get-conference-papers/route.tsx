@@ -40,8 +40,8 @@ export async function GET(request: Request) {
     const paperSubmittedInConference = await PaperModel.find({
       conference: getConferenceDetails._id,
     })
-      .populate('paperAuthor.userId', 'fullname')
-      .populate('correspondingAuthor.userId', 'fullname');
+      .populate('paperAuthor.userId', 'fullname email affilation')
+      .populate('correspondingAuthor.userId', 'fullname email affilation');
       console.log(paperSubmittedInConference)
 
     if (

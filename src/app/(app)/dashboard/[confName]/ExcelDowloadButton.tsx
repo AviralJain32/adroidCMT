@@ -1,4 +1,3 @@
-// components/DownloadExcelButton.js
 'use client';
 
 import React from 'react';
@@ -6,32 +5,37 @@ import { exportToExcel } from '@/helpers/exportToExcel';
 import { SubmittedPaper } from '@/types/SubmittedPaperType';
 import moment from 'moment';
 
-const DownloadExcelButton = ({ papers }:any) => {
-  const getAuthorNames = (row: SubmittedPaper): [string, string] => {
-  const authors = row.paperAuthor.map((author: any) => author.userId?.fullname || author.name);
-  const correspondingAuthors = row.correspondingAuthor.map((author: any) => author.userId?.fullname || author.name);
-
-  const uniqueAuthors = Array.from(new Set(authors)).join(', ');
-  const uniqueCorrespondingAuthors = Array.from(new Set(correspondingAuthors)).join(', ');
-
-  return [uniqueAuthors, uniqueCorrespondingAuthors];
+const DownloadExcelButton = ({ papers }: { papers: SubmittedPaper[] }) => {
+  const getAuthorDetails = (authors: any[]) => {
+    const names = authors.map(author => author.userId?.fullname || author.name).join(', ');
+    const emails = authors.map(author => author.userId?.email || 'N/A').join(', ');
+    const affiliations = authors.map(author => author.userId?.affiliation || author.affiliation || 'N/A').join(', ');
+    return { names, emails, affiliations };
   };
 
-  const santizedPapers = papers.map((paper: SubmittedPaper) => {
-    const [authors, correspondingAuthors] = getAuthorNames(paper);
+  const sanitizedPapers = papers.map((paper: SubmittedPaper) => {
+    const submissionDate = moment(paper.paperSubmissionDate).format('MMMM Do YYYY, h:mm:ss a');
+    const correspondingAuthors = getAuthorDetails(paper.correspondingAuthor);
+
+    const allAuthors = getAuthorDetails(paper.paperAuthor);
 
     return {
-      PaperId: paper.paperID,
+      Timestamp: submissionDate,
+      PaperID: paper.paperID,
       PaperTitle: paper.paperTitle,
-      Authors: authors,
-      CorrespondingAuthors: correspondingAuthors,
-      Keywords: paper.paperKeywords.join(', '),
       Abstract: paper.paperAbstract,
-      SubmissionDate: moment(paper.paperSubmissionDate).format('MMMM Do YYYY, h:mm:ss a'),
+      Keywords: paper.paperKeywords.join(', '),
+      CorrespondingAuthor: correspondingAuthors.names,
+      EmailID: correspondingAuthors.emails,
+      Affiliation: correspondingAuthors.affiliations,
+      AllAuthors: allAuthors.names,
+      AllAuthorEmails: allAuthors.emails,
+      AllAuthorAffiliations: allAuthors.affiliations,
     };
   });
+
   const handleDownload = () => {
-    exportToExcel(santizedPapers, 'conference_papers');
+    exportToExcel(sanitizedPapers, 'conference_papers');
   };
 
   return (
