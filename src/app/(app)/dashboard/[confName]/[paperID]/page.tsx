@@ -180,7 +180,7 @@ const Page = () => {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {paperAuthor.map((author:any, index: number) => (
+            {paperAuthor && paperAuthor.map((author:any, index: number) => (
               <TableRow key={index}>
                 <TableCell>{author.userId ? <Badge variant={'accepted'}>Verified User</Badge>:<Badge variant={'submitted'}>Unverified User</Badge>}</TableCell>
                 <TableCell className="font-medium">{author.userId?.fullname || author.name}</TableCell>
@@ -199,7 +199,7 @@ const Page = () => {
                 </TableCell> */}
               </TableRow>
             ))}
-            {correspondingAuthor.map(
+            {correspondingAuthor && correspondingAuthor.map(
               (corresponding: any, index: number) => (
                 <TableRow key={index + paperAuthor.length}>
                   <TableCell className="font-medium">

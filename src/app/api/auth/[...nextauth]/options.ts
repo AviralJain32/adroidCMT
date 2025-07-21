@@ -46,16 +46,6 @@ export const authOptions: NextAuthOptions = {
     Google({
       clientId: process.env.AUTH_GOOGLE_ID || '',
       clientSecret: process.env.AUTH_GOOGLE_SECRET || '',
-      // async profile(profile) {
-      //     console.log("i am in profile section of google provider");
-      //     console.log(profile)
-      //     // await dbConnect();
-      //     // const dbUser = await UserModel.findOne({ email: profile.email });
-      //     // console.log(dbUser?.email)
-      //     // const userid:any=dbUser?._id
-      //     // const userStringID=userid.toString() //,id:userStringID
-      //     return { ...profile }
-      //   },
     }),
     {
       id: 'orcid',
@@ -75,7 +65,7 @@ export const authOptions: NextAuthOptions = {
       clientId: process.env.AUTH_ORCID_ID,
       clientSecret: process.env.AUTH_ORCID_SECRET,
       profile(profile) {
-        console.log(profile);
+        console.log("ye ri orcid profile",profile);
         return {
           id: profile.sub,
           fullname: profile.given_name + ' ' + profile.family_name, // Modify based on what ORCID provides in the user info response
@@ -86,7 +76,6 @@ export const authOptions: NextAuthOptions = {
   ],
   callbacks: {
     async jwt({ token, user, account }) {
-      console.log('bhai mai callbacks ke jwt function mai hu');
       const newUser: any = user;
       if (user) {
         if (!user._id) {
@@ -139,7 +128,6 @@ export const authOptions: NextAuthOptions = {
           console.log('No user found, creating a new one...');
 
           user = new UserModel({
-            //   _id:new mongoose.Types.ObjectId(profile.sub) ,
             fullname: profile.name,
             email: profile.email,
             password: 1234, // No password for OAuth users
