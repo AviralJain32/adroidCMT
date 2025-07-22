@@ -211,8 +211,8 @@ const Page = () => {
                     {corresponding.name || corresponding.userId.fullname}{' '}
                   </TableCell>
                   <TableCell>{corresponding.email}</TableCell>
-                  <TableCell>{corresponding.userId && corresponding.userId.country}</TableCell>
-                  <TableCell>{corresponding.userId && corresponding.userId.affilation}</TableCell>
+                  <TableCell>{corresponding.userId?.country || "-"}</TableCell>
+                  <TableCell>{corresponding.userId?.affilation || "-"}</TableCell>
                   {/* <TableCell>
                     <a
                       href={corresponding.webpage}
