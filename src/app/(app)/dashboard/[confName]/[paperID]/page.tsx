@@ -107,6 +107,10 @@ const Page = () => {
     reviewRequests,
   } = paperDetails;
 
+  console.log(correspondingAuthor)
+  console.log(paperAuthor)
+
+
   return (
     <div className="container mx-auto p-6 bg-white rounded-lg">
       <div className="shadow p-4">
@@ -183,7 +187,7 @@ const Page = () => {
             {paperAuthor && paperAuthor.map((author:any, index: number) => (
               <TableRow key={index}>
                 <TableCell>{author.userId ? <Badge variant={'accepted'}>Verified User</Badge>:<Badge variant={'submitted'}>Unverified User</Badge>}</TableCell>
-                <TableCell className="font-medium">{author.userId?.fullname || author.name}</TableCell>
+                <TableCell className="font-medium">{author.name || author.userId?.fullname }</TableCell>
                 <TableCell>{author.email}</TableCell>
                 <TableCell>{author.userId?.country || "-"}</TableCell>
                 <TableCell>{author.userId?.affilation || "-"}</TableCell>
@@ -202,12 +206,13 @@ const Page = () => {
             {correspondingAuthor && correspondingAuthor.map(
               (corresponding: any, index: number) => (
                 <TableRow key={index + paperAuthor.length}>
+                  <TableCell>{corresponding.userId ? <Badge variant={'accepted'}>Verified User</Badge>:<Badge variant={'submitted'}>Unverified User</Badge>}</TableCell>
                   <TableCell className="font-medium">
-                    {corresponding.userId.fullname}{' '}
+                    {corresponding.name || corresponding.userId.fullname}{' '}
                   </TableCell>
                   <TableCell>{corresponding.email}</TableCell>
-                  <TableCell>{corresponding.userId.country}</TableCell>
-                  <TableCell>{corresponding.userId.affilation}</TableCell>
+                  <TableCell>{corresponding.userId && corresponding.userId.country}</TableCell>
+                  <TableCell>{corresponding.userId && corresponding.userId.affilation}</TableCell>
                   {/* <TableCell>
                     <a
                       href={corresponding.webpage}

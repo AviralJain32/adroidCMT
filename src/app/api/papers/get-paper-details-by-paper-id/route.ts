@@ -26,8 +26,8 @@ export async function GET(request: Request) {
     const getPaperDetails = await PaperModel.findOne({
       paperID: queryParams.paperID,
     })
-      .populate({path:'paperAuthor.userId',select:'fullname email country affilation'}) // Populating paper authors
-      .populate({path:'correspondingAuthor.userId',select:'fullname email country affilation'}) // Populating corresponding authors
+      .populate({path:'paperAuthor.userId',select:'fullname country affilation'}) // Populating paper authors
+      .populate({path:'correspondingAuthor.userId',select:'fullname country affilation'}) // Populating corresponding authors
       .populate({
         path: 'reviewers.Id', // Path to populate reviewers
         select: 'fullname email', // Only select name and email fields

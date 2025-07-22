@@ -6,9 +6,70 @@ import { authOptions } from '../../auth/[...nextauth]/options';
 import ConferenceModel from '@/model/Conference';
 import { generatePaperID } from '@/helpers/PaperId';
 import {
-  handleFileUpload,
-  validateAuthors,
-} from '@/helpers/VerficationAuthorsAndCloudinaryCommonFunctions';
+  handleFileUpload
+} from '@/helpers/FileUpload';
+import UserModel from '@/model/User';
+import { sendEmailToAuthorForLogin } from '@/helpers/sendEmailToAuthorForLogin';
+
+
+interface paperAuthorType {
+  name:string,
+  email: string;
+  Country: string;
+  Affiliation: string;
+  WebPage: string;
+  isCorrespondingAuthor: boolean;
+}
+
+export async function validateAuthors(paperAuthorsArray: paperAuthorType[],paperTitle:string) {
+  let Authors: any[] = [];
+  let CorrespondingAuthors: any[] = [];
+  // let ErrorOfNotGettingUser: { success: boolean; message: string }[] = [];
+
+  const authorChecks = paperAuthorsArray.map(
+    async (paperAuthor: paperAuthorType) => {
+      try {
+        const User = await UserModel.findOne({
+          $and: [{ email: paperAuthor.email }, { isVerified: true }],
+        });
+        // if (!User) {
+        //   ErrorOfNotGettingUser.push({
+        //     success: false,
+        //     message: `The author ${paperAuthor.FirstName} ${paperAuthor.LastName} with the email id ${paperAuthor.email} is not registered in our system. Please ensure the author creates an account on our platform before adding them as a paper author.`,
+        //   });
+        // }
+        if (paperAuthor.isCorrespondingAuthor) {
+          const AuthorObj:any={email:paperAuthor.email,name:paperAuthor.name}
+          if(User?._id){
+            AuthorObj["userId"]=User?._id
+          }
+          CorrespondingAuthors.push(AuthorObj);
+        } else {
+          const AuthorObj:any={email:paperAuthor.email,name:paperAuthor.name}
+          if(User?._id){
+            AuthorObj["userId"]=User?._id
+          }
+          Authors.push(AuthorObj);
+        }
+        
+        if(!User?._id){
+          sendEmailToAuthorForLogin(paperAuthor.email,paperAuthor.isCorrespondingAuthor,paperTitle)
+        }
+      } catch (error) {
+        console.log(error)
+      }
+    },
+  );
+
+  await Promise.all(authorChecks);
+
+  // if (ErrorOfNotGettingUser.length !== 0) {
+  //   throw new Error(ErrorOfNotGettingUser[0].message);
+  // }
+
+  return { Authors, CorrespondingAuthors };
+}
+
 
 export async function POST(request: NextRequest) {
   await dbConnect();
@@ -46,8 +107,7 @@ export async function POST(request: NextRequest) {
   try {
     const { Authors, CorrespondingAuthors } =
       await validateAuthors(paperAuthorsArray,paperTitle);
-      console.log(Authors)
-      console.log(CorrespondingAuthors)
+
 
 
     const conferenceExists = await ConferenceModel.exists({

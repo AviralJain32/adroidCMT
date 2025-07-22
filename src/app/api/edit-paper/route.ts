@@ -7,7 +7,7 @@ import { deleteFromCloudinary } from '@/helpers/cloudinaryUploadFile';
 import {
   handleFileUpload,
   validateAuthors,
-} from '@/helpers/VerficationAuthorsAndCloudinaryCommonFunctions';
+} from '@/helpers/FileUpload';
 
 export async function PUT(request: NextRequest) {
   await dbConnect();
